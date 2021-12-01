@@ -937,7 +937,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405846714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8980064, y: 2.09, z: 8.020129}
+  m_LocalPosition: {x: -1.91, y: 2.09, z: 8.020129}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1639820102}
@@ -2051,7 +2051,7 @@ Light:
     m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.773
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -2099,13 +2099,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244992309}
-  m_LocalRotation: {x: 0.03033469, y: -0.022942033, z: 0.1957175, w: 0.97992253}
+  m_LocalRotation: {x: 0.043821916, y: -0.025634209, z: 0.19538327, w: 0.9794121}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 3.924, y: -1.901, z: 22.525}
+  m_LocalEulerAnglesHint: {x: 5.501, y: -1.905, z: 22.472}
 --- !u!1 &1257578744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,7 +2147,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257578744}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -2196,7 +2196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257578744}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.1386, y: 0.3261, z: 9.160471}
+  m_LocalPosition: {x: -0.0086000115, y: 0.3261, z: 8.74}
   m_LocalScale: {x: 0.536449, y: 2, z: 0.44636676}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2505,7 +2505,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 30
+  far clip plane: 10
   field of view: 60
   orthographic: 1
   orthographic size: 5
@@ -2532,7 +2532,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1406598825}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: 7.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
