@@ -2118,7 +2118,6 @@ GameObject:
   - component: {fileID: 1257578747}
   - component: {fileID: 1257578746}
   - component: {fileID: 1257578745}
-  - component: {fileID: 1257578749}
   m_Layer: 0
   m_Name: Tile Background
   m_TagString: Untagged
@@ -2204,18 +2203,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!156049354 &1257578749
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257578744}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 1}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
 --- !u!1001 &1297852545
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2978,6 +2965,7 @@ GameObject:
   - component: {fileID: 1824453148}
   - component: {fileID: 1824453147}
   - component: {fileID: 1824453146}
+  - component: {fileID: 1824453149}
   m_Layer: 0
   m_Name: Tile Background Inner
   m_TagString: Untagged
@@ -3062,6 +3050,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824453144}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1824453149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824453144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af4ea13a36931a944a4b899c5a3fa381, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  gridRenderer: {fileID: 1824453147}
 --- !u!1001 &1851153683
 PrefabInstance:
   m_ObjectHideFlags: 0

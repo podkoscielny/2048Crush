@@ -8,12 +8,8 @@ public class GridSystem : ScriptableObject
     [SerializeField] int rows;
     [SerializeField] int columns;
 
-    public 
-
-    void OnEnable()
-    {
-            
-    }
+    public int Rows => rows;
+    public int Columns => columns;
 
     void OnValidate()
     {
