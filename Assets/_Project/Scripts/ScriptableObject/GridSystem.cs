@@ -5,15 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GridSystem", menuName = "ScriptableObjects/GridSystem")]
 public class GridSystem : ScriptableObject
 {
-    [SerializeField] int rows;
-    [SerializeField] int columns;
+    [SerializeField] GridSize gridSize;
 
-    public int Rows => rows;
-    public int Columns => columns;
+    public GridSize GridSize => gridSize;
 
-    void OnValidate()
-    {
-        rows = Mathf.Max(1, rows);
-        columns = Mathf.Max(1, columns);
-    }
+    public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
 }

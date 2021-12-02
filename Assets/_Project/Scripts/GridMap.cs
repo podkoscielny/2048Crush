@@ -28,20 +28,23 @@ public class GridMap : MonoBehaviour
 
     private void InitializeGrid()
     {
+        int rowsCount = gridSystem.GridSize.Rows;
+        int columnsCount = gridSystem.GridSize.Columns;
+
         float gridWidth = gridRenderer.bounds.size.x;
         float gridHeight = gridRenderer.bounds.size.y;
         Vector3 gridCenter = gridRenderer.bounds.center;
 
-        float cellWidth = gridWidth / gridSystem.Rows;
-        float cellHeight = gridHeight / gridSystem.Columns;
+        float cellWidth = gridWidth / rowsCount;
+        float cellHeight = gridHeight / columnsCount;
 
         _cubeSize = new Vector3(cellWidth, cellHeight, 0.1f);
 
-        for (int i = 0; i < gridSystem.Rows; i++)
+        for (int i = 0; i < rowsCount; i++)
         {
             float xPosition = gridCenter.x - (gridWidth / 2) + (cellWidth / 2) + (i * cellWidth);
 
-            for (int j = 0; j < gridSystem.Columns; j++)
+            for (int j = 0; j < columnsCount; j++)
             {
                 float yPosition = gridCenter.y - (gridHeight / 2) + (cellHeight / 2) + (j * cellHeight);
 
