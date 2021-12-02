@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4610248557676912174}
   - component: {fileID: 8936461338427067416}
   - component: {fileID: 740246320}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 5786259615129775734}
   - component: {fileID: 6654495359786886586}
   - component: {fileID: 8686686540949471771}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Point Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
