@@ -11,11 +11,15 @@ public class GridMap : MonoBehaviour
     private Vector3[,] gridCells;
     private Vector3 _cubeSize = new Vector3(0.5f, 0.5f, 0.5f);
     private Vector3 _tileRayDirection = new Vector3(0, 0, -1);
+    private Vector3 _firstTileVelocityRef = Vector3.zero;
+    private Vector3 _secondTileVelocityRef = Vector3.zero;
 
     private int _rows;
     private int _columns;
     private float _cellWidth;
     private float _cellHeight;
+
+    private const float SWITCH_TILE_SPEED = .03f;
 
     void OnEnable()
     {
@@ -52,15 +56,32 @@ public class GridMap : MonoBehaviour
 
     private void HandleSwitchTiles(List<SelectedTileProperties> selectedTiles)
     {
-        //if (Vector3.Distance(selectedTiles[0].TileRb.position, selectedTiles[1].TileRb.position) <= _cellWidth)
-        //{
-        //    Debug.Log("True");
-        //}
-        //else
-        //{
-        //    Debug.Log("False");
-        //}
-        Debug.Log(AreTilesClose(selectedTiles));
+        bool areTilesClose = AreTilesClose(selectedTiles);
+
+        if (!areTilesClose) return;
+
+        StartCoroutine(SwitchTilesPosition(selectedTiles));
+    }
+
+    private IEnumerator SwitchTilesPosition(List<SelectedTileProperties> selectedTiles)
+    {
+        Rigidbody firstTileRb = selectedTiles[0].TileRb;
+        Rigidbody secondTileRb = selectedTiles[1].TileRb;
+
+        Vector3 initialFirstTilePosition = firstTileRb.position;
+        Vector3 initialSecondTilePosition = secondTileRb.position;
+
+        do
+        {
+            Vector3 firstTileDestination = Vector3.SmoothDamp(firstTileRb.position, initialSecondTilePosition, ref _firstTileVelocityRef, SWITCH_TILE_SPEED);
+            Vector3 secondTileDestination = Vector3.SmoothDamp(secondTileRb.position, initialFirstTilePosition, ref _secondTileVelocityRef, SWITCH_TILE_SPEED);
+
+            firstTileRb.MovePosition(firstTileDestination);
+            secondTileRb.MovePosition(secondTileDestination);
+
+            yield return null;
+
+        } while (firstTileRb.position != initialSecondTilePosition && secondTileRb.position != initialFirstTilePosition);
     }
 
     private bool AreTilesClose(List<SelectedTileProperties> selectedTiles)
