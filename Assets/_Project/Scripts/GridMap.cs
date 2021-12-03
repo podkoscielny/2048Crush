@@ -7,17 +7,21 @@ public class GridMap : MonoBehaviour
     [SerializeField] GridSystem gridSystem;
     [SerializeField] MeshRenderer gridRenderer;
     [SerializeField] LayerMask tileMask;
+    [SerializeField] GameObject tilePrefab;
+    [SerializeField] Transform spawnPosition;
 
     private Vector3[,] _gridCells;
     private GameObject[,] _tilesAtGridCells;
     private SelectedTileProperties[] _selectedTiles;
     private Vector3 _cubeSize = new Vector3(0.5f, 0.5f, 0.5f);
     private Vector3 _tileRayDirection = new Vector3(0, 0, -1);
+    private SelectedTileProperties _emptyProperties = new SelectedTileProperties();
 
     private int _rows;
     private int _columns;
 
-    private const float SWITCH_TILE_SPEED = .03f;
+    private const float SPAWN_TILE_Y_POSITION = 0.9f;
+    private const float SWITCH_TILE_SPEED = 4f;
     private const int MINIMUM_TILES_TO_DESTROY = 3;
 
     void OnEnable()
@@ -112,8 +116,8 @@ public class GridMap : MonoBehaviour
 
         do
         {
-            Vector3 firstTileDestination = Vector3.MoveTowards(firstTileRb.position, initialSecondTilePosition, 4f * Time.fixedDeltaTime);
-            Vector3 secondTileDestination = Vector3.MoveTowards(secondTileRb.position, initialFirstTilePosition, 4f * Time.fixedDeltaTime);
+            Vector3 firstTileDestination = Vector3.MoveTowards(firstTileRb.position, initialSecondTilePosition, SWITCH_TILE_SPEED * Time.fixedDeltaTime);
+            Vector3 secondTileDestination = Vector3.MoveTowards(secondTileRb.position, initialFirstTilePosition, SWITCH_TILE_SPEED * Time.fixedDeltaTime);
 
             firstTileRb.MovePosition(firstTileDestination);
             secondTileRb.MovePosition(secondTileDestination);
@@ -123,11 +127,10 @@ public class GridMap : MonoBehaviour
         } while (firstTileRb.position != initialSecondTilePosition && secondTileRb.position != initialFirstTilePosition);
 
         AssignTilesToGridCells();
-        DestroyTiles();
-        ClearSelectedTiles();
+        StartCoroutine(DestroyTiles());   
     }
 
-    private void DestroyTiles()
+    private IEnumerator DestroyTiles()
     {
         List<Vector2Int> tilesToBeDestroyed = CheckTilesToBeDestroyed(_selectedTiles[0].TileObject);
         List<Vector2Int> tilesToBeDestroyed2 = CheckTilesToBeDestroyed(_selectedTiles[1].TileObject);
@@ -143,6 +146,48 @@ public class GridMap : MonoBehaviour
         {
             Destroy(_tilesAtGridCells[tile.x, tile.y]);
         }
+
+        yield return new WaitForEndOfFrame();
+
+        if (tilesToDestroy.Count > 0) StartCoroutine(SpawnMissingTiles());
+    }
+
+    private IEnumerator SpawnMissingTiles()
+    {
+        Debug.Log("Spawn");
+        //foreach (Vector2Int cell in destroyedTileCells)
+        //{
+        //    Vector3 tilePosition = _gridCells[cell.x, cell.y];
+        //    tilePosition.z = tilePrefab.transform.position.z;
+
+        //    Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
+        //}
+
+        for (int i = 0; i < _rows; i++)
+        {
+            List<Vector2Int> missingTilesInColumn = new List<Vector2Int>();
+
+            for (int j = 0; j < _columns; j++)
+            {
+                Physics.Raycast(_gridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
+
+                if (hitInfo.collider == null)
+                {
+                    float columnX = _gridCells[i, 0].x;
+                    float tileY = spawnPosition.position.y + (missingTilesInColumn.Count * (gridRenderer.bounds.size.x / _rows + 0.05f));
+                    Vector3 tilePosition = new Vector3(columnX, tileY, spawnPosition.position.z);
+
+                    Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
+
+                    missingTilesInColumn.Add(new Vector2Int(i, j));
+                }
+            }
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        //AssignTilesToGridCells();
+        //ClearSelectedTiles();
     }
 
     private void AssignTilesToGridCells()
@@ -259,7 +304,11 @@ public class GridMap : MonoBehaviour
         return tilesToDestroy;
     }
 
-    private void ClearSelectedTiles() => _selectedTiles.Initialize();
+    private void ClearSelectedTiles()
+    {
+        _selectedTiles[0] = _emptyProperties;
+        _selectedTiles[1] = _emptyProperties;
+    }
 
     private void InitializeGrid()
     {
