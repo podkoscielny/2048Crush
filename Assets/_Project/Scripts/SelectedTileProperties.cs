@@ -6,10 +6,12 @@ public struct SelectedTileProperties
 {
     public GameObject TileObject { get; private set; }
     public Rigidbody TileRb { get; private set; }
+    public TileType TileType { get; private set; }
 
-    public SelectedTileProperties(GameObject tileObject, Rigidbody tileRb)
+    public SelectedTileProperties(GameObject tileObject, Rigidbody tileRb, TileType tileType)
     {
         TileObject = tileObject;
         TileRb = tileRb;
+        TileType = tileType;
     }
 }

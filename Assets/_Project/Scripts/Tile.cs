@@ -14,6 +14,8 @@ public class Tile : MonoBehaviour
     [SerializeField] Rigidbody tileRb;
     [SerializeField] TileType[] tileTypes;
 
+    public TileType TileType { get; private set; }
+
     private static readonly List<SelectedTileProperties> _selectedTiles = new List<SelectedTileProperties>();
 
     void OnEnable()
@@ -23,6 +25,8 @@ public class Tile : MonoBehaviour
 
         tileText.text = randomTile.PointsToString;
         tileRenderer.material = randomTile.TileMaterial;
+
+        TileType = randomTile;
     }
 
     void OnMouseDown()
@@ -41,7 +45,7 @@ public class Tile : MonoBehaviour
 
     private void AddTileToSelectedTiles()
     {
-        SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb);
+        SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb, TileType);
 
         _selectedTiles.Add(tileProperties);
     }
