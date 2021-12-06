@@ -10,10 +10,8 @@ public class GridMap : MonoBehaviour
     [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform spawnPosition;
 
-    private Vector3[,] _gridCells;
     private GameObject[,] _tilesAtGridCells;
     private SelectedTileProperties[] _selectedTiles;
-    private Vector3 _cubeSize = new Vector3(0.5f, 0.5f, 0.5f);
     private Vector3 _tileRayDirection = new Vector3(0, 0, -1);
     private SelectedTileProperties _emptyProperties = new SelectedTileProperties();
 
@@ -24,37 +22,36 @@ public class GridMap : MonoBehaviour
     private const float SWITCH_TILE_SPEED = 4f;
     private const int MINIMUM_TILES_TO_DESTROY = 3;
 
-    void OnEnable()
+    private void OnEnable()
     {
         Tile.OnTileClicked += HandleTileClick;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Tile.OnTileClicked -= HandleTileClick;
     }
 
-    void Start()
+    private void Start()
     {
         _rows = gridSystem.GridSize.Rows;
         _columns = gridSystem.GridSize.Columns;
 
         _selectedTiles = new SelectedTileProperties[2];
-        _gridCells = new Vector3[_rows, _columns];
         _tilesAtGridCells = new GameObject[_rows, _columns];
-        InitializeGrid();
+        gridSystem.InitializeGrid(gridRenderer);
         AssignTilesToGridCells();
     }
 
     void OnDrawGizmos()
     {
-        if (_gridCells != null)
+        if (gridSystem.GridCells != null)
         {
-            for (int i = 0; i < _gridCells.GetLength(0); i++)
+            for (int i = 0; i < gridSystem.GridCells.GetLength(0); i++)
             {
-                for (int j = 0; j < _gridCells.GetLength(1); j++)
+                for (int j = 0; j < gridSystem.GridCells.GetLength(1); j++)
                 {
-                    Gizmos.DrawWireCube(_gridCells[i, j], _cubeSize);
+                    Gizmos.DrawWireCube(gridSystem.GridCells[i, j], gridSystem.CubeSize);
                 }
             }
         }
@@ -73,7 +70,7 @@ public class GridMap : MonoBehaviour
 
             if (AreTilesClose(firstTileSelectedCell, secondTileSelectedCell))
             {
-                _selectedTiles[1] = tileToBeSelected;
+                _selectedTiles[1] = tileToBeSelected; // Add Coroutine Queue method
                 StartCoroutine(SwitchTilesPosition());
             }
         }
@@ -154,26 +151,17 @@ public class GridMap : MonoBehaviour
 
     private IEnumerator SpawnMissingTiles()
     {
-        Debug.Log("Spawn");
-        //foreach (Vector2Int cell in destroyedTileCells)
-        //{
-        //    Vector3 tilePosition = _gridCells[cell.x, cell.y];
-        //    tilePosition.z = tilePrefab.transform.position.z;
-
-        //    Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
-        //}
-
         for (int i = 0; i < _rows; i++)
         {
             List<Vector2Int> missingTilesInColumn = new List<Vector2Int>();
 
             for (int j = 0; j < _columns; j++)
             {
-                Physics.Raycast(_gridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
+                Physics.Raycast(gridSystem.GridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
 
                 if (hitInfo.collider == null)
                 {
-                    float columnX = _gridCells[i, 0].x;
+                    float columnX = gridSystem.GridCells[i, 0].x;
                     float tileY = spawnPosition.position.y + (missingTilesInColumn.Count * (gridRenderer.bounds.size.x / _rows + 0.05f));
                     Vector3 tilePosition = new Vector3(columnX, tileY, spawnPosition.position.z);
 
@@ -185,9 +173,6 @@ public class GridMap : MonoBehaviour
         }
 
         yield return new WaitForEndOfFrame();
-
-        //AssignTilesToGridCells();
-        //ClearSelectedTiles();
     }
 
     private void AssignTilesToGridCells()
@@ -196,7 +181,7 @@ public class GridMap : MonoBehaviour
         {
             for (int j = 0; j < _columns; j++)
             {
-                Physics.Raycast(_gridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
+                Physics.Raycast(gridSystem.GridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
 
                 GameObject tileHit = hitInfo.collider.gameObject;
 
@@ -308,29 +293,5 @@ public class GridMap : MonoBehaviour
     {
         _selectedTiles[0] = _emptyProperties;
         _selectedTiles[1] = _emptyProperties;
-    }
-
-    private void InitializeGrid()
-    {
-        float gridWidth = gridRenderer.bounds.size.x;
-        float gridHeight = gridRenderer.bounds.size.y;
-        Vector3 gridCenter = gridRenderer.bounds.center;
-
-        float cellWidth = gridWidth / _rows;
-        float cellHeight = gridHeight / _columns;
-
-        _cubeSize = new Vector3(cellWidth, cellHeight, 0.1f);
-
-        for (int i = 0; i < _rows; i++)
-        {
-            float xPosition = gridCenter.x - (gridWidth / 2) + (cellWidth / 2) + (i * cellWidth);
-
-            for (int j = 0; j < _columns; j++)
-            {
-                float yPosition = gridCenter.y + (gridHeight / 2) - (cellHeight / 2) - (j * cellHeight);
-
-                _gridCells[i, j] = new Vector3(xPosition, yPosition, gridCenter.z);
-            }
-        }
     }
 }

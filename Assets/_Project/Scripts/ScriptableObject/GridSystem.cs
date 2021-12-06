@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "GridSystem", menuName = "ScriptableObjects/GridSystem")]
 public class GridSystem : ScriptableObject
@@ -8,6 +11,60 @@ public class GridSystem : ScriptableObject
     [SerializeField] GridSize gridSize;
 
     public GridSize GridSize => gridSize;
+    public Vector3[,] GridCells => _gridCells;
+    public Vector3 CubeSize => _cubeSize;
+
+    private Vector3[,] _gridCells;
+    private Vector3 _cubeSize = new Vector3(0, 0, 0);
 
     public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
+
+    private void OnEnable()
+    {
+        EditorApplication.playModeStateChanged += ResetDataOnPlayModeExit;
+    }
+
+    private void OnDisable()
+    {
+        EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
+    }
+
+    public void InitializeGrid(MeshRenderer gridRenderer)
+    {
+        int rows = gridSize.Rows;
+        int columns = gridSize.Columns;
+
+        _gridCells = new Vector3[rows, columns];
+
+        float gridWidth = gridRenderer.bounds.size.x;
+        float gridHeight = gridRenderer.bounds.size.y;
+        Vector3 gridCenter = gridRenderer.bounds.center;
+
+        float cellWidth = gridWidth / rows;
+        float cellHeight = gridHeight / columns;
+
+        _cubeSize = new Vector3(cellWidth, cellHeight, 0.1f);
+
+        for (int i = 0; i < rows; i++)
+        {
+            float xPosition = gridCenter.x - (gridWidth / 2) + (cellWidth / 2) + (i * cellWidth);
+
+            for (int j = 0; j < columns; j++)
+            {
+                float yPosition = gridCenter.y + (gridHeight / 2) - (cellHeight / 2) - (j * cellHeight);
+
+                _gridCells[i, j] = new Vector3(xPosition, yPosition, gridCenter.z);
+            }
+        }
+    }
+
+#if UNITY_EDITOR
+    private void ResetDataOnPlayModeExit(PlayModeStateChange changedState)
+    {
+        if (changedState == PlayModeStateChange.ExitingPlayMode)
+        {
+
+        }
+    }
+#endif
 }
