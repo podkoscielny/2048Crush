@@ -8,7 +8,6 @@ public class GridMap : MonoBehaviour
     [SerializeField] GridSystem gridSystem;
     [SerializeField] MeshRenderer gridRenderer;
     [SerializeField] GameObject tilePrefab;
-    [SerializeField] Transform spawnPosition;
     [SerializeField] ObjectPool objectPool;
 
     private SelectedTileProperties[] _selectedTiles = new SelectedTileProperties[2];
@@ -67,7 +66,7 @@ public class GridMap : MonoBehaviour
             for (int j = 0; j < gridCells.GetLength(1); j++)
             {
                 GameObject tile = objectPool.GetFromPool(Tags.Tile);
-                Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, spawnPosition.position.z);
+                Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, tilePrefab.transform.position.z);
 
                 tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
                 gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
@@ -158,8 +157,8 @@ public class GridMap : MonoBehaviour
                 columnIndex = cell.x;
             }
 
-            float tileY = spawnPosition.position.y + (missingInColumn * (gridRenderer.bounds.size.y / _columns + 0.05f));
-            Vector3 tilePosition = new Vector3(cellPosition.x, tileY, spawnPosition.position.z);
+            float tileY = gridSystem.GridCells[0,0].y + (gridSystem.CellHeight * 1.5f) + (missingInColumn * (gridRenderer.bounds.size.y / _columns + 0.05f));
+            Vector3 tilePosition = new Vector3(cellPosition.x, tileY, tilePrefab.transform.position.z);
 
             GameObject tile = objectPool.GetFromPool(Tags.Tile);
             tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
