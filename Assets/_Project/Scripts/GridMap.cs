@@ -15,6 +15,8 @@ public class GridMap : MonoBehaviour
 
     private int _rows;
     private int _columns;
+    private RigidbodyConstraints _fullTileConstraints;
+    private RigidbodyConstraints _unlockedTileConstraints;
 
     private const float SWITCH_TILE_SPEED = 4f;
     private const int MINIMUM_TILES_TO_DESTROY = 3;
@@ -31,6 +33,9 @@ public class GridMap : MonoBehaviour
 
     private void Awake()
     {
+        _fullTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+        _unlockedTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+
         gridSystem.InitializeGrid(gridRenderer);
         objectPool.InitializePool();
     }
@@ -88,8 +93,30 @@ public class GridMap : MonoBehaviour
             if (gridSystem.AreTilesClose(firstTileSelectedCell, secondTileSelectedCell))
             {
                 _selectedTiles[1] = tileToBeSelected; // Add Coroutine Queue method
-                StartCoroutine(SwitchTilesPosition());
+                StartCoroutine(MatchTiles());
             }
+        }
+    }
+
+    private IEnumerator MatchTiles()
+    {
+        yield return StartCoroutine(SwitchTilesPosition());
+
+        gridSystem.AssignTilesToGridCells();
+        List<Vector2Int> tilesToDestroy = DestroyTiles();
+
+        if (tilesToDestroy.Count > 0)
+        {
+            SpawnMissingTiles();
+            yield return StartCoroutine(AddGravityToTiles());
+            gridSystem.AssignTilesToGridCells();
+            ClearSelectedTiles();
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.1f);
+            yield return SwitchTilesPosition();
+            ClearSelectedTiles();
         }
     }
 
@@ -100,6 +127,9 @@ public class GridMap : MonoBehaviour
 
         Vector3 initialFirstTilePosition = firstTileRb.position;
         Vector3 initialSecondTilePosition = secondTileRb.position;
+
+        firstTileRb.constraints = _unlockedTileConstraints;
+        secondTileRb.constraints = _unlockedTileConstraints;
 
         do
         {
@@ -113,11 +143,11 @@ public class GridMap : MonoBehaviour
 
         } while (firstTileRb.position != initialSecondTilePosition && secondTileRb.position != initialFirstTilePosition);
 
-        gridSystem.AssignTilesToGridCells();
-        DestroyTiles();
+        firstTileRb.constraints = _fullTileConstraints;
+        secondTileRb.constraints = _fullTileConstraints;
     }
 
-    private void DestroyTiles()
+    private List<Vector2Int> DestroyTiles()
     {
         List<Vector2Int> tilesToBeDestroyed = CheckTilesToBeDestroyed(_selectedTiles[0]);
         List<Vector2Int> tilesToBeDestroyed2 = CheckTilesToBeDestroyed(_selectedTiles[1]);
@@ -134,7 +164,7 @@ public class GridMap : MonoBehaviour
             objectPool.AddToPool(Tags.Tile, gridSystem.TilesAtGridCells[tile.x, tile.y]);
         }
 
-        if (tilesToDestroy.Count > 0) SpawnMissingTiles();
+        return tilesToDestroy;
     }
 
     private void SpawnMissingTiles()
@@ -157,11 +187,50 @@ public class GridMap : MonoBehaviour
                 columnIndex = cell.x;
             }
 
-            float tileY = gridSystem.GridCells[0,0].y + (gridSystem.CellHeight * 1.5f) + (missingInColumn * (gridRenderer.bounds.size.y / _columns + 0.05f));
+            float tileY = gridSystem.GridCells[0, 0].y + (gridSystem.CellHeight * 1.5f) + (missingInColumn * (gridRenderer.bounds.size.y / _columns + 0.05f));
             Vector3 tilePosition = new Vector3(cellPosition.x, tileY, tilePrefab.transform.position.z);
 
             GameObject tile = objectPool.GetFromPool(Tags.Tile);
             tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
+        }
+    }
+
+    private IEnumerator AddGravityToTiles()
+    {
+        var activeTiles = TagSystem.FindAllGameObjectsWithTag(Tags.Tile);
+        List<Rigidbody> tileRigidBodys = new List<Rigidbody>();
+
+        foreach (var tile in activeTiles)
+        {
+            if (tile.TryGetComponent(out Rigidbody tileRb))
+            {
+                tileRb.isKinematic = false;
+                tileRigidBodys.Add(tileRb);
+            }
+        }
+
+        bool areTilesMoving = true;
+
+        yield return new WaitForSeconds(0.1f);
+
+        do
+        {
+            int notMovingTilesCount = 0;
+
+            foreach (Rigidbody tileRb in tileRigidBodys)
+            {
+                if (tileRb.velocity.y == 0) notMovingTilesCount++;
+            }
+
+            if (notMovingTilesCount == tileRigidBodys.Count) areTilesMoving = false;
+
+            yield return null;
+
+        } while (areTilesMoving);
+
+        foreach (Rigidbody tileRb in tileRigidBodys)
+        {
+            tileRb.isKinematic = true;
         }
     }
 
