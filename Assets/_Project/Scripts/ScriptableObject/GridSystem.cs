@@ -33,6 +33,38 @@ public class GridSystem : ScriptableObject
         EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
     }
 
+    public Vector3 GetCellCoordinates(int rowIndex, int columnIndex) => _gridCells[rowIndex, columnIndex];
+
+    public List<Vector2Int> GetEmptyGridCells()
+    {
+        List<Vector2Int> missingTiles = new List<Vector2Int>();
+
+        for (int i = 0; i < gridSize.Rows; i++)
+        {
+            for (int j = 0; j < gridSize.Columns; j++)
+            {
+                Physics.Raycast(_gridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
+
+                if (hitInfo.collider == null) missingTiles.Add(new Vector2Int(i, j));
+            }
+        }
+
+        return missingTiles;
+    }
+
+    public Vector2Int GetTileGridCell(GameObject tileObject)
+    {
+        for (int i = 0; i < gridSize.Rows; i++)
+        {
+            for (int j = 0; j < gridSize.Columns; j++)
+            {
+                if (_tilesAtGridCells[i, j] == tileObject) return new Vector2Int(i, j);
+            }
+        }
+
+        return new Vector2Int(-1, -1);
+    }
+
     public void AssignTilesToGridCells()
     {
         for (int i = 0; i < gridSize.Rows; i++)
@@ -46,6 +78,20 @@ public class GridSystem : ScriptableObject
                 _tilesAtGridCells[i, j] = tileHit;
             }
         }
+    }
+
+    public bool AreTilesClose(Vector2Int firstGridCell, Vector2Int secondGridCell)
+    {
+        if (firstGridCell.x == secondGridCell.x)
+        {
+            return Mathf.Abs(firstGridCell.y - secondGridCell.y) == 1;
+        }
+        else if (firstGridCell.y == secondGridCell.y)
+        {
+            return Mathf.Abs(firstGridCell.x - secondGridCell.x) == 1;
+        }
+
+        return false;
     }
 
     public void InitializeGrid(MeshRenderer gridRenderer)

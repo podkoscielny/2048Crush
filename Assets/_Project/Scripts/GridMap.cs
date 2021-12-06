@@ -63,42 +63,15 @@ public class GridMap : MonoBehaviour
         }
         else if (_selectedTiles[1].TileObject == null && _selectedTiles[0].TileObject != tileToBeSelected.TileObject)
         {
-            Vector2Int firstTileSelectedCell = GetTileGridCell(_selectedTiles[0].TileObject);
-            Vector2Int secondTileSelectedCell = GetTileGridCell(tileToBeSelected.TileObject);
+            Vector2Int firstTileSelectedCell = gridSystem.GetTileGridCell(_selectedTiles[0].TileObject);
+            Vector2Int secondTileSelectedCell = gridSystem.GetTileGridCell(tileToBeSelected.TileObject);
 
-            if (AreTilesClose(firstTileSelectedCell, secondTileSelectedCell))
+            if (gridSystem.AreTilesClose(firstTileSelectedCell, secondTileSelectedCell))
             {
                 _selectedTiles[1] = tileToBeSelected; // Add Coroutine Queue method
                 StartCoroutine(SwitchTilesPosition());
             }
         }
-    }
-
-    private Vector2Int GetTileGridCell(GameObject tileObject)
-    {
-        for (int i = 0; i < _rows; i++)
-        {
-            for (int j = 0; j < _columns; j++)
-            {
-                if (gridSystem.TilesAtGridCells[i, j] == tileObject) return new Vector2Int(i, j);
-            }
-        }
-
-        return new Vector2Int(-1, -1);
-    }
-
-    private bool AreTilesClose(Vector2Int firstGridCell, Vector2Int secondGridCell)
-    {
-        if (firstGridCell.x == secondGridCell.x)
-        {
-            return Mathf.Abs(firstGridCell.y - secondGridCell.y) == 1;
-        }
-        else if (firstGridCell.y == secondGridCell.y)
-        {
-            return Mathf.Abs(firstGridCell.x - secondGridCell.x) == 1;
-        }
-
-        return false;
     }
 
     private IEnumerator SwitchTilesPosition()
@@ -122,7 +95,7 @@ public class GridMap : MonoBehaviour
         } while (firstTileRb.position != initialSecondTilePosition && secondTileRb.position != initialFirstTilePosition);
 
         gridSystem.AssignTilesToGridCells();
-        StartCoroutine(DestroyTiles());   
+        StartCoroutine(DestroyTiles());
     }
 
     private IEnumerator DestroyTiles()
@@ -149,25 +122,28 @@ public class GridMap : MonoBehaviour
 
     private IEnumerator SpawnMissingTiles()
     {
-        for (int i = 0; i < _rows; i++)
+        List<Vector2Int> emptyCells = gridSystem.GetEmptyGridCells();
+        int columnIndex = -1;
+        int missingInColumn = 0;
+
+        foreach (Vector2Int cell in emptyCells)
         {
-            List<Vector2Int> missingTilesInColumn = new List<Vector2Int>();
+            Vector3 cellPosition = gridSystem.GetCellCoordinates(cell.x, cell.y);
 
-            for (int j = 0; j < _columns; j++)
+            if (cell.x == columnIndex)
             {
-                Physics.Raycast(gridSystem.GridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
-
-                if (hitInfo.collider == null)
-                {
-                    float columnX = gridSystem.GridCells[i, 0].x;
-                    float tileY = spawnPosition.position.y + (missingTilesInColumn.Count * (gridRenderer.bounds.size.x / _rows + 0.05f));
-                    Vector3 tilePosition = new Vector3(columnX, tileY, spawnPosition.position.z);
-
-                    Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
-
-                    missingTilesInColumn.Add(new Vector2Int(i, j));
-                }
+                missingInColumn++;
             }
+            else
+            {
+                missingInColumn = 0;
+                columnIndex = cell.x;
+            }
+
+            float tileY = spawnPosition.position.y + (missingInColumn * (gridRenderer.bounds.size.y / gridSystem.GridSize.Columns + 0.05f));
+            Vector3 tilePosition = new Vector3(cellPosition.x, tileY, spawnPosition.position.z);
+
+            Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
         }
 
         yield return new WaitForEndOfFrame();
@@ -175,7 +151,7 @@ public class GridMap : MonoBehaviour
 
     private List<Vector2Int> CheckTilesToBeDestroyed(GameObject selectedTile)
     {
-        Vector2Int selectedTileCell = GetTileGridCell(selectedTile);
+        Vector2Int selectedTileCell = gridSystem.GetTileGridCell(selectedTile);
 
         List<Vector2Int> tilesToBeDestroyedInColumn = new List<Vector2Int>();
         List<Vector2Int> tilesToBeDestroyedInRow = new List<Vector2Int>();
