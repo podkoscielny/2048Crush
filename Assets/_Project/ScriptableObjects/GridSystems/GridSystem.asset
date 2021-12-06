@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: GridSystem
   m_EditorClassIdentifier: 
   gridSize: {fileID: 11400000, guid: 8f66382b910231e42a2be5a0dade1ce8, type: 2}
+  tileMask:
+    serializedVersion: 2
+    m_Bits: 128

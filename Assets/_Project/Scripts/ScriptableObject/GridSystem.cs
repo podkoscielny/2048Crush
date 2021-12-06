@@ -9,13 +9,17 @@ using UnityEditor;
 public class GridSystem : ScriptableObject
 {
     [SerializeField] GridSize gridSize;
+    [SerializeField] LayerMask tileMask;
 
     public GridSize GridSize => gridSize;
     public Vector3[,] GridCells => _gridCells;
     public Vector3 CubeSize => _cubeSize;
+    public GameObject[,] TilesAtGridCells => _tilesAtGridCells;
 
     private Vector3[,] _gridCells;
+    private GameObject[,] _tilesAtGridCells;
     private Vector3 _cubeSize = new Vector3(0, 0, 0);
+    private Vector3 _tileRayDirection = new Vector3(0, 0, -1);
 
     public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
 
@@ -29,12 +33,28 @@ public class GridSystem : ScriptableObject
         EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
     }
 
+    public void AssignTilesToGridCells()
+    {
+        for (int i = 0; i < gridSize.Rows; i++)
+        {
+            for (int j = 0; j < gridSize.Columns; j++)
+            {
+                Physics.Raycast(_gridCells[i, j], _tileRayDirection, out RaycastHit hitInfo, Mathf.Infinity, tileMask);
+
+                GameObject tileHit = hitInfo.collider.gameObject;
+
+                _tilesAtGridCells[i, j] = tileHit;
+            }
+        }
+    }
+
     public void InitializeGrid(MeshRenderer gridRenderer)
     {
         int rows = gridSize.Rows;
         int columns = gridSize.Columns;
 
         _gridCells = new Vector3[rows, columns];
+        _tilesAtGridCells = new GameObject[rows, columns];
 
         float gridWidth = gridRenderer.bounds.size.x;
         float gridHeight = gridRenderer.bounds.size.y;
