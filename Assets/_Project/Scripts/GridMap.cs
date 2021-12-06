@@ -6,18 +6,15 @@ public class GridMap : MonoBehaviour
 {
     [SerializeField] GridSystem gridSystem;
     [SerializeField] MeshRenderer gridRenderer;
-    [SerializeField] LayerMask tileMask;
     [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform spawnPosition;
 
-    private SelectedTileProperties[] _selectedTiles;
-    private Vector3 _tileRayDirection = new Vector3(0, 0, -1);
+    private SelectedTileProperties[] _selectedTiles = new SelectedTileProperties[2];
     private SelectedTileProperties _emptyProperties = new SelectedTileProperties();
 
     private int _rows;
     private int _columns;
 
-    private const float SPAWN_TILE_Y_POSITION = 0.9f;
     private const float SWITCH_TILE_SPEED = 4f;
     private const int MINIMUM_TILES_TO_DESTROY = 3;
 
@@ -36,7 +33,6 @@ public class GridMap : MonoBehaviour
         _rows = gridSystem.GridSize.Rows;
         _columns = gridSystem.GridSize.Columns;
 
-        _selectedTiles = new SelectedTileProperties[2];
         gridSystem.InitializeGrid(gridRenderer);
         gridSystem.AssignTilesToGridCells();
     }
@@ -100,8 +96,8 @@ public class GridMap : MonoBehaviour
 
     private IEnumerator DestroyTiles()
     {
-        List<Vector2Int> tilesToBeDestroyed = CheckTilesToBeDestroyed(_selectedTiles[0].TileObject);
-        List<Vector2Int> tilesToBeDestroyed2 = CheckTilesToBeDestroyed(_selectedTiles[1].TileObject);
+        List<Vector2Int> tilesToBeDestroyed = CheckTilesToBeDestroyed(_selectedTiles[0]);
+        List<Vector2Int> tilesToBeDestroyed2 = CheckTilesToBeDestroyed(_selectedTiles[1]);
 
         List<Vector2Int> tilesToDestroy = new List<Vector2Int>(tilesToBeDestroyed);
 
@@ -140,7 +136,7 @@ public class GridMap : MonoBehaviour
                 columnIndex = cell.x;
             }
 
-            float tileY = spawnPosition.position.y + (missingInColumn * (gridRenderer.bounds.size.y / gridSystem.GridSize.Columns + 0.05f));
+            float tileY = spawnPosition.position.y + (missingInColumn * (gridRenderer.bounds.size.y / _columns + 0.05f));
             Vector3 tilePosition = new Vector3(cellPosition.x, tileY, spawnPosition.position.z);
 
             Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
@@ -149,9 +145,9 @@ public class GridMap : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
-    private List<Vector2Int> CheckTilesToBeDestroyed(GameObject selectedTile)
+    private List<Vector2Int> CheckTilesToBeDestroyed(SelectedTileProperties selectedTile)
     {
-        Vector2Int selectedTileCell = gridSystem.GetTileGridCell(selectedTile);
+        Vector2Int selectedTileCell = gridSystem.GetTileGridCell(selectedTile.TileObject);
 
         List<Vector2Int> tilesToBeDestroyedInColumn = new List<Vector2Int>();
         List<Vector2Int> tilesToBeDestroyedInRow = new List<Vector2Int>();
@@ -160,7 +156,7 @@ public class GridMap : MonoBehaviour
 
         for (int j = 0; j < _columns; j++)
         {
-            if (gridSystem.TilesAtGridCells[selectedTileCell.x, j].TryGetComponent(out Tile tile) && tile.TileType == _selectedTiles[0].TileType)
+            if (gridSystem.TilesAtGridCells[selectedTileCell.x, j].TryGetComponent(out Tile tile) && tile.TileType == selectedTile.TileType)
             {
                 Vector2Int tileCell = new Vector2Int(selectedTileCell.x, j);
                 tilesToBeDestroyedInColumn.Add(tileCell);
@@ -200,7 +196,7 @@ public class GridMap : MonoBehaviour
 
         for (int j = 0; j < _rows; j++)
         {
-            if (gridSystem.TilesAtGridCells[j, selectedTileCell.y].TryGetComponent(out Tile tile) && tile.TileType == _selectedTiles[0].TileType)
+            if (gridSystem.TilesAtGridCells[j, selectedTileCell.y].TryGetComponent(out Tile tile) && tile.TileType == selectedTile.TileType)
             {
                 Vector2Int tileCell = new Vector2Int(j, selectedTileCell.y);
                 tilesToBeDestroyedInRow.Add(tileCell);
