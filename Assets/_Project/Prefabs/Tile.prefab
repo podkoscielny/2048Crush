@@ -97,7 +97,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.1, y: 1.1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8936461338427067416
 Rigidbody:
@@ -130,6 +130,8 @@ MonoBehaviour:
   tileText: {fileID: 8686686540949471771}
   tileRenderer: {fileID: 4610248557676912169}
   tileRb: {fileID: 8936461338427067416}
+  tileCollider: {fileID: 4610248557676912174}
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tileTypes:
   - {fileID: 11400000, guid: 907a97166f50a4f4c87557a661af63f8, type: 2}
   - {fileID: 11400000, guid: a63daa73d20f21d488f107e5786f6eef, type: 2}

@@ -12,11 +12,12 @@ public class Tile : MonoBehaviour
     [SerializeField] TextMeshPro tileText;
     [SerializeField] MeshRenderer tileRenderer;
     [SerializeField] Rigidbody tileRb;
+    [SerializeField] GridSystem gridSystem;
     [SerializeField] TileType[] tileTypes;
 
     public TileType TileType { get; private set; }
 
-    void OnEnable()
+    private void OnEnable()
     {
         int randomTileIndex = Random.Range(0, tileTypes.Length);
         TileType randomTile = tileTypes[randomTileIndex];
@@ -27,7 +28,15 @@ public class Tile : MonoBehaviour
         TileType = randomTile;
     }
 
-    void OnMouseDown()
+    private void Awake()
+    {
+        float tileScaleX = gridSystem.CellWidth * 0.9f;
+        float tileScaleY = gridSystem.CellHeight * 0.9f;
+
+        transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
+    }
+
+    private void OnMouseDown()
     {
         SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb, TileType, this);
         OnTileClicked?.Invoke(tileProperties);

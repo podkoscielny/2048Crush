@@ -11,11 +11,15 @@ public class GridSystem : ScriptableObject
     [SerializeField] GridSize gridSize;
     [SerializeField] LayerMask tileMask;
 
+    public float CellWidth => _cellWidth;
+    public float CellHeight => _cellHeight;
     public GridSize GridSize => gridSize;
     public Vector3[,] GridCells => _gridCells;
     public Vector3 CubeSize => _cubeSize;
     public GameObject[,] TilesAtGridCells => _tilesAtGridCells;
 
+    private float _cellWidth;
+    private float _cellHeight;
     private Vector3[,] _gridCells;
     private GameObject[,] _tilesAtGridCells;
     private Vector3 _cubeSize = new Vector3(0, 0, 0);
@@ -110,6 +114,9 @@ public class GridSystem : ScriptableObject
 
         float cellWidth = gridWidth / rows;
         float cellHeight = gridHeight / columns;
+
+        _cellWidth = cellWidth;
+        _cellHeight = cellHeight;
 
         _cubeSize = new Vector3(cellWidth, cellHeight, 0.1f);
 
