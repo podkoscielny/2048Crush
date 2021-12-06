@@ -33,6 +33,8 @@ public class GridSystem : ScriptableObject
         EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
     }
 
+    public void AssignTileToCell(GameObject tile, Vector2Int cell) => _tilesAtGridCells[cell.x, cell.y] = tile;
+
     public Vector3 GetCellCoordinates(int rowIndex, int columnIndex) => _gridCells[rowIndex, columnIndex];
 
     public List<Vector2Int> GetEmptyGridCells()

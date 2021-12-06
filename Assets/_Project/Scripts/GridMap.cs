@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tags = TagSystem.Tags;
 
 public class GridMap : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GridMap : MonoBehaviour
     [SerializeField] MeshRenderer gridRenderer;
     [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform spawnPosition;
+    [SerializeField] ObjectPool objectPool;
 
     private SelectedTileProperties[] _selectedTiles = new SelectedTileProperties[2];
     private SelectedTileProperties _emptyProperties = new SelectedTileProperties();
@@ -28,13 +30,18 @@ public class GridMap : MonoBehaviour
         Tile.OnTileClicked -= HandleTileClick;
     }
 
+    private void Awake()
+    {
+        gridSystem.InitializeGrid(gridRenderer);
+        objectPool.InitializePool();
+    }
+
     private void Start()
     {
         _rows = gridSystem.GridSize.Rows;
         _columns = gridSystem.GridSize.Columns;
 
-        gridSystem.InitializeGrid(gridRenderer);
-        gridSystem.AssignTilesToGridCells();
+        InitializeTiles();
     }
 
     void OnDrawGizmos()
@@ -47,6 +54,23 @@ public class GridMap : MonoBehaviour
                 {
                     Gizmos.DrawWireCube(gridSystem.GridCells[i, j], gridSystem.CubeSize);
                 }
+            }
+        }
+    }
+
+    private void InitializeTiles()
+    {
+        Vector3[,] gridCells = gridSystem.GridCells;
+
+        for (int i = 0; i < gridCells.GetLength(0); i++)
+        {
+            for (int j = 0; j < gridCells.GetLength(1); j++)
+            {
+                GameObject tile = objectPool.GetFromPool(Tags.Tile);
+                Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, spawnPosition.position.z);
+
+                tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
+                gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
             }
         }
     }
@@ -91,10 +115,10 @@ public class GridMap : MonoBehaviour
         } while (firstTileRb.position != initialSecondTilePosition && secondTileRb.position != initialFirstTilePosition);
 
         gridSystem.AssignTilesToGridCells();
-        StartCoroutine(DestroyTiles());
+        DestroyTiles();
     }
 
-    private IEnumerator DestroyTiles()
+    private void DestroyTiles()
     {
         List<Vector2Int> tilesToBeDestroyed = CheckTilesToBeDestroyed(_selectedTiles[0]);
         List<Vector2Int> tilesToBeDestroyed2 = CheckTilesToBeDestroyed(_selectedTiles[1]);
@@ -108,15 +132,13 @@ public class GridMap : MonoBehaviour
 
         foreach (Vector2Int tile in tilesToDestroy)
         {
-            Destroy(gridSystem.TilesAtGridCells[tile.x, tile.y]);
+            objectPool.AddToPool(Tags.Tile, gridSystem.TilesAtGridCells[tile.x, tile.y]);
         }
 
-        yield return new WaitForEndOfFrame();
-
-        if (tilesToDestroy.Count > 0) StartCoroutine(SpawnMissingTiles());
+        if (tilesToDestroy.Count > 0) SpawnMissingTiles();
     }
 
-    private IEnumerator SpawnMissingTiles()
+    private void SpawnMissingTiles()
     {
         List<Vector2Int> emptyCells = gridSystem.GetEmptyGridCells();
         int columnIndex = -1;
@@ -139,10 +161,9 @@ public class GridMap : MonoBehaviour
             float tileY = spawnPosition.position.y + (missingInColumn * (gridRenderer.bounds.size.y / _columns + 0.05f));
             Vector3 tilePosition = new Vector3(cellPosition.x, tileY, spawnPosition.position.z);
 
-            Instantiate(tilePrefab, tilePosition, tilePrefab.transform.rotation);
+            GameObject tile = objectPool.GetFromPool(Tags.Tile);
+            tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
         }
-
-        yield return new WaitForEndOfFrame();
     }
 
     private List<Vector2Int> CheckTilesToBeDestroyed(SelectedTileProperties selectedTile)

@@ -928,7 +928,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &405846715
 Transform:
   m_ObjectHideFlags: 0
@@ -3190,11 +3190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   gridRenderer: {fileID: 1824453147}
-  tileMask:
-    serializedVersion: 2
-    m_Bits: 128
   tilePrefab: {fileID: 4610248557676912175, guid: 22925b6ec069b98429de4574df8063f0, type: 3}
   spawnPosition: {fileID: 1335369219}
+  objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
 --- !u!1001 &1851153683
 PrefabInstance:
   m_ObjectHideFlags: 0
