@@ -252,31 +252,15 @@ public class GridMap : MonoBehaviour
             }
             else
             {
-                if (tilesToBeDestroyedInColumn.Count < MINIMUM_TILES_TO_DESTROY)
+                bool isSelectedTileInColumn = tilesToBeDestroyedInColumn.Contains(selectedTileCell);
+
+                if (tilesToBeDestroyedInColumn.Count < MINIMUM_TILES_TO_DESTROY || !isSelectedTileInColumn)
                 {
                     tilesToBeDestroyedInColumn.Clear();
                 }
                 else
                 {
-                    bool isSelectedTileInColumn = false;
-
-                    foreach (Vector2Int tileCell in tilesToBeDestroyedInColumn)
-                    {
-                        if (tileCell == selectedTileCell)
-                        {
-                            isSelectedTileInColumn = true;
-                            break;
-                        }
-                    }
-
-                    if (isSelectedTileInColumn)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        tilesToBeDestroyedInColumn.Clear();
-                    }
+                    if(isSelectedTileInColumn) break;
                 }
             }
         }
@@ -292,31 +276,15 @@ public class GridMap : MonoBehaviour
             }
             else
             {
-                if (tilesToBeDestroyedInRow.Count < MINIMUM_TILES_TO_DESTROY)
+                bool isSelectedTileInRow = tilesToBeDestroyedInRow.Contains(selectedTileCell);
+
+                if (tilesToBeDestroyedInRow.Count < MINIMUM_TILES_TO_DESTROY || !isSelectedTileInRow)
                 {
                     tilesToBeDestroyedInRow.Clear();
                 }
                 else
                 {
-                    bool isSelectedTileInRow = false;
-
-                    foreach (Vector2Int tileCell in tilesToBeDestroyedInRow)
-                    {
-                        if (tileCell == selectedTileCell)
-                        {
-                            isSelectedTileInRow = true;
-                            break;
-                        }
-                    }
-
-                    if (isSelectedTileInRow)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        tilesToBeDestroyedInRow.Clear();
-                    }
+                    if (isSelectedTileInRow) break;
                 }
             }
         }
