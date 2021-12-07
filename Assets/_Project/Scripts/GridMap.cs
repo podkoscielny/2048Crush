@@ -121,6 +121,9 @@ public class GridMap : MonoBehaviour
         firstTileRb.constraints = _unlockedTileConstraints;
         secondTileRb.constraints = _unlockedTileConstraints;
 
+        firstTileRb.isKinematic = true;
+        secondTileRb.isKinematic = true;
+
         do
         {
             Vector3 firstTileDestination = Vector3.MoveTowards(firstTileRb.position, initialSecondTilePosition, SWITCH_TILE_SPEED * Time.fixedDeltaTime);
@@ -135,6 +138,9 @@ public class GridMap : MonoBehaviour
 
         firstTileRb.constraints = _fullTileConstraints;
         secondTileRb.constraints = _fullTileConstraints;
+
+        firstTileRb.isKinematic = false;
+        secondTileRb.isKinematic = false;
     }
 
     private List<Vector2Int> DestroyTiles()
@@ -194,7 +200,6 @@ public class GridMap : MonoBehaviour
         {
             if (tile.TryGetComponent(out Rigidbody tileRb))
             {
-                tileRb.isKinematic = false;
                 tileRb.constraints = _semiUnlockedTileConstraints;
                 tileRigidBodys.Add(tileRb);
             }
@@ -218,11 +223,6 @@ public class GridMap : MonoBehaviour
             yield return null;
 
         } while (areTilesMoving);
-
-        foreach (Rigidbody tileRb in tileRigidBodys)
-        {
-            tileRb.isKinematic = true;
-        }
     }
 
     private List<Vector2Int> CheckTilesToBeDestroyed(SelectedTileProperties selectedTile)

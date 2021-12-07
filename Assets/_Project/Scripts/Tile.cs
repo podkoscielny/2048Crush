@@ -11,13 +11,26 @@ public class Tile : MonoBehaviour
 
     [SerializeField] TextMeshPro tileText;
     [SerializeField] MeshRenderer tileRenderer;
+    [SerializeField] BoxCollider tileCollider;
     [SerializeField] Rigidbody tileRb;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TileType[] tileTypes;
 
     public TileType TileType { get; private set; }
 
-    private void OnEnable()
+    private const float CELL_SIZE_FACTOR = 0.9f; 
+
+    private void OnEnable() => InitializeTileType();
+
+    private void Awake() => InitializeTileSize();
+
+    private void OnMouseDown()
+    {
+        SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb, TileType, this);
+        OnTileClicked?.Invoke(tileProperties);
+    }
+
+    private void InitializeTileType()
     {
         int randomTileIndex = Random.Range(0, tileTypes.Length);
         TileType randomTile = tileTypes[randomTileIndex];
@@ -28,17 +41,13 @@ public class Tile : MonoBehaviour
         TileType = randomTile;
     }
 
-    private void Awake()
+    private void InitializeTileSize()
     {
-        float tileScaleX = gridSystem.CellWidth * 0.9f;
-        float tileScaleY = gridSystem.CellHeight * 0.9f;
+        float tileScaleX = gridSystem.CellWidth * CELL_SIZE_FACTOR;
+        float tileScaleY = gridSystem.CellHeight * CELL_SIZE_FACTOR;
+        float boxColliderFactor = 1 / CELL_SIZE_FACTOR;
 
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
-    }
-
-    private void OnMouseDown()
-    {
-        SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb, TileType, this);
-        OnTileClicked?.Invoke(tileProperties);
+        tileCollider.size = new Vector3(1, boxColliderFactor, tileCollider.size.z);
     }
 }
