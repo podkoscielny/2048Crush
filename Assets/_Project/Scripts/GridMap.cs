@@ -9,6 +9,7 @@ public class GridMap : MonoBehaviour
     [SerializeField] MeshRenderer gridRenderer;
     [SerializeField] GameObject tilePrefab;
     [SerializeField] ObjectPool objectPool;
+    [SerializeField] Score score;
 
     private SelectedTileProperties[] _selectedTiles = new SelectedTileProperties[2];
     private SelectedTileProperties _emptyProperties = new SelectedTileProperties();
@@ -155,10 +156,19 @@ public class GridMap : MonoBehaviour
             if (!tilesToDestroy.Contains(tile)) tilesToDestroy.Add(tile);
         }
 
+        int pointsToAdd = 0;
+
         foreach (Vector2Int tile in tilesToDestroy)
         {
             objectPool.AddToPool(Tags.Tile, gridSystem.TilesAtGridCells[tile.x, tile.y]);
+
+            if(gridSystem.TilesAtGridCells[tile.x, tile.y].TryGetComponent(out Tile tileScript))
+            {
+                pointsToAdd += tileScript.TileType.PointsWorth;
+            }
         }
+
+        score.AddPoints(pointsToAdd);
 
         return tilesToDestroy;
     }
