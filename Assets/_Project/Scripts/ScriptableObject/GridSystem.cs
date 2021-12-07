@@ -88,6 +88,7 @@ public class GridSystem : ScriptableObject
 
     public bool AreTilesClose(Vector2Int firstGridCell, Vector2Int secondGridCell)
     {
+        Debug.Log($"{firstGridCell} {secondGridCell}");
         if (firstGridCell.x == secondGridCell.x)
         {
             return Mathf.Abs(firstGridCell.y - secondGridCell.y) == 1;

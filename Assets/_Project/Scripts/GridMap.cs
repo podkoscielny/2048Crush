@@ -17,6 +17,7 @@ public class GridMap : MonoBehaviour
     private int _columns;
     private RigidbodyConstraints _fullTileConstraints;
     private RigidbodyConstraints _unlockedTileConstraints;
+    private RigidbodyConstraints _semiUnlockedTileConstraints;
 
     private const float SWITCH_TILE_SPEED = 4f;
     private const int MINIMUM_TILES_TO_DESTROY = 3;
@@ -33,8 +34,9 @@ public class GridMap : MonoBehaviour
 
     private void Awake()
     {
-        _fullTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+        _fullTileConstraints = RigidbodyConstraints.FreezeAll;
         _unlockedTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+        _semiUnlockedTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
 
         gridSystem.InitializeGrid(gridRenderer);
         objectPool.InitializePool();
@@ -62,23 +64,6 @@ public class GridMap : MonoBehaviour
         }
     }
 
-    private void InitializeTiles()
-    {
-        Vector3[,] gridCells = gridSystem.GridCells;
-
-        for (int i = 0; i < gridCells.GetLength(0); i++)
-        {
-            for (int j = 0; j < gridCells.GetLength(1); j++)
-            {
-                GameObject tile = objectPool.GetFromPool(Tags.Tile);
-                Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, tilePrefab.transform.position.z);
-
-                tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
-                gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
-            }
-        }
-    }
-
     private void HandleTileClick(SelectedTileProperties tileToBeSelected)
     {
         if (_selectedTiles[0].TileObject == null)
@@ -92,8 +77,12 @@ public class GridMap : MonoBehaviour
 
             if (gridSystem.AreTilesClose(firstTileSelectedCell, secondTileSelectedCell))
             {
-                _selectedTiles[1] = tileToBeSelected; // Add Coroutine Queue method
+                _selectedTiles[1] = tileToBeSelected;
                 StartCoroutine(MatchTiles());
+            }
+            else
+            {
+                ClearSelectedTiles();
             }
         }
     }
@@ -116,6 +105,7 @@ public class GridMap : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
             yield return SwitchTilesPosition();
+            gridSystem.AssignTilesToGridCells();
             ClearSelectedTiles();
         }
     }
@@ -205,6 +195,7 @@ public class GridMap : MonoBehaviour
             if (tile.TryGetComponent(out Rigidbody tileRb))
             {
                 tileRb.isKinematic = false;
+                tileRb.constraints = _semiUnlockedTileConstraints;
                 tileRigidBodys.Add(tileRb);
             }
         }
@@ -305,5 +296,22 @@ public class GridMap : MonoBehaviour
     {
         _selectedTiles[0] = _emptyProperties;
         _selectedTiles[1] = _emptyProperties;
+    }
+
+    private void InitializeTiles()
+    {
+        Vector3[,] gridCells = gridSystem.GridCells;
+
+        for (int i = 0; i < gridCells.GetLength(0); i++)
+        {
+            for (int j = 0; j < gridCells.GetLength(1); j++)
+            {
+                GameObject tile = objectPool.GetFromPool(Tags.Tile);
+                Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, tilePrefab.transform.position.z);
+
+                tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
+                gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
+            }
+        }
     }
 }
