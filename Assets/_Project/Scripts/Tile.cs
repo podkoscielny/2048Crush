@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour
 
     public TileType TileType { get; private set; }
 
-    private const float CELL_SIZE_FACTOR = 0.9f; 
+    private const float CELL_SIZE_FACTOR = 0.85f; 
 
     private void OnEnable() => InitializeTileType();
 
@@ -48,6 +48,6 @@ public class Tile : MonoBehaviour
         float boxColliderFactor = 1 / CELL_SIZE_FACTOR;
 
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
-        tileCollider.size = new Vector3(1, boxColliderFactor, tileCollider.size.z);
+        tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
     }
 }
