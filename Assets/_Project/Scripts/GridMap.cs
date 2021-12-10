@@ -5,6 +5,7 @@ using Tags = TagSystem.Tags;
 
 public class GridMap : MonoBehaviour
 {
+    [SerializeField] Camera mainCamera;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] MeshRenderer gridRenderer;
     [SerializeField] GameObject tilePrefab;
@@ -39,6 +40,7 @@ public class GridMap : MonoBehaviour
         _unlockedTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
         _semiUnlockedTileConstraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
 
+        InitializeBoardSize();
         gridSystem.InitializeGrid(gridRenderer);
         objectPool.InitializePool();
     }
@@ -323,5 +325,15 @@ public class GridMap : MonoBehaviour
                 gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
             }
         }
+    }
+
+    private void InitializeBoardSize()
+    {
+        int screenWidth = Screen.width;
+        int screenHeight = Screen.height;
+
+        float aspectRatio = (float)screenWidth / (float)screenHeight;
+
+        transform.localScale = Vector3.one * aspectRatio;
     }
 }
