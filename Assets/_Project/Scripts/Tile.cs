@@ -13,12 +13,19 @@ public class Tile : MonoBehaviour
     [SerializeField] MeshRenderer tileRenderer;
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] Rigidbody tileRb;
+    [SerializeField] Outline _outlineScript;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TileType[] tileTypes;
 
     public TileType TileType { get; private set; }
 
-    private const float CELL_SIZE_FACTOR = 0.85f; 
+    private int _pointsWorth;
+    private float _outlineWidth = 5.5f;
+    private static SelectedTile _selectedTile;
+    private SelectedTile _emptyTileSelection = new SelectedTile();
+    private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
+
+    private const float CELL_SIZE_FACTOR = 0.8f;
 
     private void OnEnable() => InitializeTileType();
 
@@ -28,6 +35,40 @@ public class Tile : MonoBehaviour
     {
         SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb, TileType, this);
         OnTileClicked?.Invoke(tileProperties);
+        SelectTile();
+    }
+
+    private void SelectTile()
+    {
+        if (_selectedTile.TileObject == null)
+        {
+            SelectedTile tileToBeSelected = new SelectedTile(gameObject, _pointsWorth);
+            _selectedTile = tileToBeSelected;
+            SetOutline();
+        }
+        else
+        {
+            if (_selectedTile.TileObject == gameObject)
+            {
+                DeselectTile();
+                _selectedTile = _emptyTileSelection;
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+    private void SetOutline()
+    {
+        _outlineScript.OutlineWidth = _outlineWidth;
+        _outlineScript.OutlineColor = _outlineColorGreen;
+    }
+
+    private void DeselectTile()
+    {
+        _outlineScript.OutlineWidth = 0;
     }
 
     private void InitializeTileType()
@@ -35,6 +76,7 @@ public class Tile : MonoBehaviour
         int randomTileIndex = Random.Range(0, tileTypes.Length);
         TileType randomTile = tileTypes[randomTileIndex];
 
+        _pointsWorth = randomTile.PointsWorth;
         tileText.text = randomTile.PointsToString;
         tileRenderer.material = randomTile.TileMaterial;
 
@@ -49,5 +91,17 @@ public class Tile : MonoBehaviour
 
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
+    }
+
+    private struct SelectedTile
+    {
+        public GameObject TileObject { get; private set; }
+        public int PointsWorth { get; private set; }
+
+        public SelectedTile(GameObject tileObject, int pointsWorth)
+        {
+            TileObject = tileObject;
+            PointsWorth = pointsWorth;
+        }
     }
 }

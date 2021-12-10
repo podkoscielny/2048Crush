@@ -108,8 +108,9 @@ public class GridSystem : ScriptableObject
         _gridCells = new Vector3[rows, columns];
         _tilesAtGridCells = new GameObject[rows, columns];
 
-        float gridWidth = gridRenderer.bounds.size.x;
-        float gridHeight = gridRenderer.bounds.size.y;
+        float gridOffset = gridRenderer.bounds.size.x * 0.1f;
+        float gridWidth = gridRenderer.bounds.size.x - gridOffset;
+        float gridHeight = gridRenderer.bounds.size.y - gridOffset;
         Vector3 gridCenter = gridRenderer.bounds.center;
 
         float cellWidth = gridWidth / rows;
