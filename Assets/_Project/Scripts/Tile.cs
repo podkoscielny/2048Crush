@@ -13,14 +13,13 @@ public class Tile : MonoBehaviour
     [SerializeField] MeshRenderer tileRenderer;
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] Rigidbody tileRb;
-    [SerializeField] Outline _outlineScript;
+    [SerializeField] Outline outlineScript;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TileType[] tileTypes;
 
     public TileType TileType { get; private set; }
 
     private int _pointsWorth;
-    private float _outlineWidth = 5.5f;
     private static SelectedTile _selectedTile;
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
@@ -51,7 +50,6 @@ public class Tile : MonoBehaviour
             if (_selectedTile.TileObject == gameObject)
             {
                 DeselectTile();
-                _selectedTile = _emptyTileSelection;
             }
             else
             {
@@ -62,13 +60,14 @@ public class Tile : MonoBehaviour
 
     private void SetOutline()
     {
-        _outlineScript.OutlineWidth = _outlineWidth;
-        _outlineScript.OutlineColor = _outlineColorGreen;
+        outlineScript.enabled = true;
+        outlineScript.OutlineColor = _outlineColorGreen;
     }
 
     private void DeselectTile()
     {
-        _outlineScript.OutlineWidth = 0;
+        _selectedTile = _emptyTileSelection;
+        outlineScript.enabled = false;
     }
 
     private void InitializeTileType()
