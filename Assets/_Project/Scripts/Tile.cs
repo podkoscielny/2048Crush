@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
+using OutlineEffect;
+using DG.Tweening;
 
 public class Tile : MonoBehaviour
 {
@@ -19,8 +19,12 @@ public class Tile : MonoBehaviour
 
     public TileType TileType { get; private set; }
 
-    private int _pointsWorth;
     private static SelectedTile _selectedTile;
+    private static bool _canBeClicked = true;
+
+    private int _pointsWorth;
+    private Sequence _tileMoveSequence;
+    private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
 
@@ -32,8 +36,8 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        SelectedTileProperties tileProperties = new SelectedTileProperties(gameObject, tileRb, TileType, this);
-        OnTileClicked?.Invoke(tileProperties);
+        if (!_canBeClicked) return;
+
         SelectTile();
     }
 
@@ -41,9 +45,11 @@ public class Tile : MonoBehaviour
     {
         if (_selectedTile.TileObject == null)
         {
-            SelectedTile tileToBeSelected = new SelectedTile(gameObject, _pointsWorth);
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            SelectedTile tileToBeSelected = new SelectedTile(gameObject, _pointsWorth, tileCell);
             _selectedTile = tileToBeSelected;
-            SetOutline();
+
+            SetOutline(_outlineColorGreen);
         }
         else
         {
@@ -53,15 +59,65 @@ public class Tile : MonoBehaviour
             }
             else
             {
-
+                CheckMatch();
             }
         }
     }
 
-    private void SetOutline()
+    private void CheckMatch()
+    {
+        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+
+        if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell, out Axis closeInAxis))
+        {
+            _canBeClicked = false;
+            MoveTile(closeInAxis);
+        }
+        else
+        {
+
+        }
+    }
+
+    private void MoveTile(Axis closeInAxis)
+    {
+        _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
+        _tileMoveSequence.Append(_selectedTile.TileObject.transform.DORotateQuaternion(GetTileRotation(closeInAxis), 0.1f));
+        _tileMoveSequence.Append(MoveTileInDirection(closeInAxis).SetEase(Ease.InBack));
+    }
+
+    private Quaternion GetTileRotation(Axis closeInAxis)
+    {
+        Quaternion rotation;
+
+        if (closeInAxis == Axis.X)
+        {
+            rotation = transform.position.x < _selectedTile.TileObject.transform.position.x ? Quaternion.Euler(0, 67, 0) : Quaternion.Euler(0, -67, 0);
+        }
+        else
+        {
+            rotation = transform.position.y < _selectedTile.TileObject.transform.position.y ? Quaternion.Euler(-53, 0, 0) : Quaternion.Euler(53, 0, 0);
+        }
+
+        return rotation;
+    }
+
+    private Tween MoveTileInDirection(Axis closeInAxis)
+    {
+        if(closeInAxis == Axis.X)
+        {
+            return _selectedTile.TileObject.transform.DOMoveX(transform.position.x, 0.15f).SetEase(Ease.InBack);
+        }
+        else
+        {
+            return _selectedTile.TileObject.transform.DOMoveY(transform.position.y, 0.15f).SetEase(Ease.InBack);
+        }
+    }
+
+    private void SetOutline(Color outlineColor)
     {
         outlineScript.enabled = true;
-        outlineScript.OutlineColor = _outlineColorGreen;
+        outlineScript.OutlineColor = outlineColor;
     }
 
     private void DeselectTile()
@@ -78,6 +134,7 @@ public class Tile : MonoBehaviour
         _pointsWorth = randomTile.PointsWorth;
         tileText.text = randomTile.PointsToString;
         tileRenderer.material = randomTile.TileMaterial;
+        transform.rotation = _initialRotation;
 
         TileType = randomTile;
     }
@@ -96,11 +153,13 @@ public class Tile : MonoBehaviour
     {
         public GameObject TileObject { get; private set; }
         public int PointsWorth { get; private set; }
+        public Vector2Int TileCell { get; private set; }
 
-        public SelectedTile(GameObject tileObject, int pointsWorth)
+        public SelectedTile(GameObject tileObject, int pointsWorth, Vector2Int tileCell)
         {
             TileObject = tileObject;
             PointsWorth = pointsWorth;
+            TileCell = tileCell;
         }
     }
 }

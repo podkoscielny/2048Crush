@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4610248557676912171}
+  - component: {fileID: 5978196333470396332}
   - component: {fileID: 4610248557676912168}
   - component: {fileID: 4610248557676912169}
   - component: {fileID: 4610248557676912174}
@@ -23,7 +23,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4610248557676912171
+--- !u!4 &5978196333470396332
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   tileRenderer: {fileID: 4610248557676912169}
   tileCollider: {fileID: 4610248557676912174}
   tileRb: {fileID: 8936461338427067416}
-  _outlineScript: {fileID: 6926719666818625641}
+  outlineScript: {fileID: 6926719666818625641}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tileTypes:
   - {fileID: 11400000, guid: 907a97166f50a4f4c87557a661af63f8, type: 2}
@@ -200,7 +200,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -0.57}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
-  m_Father: {fileID: 4610248557676912171}
+  m_Father: {fileID: 5978196333470396332}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
