@@ -4,6 +4,7 @@ using TMPro;
 using Random = UnityEngine.Random;
 using OutlineEffect;
 using DG.Tweening;
+using Tags = TagSystem.Tags;
 
 public class Tile : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Tile : MonoBehaviour
     [SerializeField] Rigidbody tileRb;
     [SerializeField] Outline outlineScript;
     [SerializeField] GridSystem gridSystem;
+    [SerializeField] ObjectPool objectPool;
     [SerializeField] TileType[] tileTypes;
 
     public TileType TileType { get; private set; }
@@ -24,15 +26,24 @@ public class Tile : MonoBehaviour
 
     private int _pointsWorth;
     private Sequence _tileMoveSequence;
+    private Vector3 _initialTileScale;
+    private Vector3 _enlargedTileScale;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
 
     private const float CELL_SIZE_FACTOR = 0.8f;
+    private const float ENLARGED_TILE_SCALE = 1.2f;
 
     private void OnEnable() => InitializeTileType();
 
-    private void Awake() => InitializeTileSize();
+    private void OnDisable() => ResetRotation();
+
+    private void Awake()
+    {
+        InitializeTileSize();
+        CacheTileScales();
+    }
 
     private void OnMouseDown()
     {
@@ -84,7 +95,12 @@ public class Tile : MonoBehaviour
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
         _tileMoveSequence.Append(_selectedTile.TileObject.transform.DORotateQuaternion(GetTileRotation(closeInAxis), 0.1f));
         _tileMoveSequence.Append(MoveTileInDirection(closeInAxis).SetEase(Ease.InBack));
+        _tileMoveSequence.AppendCallback(MoveTileToPool);
+        _tileMoveSequence.Append(transform.DOScale(_enlargedTileScale, 0.2f));
+        _tileMoveSequence.Append(transform.DOScale(_initialTileScale, 0.2f));
     }
+
+    private void MoveTileToPool() => objectPool.AddToPool(Tags.Tile, _selectedTile.TileObject);
 
     private Quaternion GetTileRotation(Axis closeInAxis)
     {
@@ -104,7 +120,7 @@ public class Tile : MonoBehaviour
 
     private Tween MoveTileInDirection(Axis closeInAxis)
     {
-        if(closeInAxis == Axis.X)
+        if (closeInAxis == Axis.X)
         {
             return _selectedTile.TileObject.transform.DOMoveX(transform.position.x, 0.15f).SetEase(Ease.InBack);
         }
@@ -148,6 +164,14 @@ public class Tile : MonoBehaviour
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
     }
+
+    private void CacheTileScales()
+    {
+        _initialTileScale = transform.localScale;
+        _enlargedTileScale = _initialTileScale * ENLARGED_TILE_SCALE;
+    }
+
+    private void ResetRotation() => transform.rotation = _initialRotation;
 
     private struct SelectedTile
     {
