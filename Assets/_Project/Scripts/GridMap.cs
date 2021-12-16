@@ -164,7 +164,7 @@ public class GridMap : MonoBehaviour
         {
             objectPool.AddToPool(Tags.Tile, gridSystem.TilesAtGridCells[tile.x, tile.y]);
 
-            if(gridSystem.TilesAtGridCells[tile.x, tile.y].TryGetComponent(out Tile tileScript))
+            if (gridSystem.TilesAtGridCells[tile.x, tile.y].TryGetComponent(out Tile tileScript))
             {
                 pointsToAdd += tileScript.TileType.PointsWorth;
             }
@@ -263,7 +263,7 @@ public class GridMap : MonoBehaviour
                 }
                 else
                 {
-                    if(isSelectedTileInColumn) break;
+                    if (isSelectedTileInColumn) break;
                 }
             }
         }
@@ -334,6 +334,10 @@ public class GridMap : MonoBehaviour
 
         float aspectRatio = (float)screenWidth / (float)screenHeight;
 
-        transform.localScale = (Vector3.one * 0.95f ) * aspectRatio;
+        transform.localScale = (Vector3.one * 0.95f) * aspectRatio;
+
+        float yPosition = mainCamera.transform.position.y - (aspectRatio + transform.position.y);
+        Vector3 boardPosition = new Vector3(transform.position.x, yPosition, transform.position.z);
+        transform.position = boardPosition;
     }
 }

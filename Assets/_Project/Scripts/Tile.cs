@@ -37,7 +37,7 @@ public class Tile : MonoBehaviour
 
     private void OnEnable() => InitializeTileType();
 
-    private void OnDisable() => ResetRotation();
+    private void OnDisable() => ResetProperties();
 
     private void Awake()
     {
@@ -171,7 +171,11 @@ public class Tile : MonoBehaviour
         _enlargedTileScale = _initialTileScale * ENLARGED_TILE_SCALE;
     }
 
-    private void ResetRotation() => transform.rotation = _initialRotation;
+    private void ResetProperties()
+    {
+        transform.rotation = _initialRotation;
+        outlineScript.enabled = false;
+    }
 
     private struct SelectedTile
     {
