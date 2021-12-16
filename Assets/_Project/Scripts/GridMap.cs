@@ -334,6 +334,6 @@ public class GridMap : MonoBehaviour
 
         float aspectRatio = (float)screenWidth / (float)screenHeight;
 
-        transform.localScale = Vector3.one * aspectRatio;
+        transform.localScale = (Vector3.one * 0.95f ) * aspectRatio;
     }
 }
