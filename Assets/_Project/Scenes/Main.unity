@@ -1042,7 +1042,7 @@ GameObject:
   - component: {fileID: 1824453148}
   - component: {fileID: 1824453147}
   - component: {fileID: 1824453146}
-  - component: {fileID: 1824453149}
+  - component: {fileID: 1824453150}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -1128,7 +1128,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824453144}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1824453149
+--- !u!114 &1824453150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1137,7 +1137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1824453144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af4ea13a36931a944a4b899c5a3fa381, type: 3}
+  m_Script: {fileID: 11500000, guid: e55bcf503a90ec842982e9f0f76aff1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1406598827}

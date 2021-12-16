@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Tags = TagSystem.Tags;
 
-public class GridMap : MonoBehaviour
+public class Board : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
     [SerializeField] GridSystem gridSystem;
