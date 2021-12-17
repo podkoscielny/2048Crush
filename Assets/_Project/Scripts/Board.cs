@@ -12,15 +12,9 @@ public class Board : MonoBehaviour
     [SerializeField] ObjectPool objectPool;
     [SerializeField] Score score;
 
-    private void OnEnable()
-    {
-        
-    }
+    private void OnEnable() => Tile.OnTilesSelected += MatchTiles;
 
-    private void OnDisable()
-    {
-        
-    }
+    private void OnDisable() => Tile.OnTilesSelected -= MatchTiles;
 
     private void Awake()
     {
@@ -29,10 +23,7 @@ public class Board : MonoBehaviour
         objectPool.InitializePool();
     }
 
-    private void Start()
-    {
-        InitializeTiles();
-    }
+    private void Start() => InitializeTiles();
 
     void OnDrawGizmos()
     {
@@ -47,6 +38,12 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+    private void MatchTiles(SelectedTile tileToBeDestroyed, SelectedTile tileToBeMergedInto)
+    {
+
+    }
+
     private void InitializeTiles()
     {
         Vector3[,] gridCells = gridSystem.GridCells;

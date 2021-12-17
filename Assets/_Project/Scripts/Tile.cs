@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
@@ -8,6 +9,8 @@ using Tags = TagSystem.Tags;
 
 public class Tile : MonoBehaviour
 {
+    public static event Action<SelectedTile, SelectedTile> OnTilesSelected;
+
     [SerializeField] TextMeshPro tileText;
     [SerializeField] MeshRenderer tileRenderer;
     [SerializeField] BoxCollider tileCollider;
@@ -54,10 +57,11 @@ public class Tile : MonoBehaviour
         if (_selectedTile.TileObject == null)
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            SelectedTile tileToBeSelected = new SelectedTile(gameObject, _pointsWorth, tileCell);
+            SelectedTile tileToBeSelected = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
             _selectedTile = tileToBeSelected;
 
             SetOutline(_outlineColorGreen);
+            StopAllCoroutines();
         }
         else
         {
@@ -83,7 +87,11 @@ public class Tile : MonoBehaviour
         }
         else
         {
+            _selectedTile.OutlineScript.OutlineColor = Color.red;
+            SetOutline(Color.red);
 
+            StartCoroutine(ResetOutlinesSelected(_selectedTile.OutlineScript));
+            _selectedTile = _emptyTileSelection;
         }
     }
 
@@ -175,6 +183,14 @@ public class Tile : MonoBehaviour
         outlineScript.OutlineColor = outlineColor;
     }
 
+    private IEnumerator ResetOutlinesSelected(Outline selectedTileOutline)
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        outlineScript.enabled = false;
+        selectedTileOutline.enabled = false;
+    }
+
     private void DeselectTile()
     {
         _selectedTile = _emptyTileSelection;
@@ -214,19 +230,5 @@ public class Tile : MonoBehaviour
     {
         transform.rotation = _initialRotation;
         outlineScript.enabled = false;
-    }
-
-    private struct SelectedTile
-    {
-        public GameObject TileObject { get; private set; }
-        public int PointsWorth { get; private set; }
-        public Vector2Int TileCell { get; private set; }
-
-        public SelectedTile(GameObject tileObject, int pointsWorth, Vector2Int tileCell)
-        {
-            TileObject = tileObject;
-            PointsWorth = pointsWorth;
-            TileCell = tileCell;
-        }
     }
 }
