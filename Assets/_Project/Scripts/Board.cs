@@ -55,6 +55,7 @@ public class Board : MonoBehaviour
         _tileMoveSequence.AppendCallback(() => OnTileSequenceEnded?.Invoke());
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
+
     private void MoveTileToPool(GameObject tileToBeDisabled) => objectPool.AddToPool(Tags.Tile, tileToBeDisabled);
 
     private void SpawnMissingTile(Vector2Int disabledTileGridCell, float spawnPositionZ)

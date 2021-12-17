@@ -24,6 +24,7 @@ public class Tile : MonoBehaviour
     private static SelectedTile _selectedTile;
 
     private int _pointsWorth;
+    private bool _isGoingToBeUpdated = false;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
@@ -78,9 +79,10 @@ public class Tile : MonoBehaviour
     {
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
 
-        if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell))
+        if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell) && _selectedTile.PointsWorth == _pointsWorth)
         {
             _canTilesBeClicked = false;
+            _isGoingToBeUpdated = true;
             OnTilesMatch?.Invoke(_selectedTile, transform);
         }
         else
@@ -110,7 +112,15 @@ public class Tile : MonoBehaviour
     private void ReenableClick()
     {
         _selectedTile = _emptyTileSelection;
-        _canTilesBeClicked = true;
+
+        if (_isGoingToBeUpdated)
+        {
+            _canTilesBeClicked = true;
+            _isGoingToBeUpdated = false;
+            _pointsWorth *= 2;
+
+            UpdateTileText();
+        }
     }
 
     private void DeselectTile()
@@ -118,6 +128,8 @@ public class Tile : MonoBehaviour
         _selectedTile = _emptyTileSelection;
         outlineScript.enabled = false;
     }
+
+    private void UpdateTileText() => tileText.text = _pointsWorth.ToString();
 
     private void InitializeTileType()
     {
