@@ -8,12 +8,9 @@ using Tags = TagSystem.Tags;
 
 public class Tile : MonoBehaviour
 {
-    public static event Action<SelectedTileProperties> OnTileClicked;
-
     [SerializeField] TextMeshPro tileText;
     [SerializeField] MeshRenderer tileRenderer;
     [SerializeField] BoxCollider tileCollider;
-    [SerializeField] Rigidbody tileRb;
     [SerializeField] Outline outlineScript;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] ObjectPool objectPool;
@@ -82,7 +79,7 @@ public class Tile : MonoBehaviour
         if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell, out Axis closeInAxis))
         {
             _canBeClicked = false;
-            MoveTile(closeInAxis);
+            MatchTiles(closeInAxis);
         }
         else
         {
@@ -90,7 +87,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void MoveTile(Axis closeInAxis)
+    private void MatchTiles(Axis closeInAxis)
     {
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
         _tileMoveSequence.Append(_selectedTile.TileObject.transform.DORotateQuaternion(GetTileRotation(closeInAxis), 0.1f));
@@ -98,9 +95,51 @@ public class Tile : MonoBehaviour
         _tileMoveSequence.AppendCallback(MoveTileToPool);
         _tileMoveSequence.Append(transform.DOScale(_enlargedTileScale, 0.2f));
         _tileMoveSequence.Append(transform.DOScale(_initialTileScale, 0.2f));
+        _tileMoveSequence.AppendCallback(SpawnMissingTile);
+        _tileMoveSequence.AppendCallback(ReenableClick);
     }
 
     private void MoveTileToPool() => objectPool.AddToPool(Tags.Tile, _selectedTile.TileObject);
+
+    private void SpawnMissingTile()
+    {
+        Vector2Int firstCellInColumn = new Vector2Int(_selectedTile.TileCell.x, 0);
+        Vector3 firstGridCellInColumn = gridSystem.GridCells[_selectedTile.TileCell.x, 0];
+        Vector3 spawnPosition = new Vector3(firstGridCellInColumn.x, firstGridCellInColumn.y + (gridSystem.CellHeight * 1.15f), transform.position.z);
+
+        GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
+        spawnedTile.transform.position = spawnPosition;
+
+        spawnedTile.transform.DOMoveY(firstGridCellInColumn.y, 0.2f).SetDelay(0.1f);
+
+        MoveTilesDown();
+
+        gridSystem.AssignTileToCell(spawnedTile, firstCellInColumn);
+    }
+
+    private void MoveTilesDown()
+    {
+        int columnIndex = _selectedTile.TileCell.x;
+
+        if (_selectedTile.TileCell.y == 0) return;
+
+        for (int i = _selectedTile.TileCell.y - 1; i >= 0; i--)
+        {
+            Vector2Int nextGridCell = new Vector2Int(columnIndex, i + 1);
+            float desiredPositionY = gridSystem.GridCells[columnIndex, i + 1].y;
+
+            GameObject tileToBeMoved = gridSystem.TilesAtGridCells[columnIndex, i];
+            tileToBeMoved.transform.DOMoveY(desiredPositionY, 0.2f);
+
+            gridSystem.AssignTileToCell(tileToBeMoved, nextGridCell);
+        }
+    }
+
+    private void ReenableClick()
+    {
+        _selectedTile = _emptyTileSelection;
+        _canBeClicked = true;
+    }
 
     private Quaternion GetTileRotation(Axis closeInAxis)
     {
