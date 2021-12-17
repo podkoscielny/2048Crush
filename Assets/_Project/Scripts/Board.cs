@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 using Tags = TagSystem.Tags;
 
 public class Board : MonoBehaviour
 {
+    public static event Action OnTileSequenceEnded;
+
     [SerializeField] Camera mainCamera;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] MeshRenderer gridRenderer;
@@ -12,7 +16,11 @@ public class Board : MonoBehaviour
     [SerializeField] ObjectPool objectPool;
     [SerializeField] Score score;
 
-    public static bool canTilesBeClicked = true;
+    private Sequence _tileMoveSequence;
+    private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
+
+    private void OnEnable() => Tile.OnTilesMatch += MatchTiles;
+    private void OnDisable() => Tile.OnTilesMatch -= MatchTiles;
 
     private void Awake()
     {
@@ -34,6 +42,51 @@ public class Board : MonoBehaviour
                     Gizmos.DrawWireCube(gridSystem.GridCells[i, j], gridSystem.CubeSize);
                 }
             }
+        }
+    }
+
+    private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated)
+    {
+        _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
+        _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdated.position, 0.1f));
+        _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdated.position, 0.15f).SetEase(Ease.InBack));
+        _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
+        _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell, tileToBeUpdated.position.z));
+        _tileMoveSequence.AppendCallback(() => OnTileSequenceEnded?.Invoke());
+        _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
+    }
+    private void MoveTileToPool(GameObject tileToBeDisabled) => objectPool.AddToPool(Tags.Tile, tileToBeDisabled);
+
+    private void SpawnMissingTile(Vector2Int disabledTileGridCell, float spawnPositionZ)
+    {
+        Vector2Int firstCellInColumn = new Vector2Int(disabledTileGridCell.x, 0);
+        Vector3 firstGridCellPosition = gridSystem.GridCells[disabledTileGridCell.x, 0];
+        Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.15f), spawnPositionZ);
+
+        GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
+        spawnedTile.transform.position = spawnPosition;
+        spawnedTile.transform.DOMoveY(firstGridCellPosition.y, 0.2f).SetDelay(0.1f);
+
+        MoveTilesDown(disabledTileGridCell);
+
+        gridSystem.AssignTileToCell(spawnedTile, firstCellInColumn);
+    }
+
+    private void MoveTilesDown(Vector2Int disabledTileGridCell)
+    {
+        int columnIndex = disabledTileGridCell.x;
+
+        if (disabledTileGridCell.y == 0) return;
+
+        for (int i = disabledTileGridCell.y - 1; i >= 0; i--)
+        {
+            Vector2Int nextGridCell = new Vector2Int(columnIndex, i + 1);
+            float desiredPositionY = gridSystem.GridCells[columnIndex, i + 1].y;
+
+            GameObject tileToBeMoved = gridSystem.TilesAtGridCells[columnIndex, i];
+            tileToBeMoved.transform.DOMoveY(desiredPositionY, 0.2f);
+
+            gridSystem.AssignTileToCell(tileToBeMoved, nextGridCell);
         }
     }
 
