@@ -9,7 +9,7 @@ using Tags = TagSystem.Tags;
 
 public class Tile : MonoBehaviour
 {
-    public static event Action<SelectedTile, SelectedTile> OnTilesSelected;
+    public static event Action<SelectedTile, SelectedTile> OnTilesMatch;
 
     [SerializeField] TextMeshPro tileText;
     [SerializeField] MeshRenderer tileRenderer;
@@ -26,24 +26,16 @@ public class Tile : MonoBehaviour
 
     private int _pointsWorth;
     private Sequence _tileMoveSequence;
-    private Vector3 _initialTileScale;
-    private Vector3 _enlargedTileScale;
+    private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
 
     private const float CELL_SIZE_FACTOR = 0.8f;
-    private const float ENLARGED_TILE_SCALE = 1.2f;
 
     private void OnEnable() => InitializeTileType();
-
     private void OnDisable() => ResetProperties();
-
-    private void Awake()
-    {
-        InitializeTileSize();
-        CacheTileScales();
-    }
+    private void Awake() => InitializeTileSize();
 
     private void OnMouseDown()
     {
@@ -73,11 +65,6 @@ public class Tile : MonoBehaviour
             }
             else
             {
-                Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-                SelectedTile tileToBeMergedInto = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
-
-                OnTilesSelected?.Invoke(_selectedTile, tileToBeMergedInto);
-
                 CheckMatch();
             }
         }
@@ -87,10 +74,10 @@ public class Tile : MonoBehaviour
     {
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
 
-        if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell, out Axis closeInAxis))
+        if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell))
         {
             _canBeClicked = false;
-            MatchTiles(closeInAxis);
+            MatchTiles();
         }
         else
         {
@@ -102,16 +89,15 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void MatchTiles(Axis closeInAxis)
+    private void MatchTiles()
     {
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
-        _tileMoveSequence.Append(_selectedTile.TileObject.transform.DORotateQuaternion(GetTileRotation(closeInAxis), 0.1f));
-        _tileMoveSequence.Append(MoveTileInDirection(closeInAxis).SetEase(Ease.InBack));
+        _tileMoveSequence.Append(_selectedTile.TileObject.transform.DODynamicLookAt(transform.position, 0.1f));
+        _tileMoveSequence.Append(_selectedTile.TileObject.transform.DOMove(transform.position, 0.15f).SetEase(Ease.InBack));
         _tileMoveSequence.AppendCallback(MoveTileToPool);
         _tileMoveSequence.AppendCallback(SpawnMissingTile);
         _tileMoveSequence.AppendCallback(ReenableClick);
-        _tileMoveSequence.Append(transform.DOScale(_enlargedTileScale, 0.2f));
-        _tileMoveSequence.Append(transform.DOScale(_initialTileScale, 0.2f));
+        _tileMoveSequence.Append(transform.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
 
     private void MoveTileToPool() => objectPool.AddToPool(Tags.Tile, _selectedTile.TileObject);
@@ -155,34 +141,6 @@ public class Tile : MonoBehaviour
         _canBeClicked = true;
     }
 
-    private Quaternion GetTileRotation(Axis closeInAxis)
-    {
-        Quaternion rotation;
-
-        if (closeInAxis == Axis.X)
-        {
-            rotation = transform.position.x < _selectedTile.TileObject.transform.position.x ? Quaternion.Euler(0, 67, 0) : Quaternion.Euler(0, -67, 0);
-        }
-        else
-        {
-            rotation = transform.position.y < _selectedTile.TileObject.transform.position.y ? Quaternion.Euler(-53, 0, 0) : Quaternion.Euler(53, 0, 0);
-        }
-
-        return rotation;
-    }
-
-    private Tween MoveTileInDirection(Axis closeInAxis)
-    {
-        if (closeInAxis == Axis.X)
-        {
-            return _selectedTile.TileObject.transform.DOMoveX(transform.position.x, 0.15f).SetEase(Ease.InBack);
-        }
-        else
-        {
-            return _selectedTile.TileObject.transform.DOMoveY(transform.position.y, 0.15f).SetEase(Ease.InBack);
-        }
-    }
-
     private void SetOutline(Color outlineColor)
     {
         outlineScript.enabled = true;
@@ -224,12 +182,6 @@ public class Tile : MonoBehaviour
 
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
-    }
-
-    private void CacheTileScales()
-    {
-        _initialTileScale = transform.localScale;
-        _enlargedTileScale = _initialTileScale * ENLARGED_TILE_SCALE;
     }
 
     private void ResetProperties()

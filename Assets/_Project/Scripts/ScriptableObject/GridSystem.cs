@@ -50,20 +50,17 @@ public class GridSystem : ScriptableObject
         return new Vector2Int(-1, -1);
     }
 
-    public bool AreTilesClose(Vector2Int firstGridCell, Vector2Int secondGridCell, out Axis closeInAxis)
+    public bool AreTilesClose(Vector2Int firstGridCell, Vector2Int secondGridCell)
     {
         bool areTilesClose = false;
-        closeInAxis = Axis.None;
 
         if (firstGridCell.x == secondGridCell.x)
         {
             areTilesClose = Mathf.Abs(firstGridCell.y - secondGridCell.y) == 1;
-            closeInAxis = Axis.Y;
         }
         else if (firstGridCell.y == secondGridCell.y)
         {
             areTilesClose = Mathf.Abs(firstGridCell.x - secondGridCell.x) == 1;
-            closeInAxis = Axis.X;
         }
 
         return areTilesClose;
