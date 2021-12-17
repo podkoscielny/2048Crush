@@ -52,6 +52,9 @@ public class Tile : MonoBehaviour
         SelectTile();
     }
 
+    public static void EnableClick() => _canBeClicked = true;
+    public static void DisableClick() => _canBeClicked = false;
+
     private void SelectTile()
     {
         if (_selectedTile.TileObject == null)
@@ -61,7 +64,6 @@ public class Tile : MonoBehaviour
             _selectedTile = tileToBeSelected;
 
             SetOutline(_outlineColorGreen);
-            StopAllCoroutines();
         }
         else
         {
@@ -71,6 +73,11 @@ public class Tile : MonoBehaviour
             }
             else
             {
+                Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+                SelectedTile tileToBeMergedInto = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
+
+                OnTilesSelected?.Invoke(_selectedTile, tileToBeMergedInto);
+
                 CheckMatch();
             }
         }
@@ -87,10 +94,10 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            _selectedTile.OutlineScript.OutlineColor = Color.red;
-            SetOutline(Color.red);
-
             StartCoroutine(ResetOutlinesSelected(_selectedTile.OutlineScript));
+
+            SetOutline(Color.red);
+            _selectedTile.OutlineScript.OutlineColor = Color.red;
             _selectedTile = _emptyTileSelection;
         }
     }
@@ -101,10 +108,10 @@ public class Tile : MonoBehaviour
         _tileMoveSequence.Append(_selectedTile.TileObject.transform.DORotateQuaternion(GetTileRotation(closeInAxis), 0.1f));
         _tileMoveSequence.Append(MoveTileInDirection(closeInAxis).SetEase(Ease.InBack));
         _tileMoveSequence.AppendCallback(MoveTileToPool);
-        _tileMoveSequence.Append(transform.DOScale(_enlargedTileScale, 0.2f));
-        _tileMoveSequence.Append(transform.DOScale(_initialTileScale, 0.2f));
         _tileMoveSequence.AppendCallback(SpawnMissingTile);
         _tileMoveSequence.AppendCallback(ReenableClick);
+        _tileMoveSequence.Append(transform.DOScale(_enlargedTileScale, 0.2f));
+        _tileMoveSequence.Append(transform.DOScale(_initialTileScale, 0.2f));
     }
 
     private void MoveTileToPool() => objectPool.AddToPool(Tags.Tile, _selectedTile.TileObject);
@@ -112,13 +119,12 @@ public class Tile : MonoBehaviour
     private void SpawnMissingTile()
     {
         Vector2Int firstCellInColumn = new Vector2Int(_selectedTile.TileCell.x, 0);
-        Vector3 firstGridCellInColumn = gridSystem.GridCells[_selectedTile.TileCell.x, 0];
-        Vector3 spawnPosition = new Vector3(firstGridCellInColumn.x, firstGridCellInColumn.y + (gridSystem.CellHeight * 1.15f), transform.position.z);
+        Vector3 firstGridCellPosition = gridSystem.GridCells[_selectedTile.TileCell.x, 0];
+        Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.15f), transform.position.z);
 
         GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
         spawnedTile.transform.position = spawnPosition;
-
-        spawnedTile.transform.DOMoveY(firstGridCellInColumn.y, 0.2f).SetDelay(0.1f);
+        spawnedTile.transform.DOMoveY(firstGridCellPosition.y, 0.2f).SetDelay(0.1f);
 
         MoveTilesDown();
 
@@ -187,8 +193,8 @@ public class Tile : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        outlineScript.enabled = false;
-        selectedTileOutline.enabled = false;
+        if (outlineScript.OutlineColor != _outlineColorGreen) outlineScript.enabled = false;
+        if (selectedTileOutline.OutlineColor != _outlineColorGreen) selectedTileOutline.enabled = false;
     }
 
     private void DeselectTile()
