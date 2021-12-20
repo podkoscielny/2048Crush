@@ -11,33 +11,35 @@ public class Tile : MonoBehaviour
     public static event Action<SelectedTile, Transform> OnTilesMatch;
 
     [SerializeField] TextMeshPro tileText;
-    [SerializeField] MeshRenderer tileRenderer;
+    [SerializeField] TextMeshPro backgroundText;
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] Outline outlineScript;
     [SerializeField] GridSystem gridSystem;
+    [SerializeField] Gradient tileBackgroundGradient;
 
     public TileType TileType { get; private set; }
 
     private static bool _canTilesBeClicked = true;
     private static SelectedTile _selectedTile;
 
-    private int _pointsWorth;
+    private int _pointsWorth = 2;
     private bool _isGoingToBeUpdated = false;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
 
     private const float CELL_SIZE_FACTOR = 0.8f;
+    private const int MAXED_COLOR_AT_TWO_TO_THE_POWER = 13;
 
     private void OnEnable()
     {
-        Board.OnTileSequenceEnded += ReenableClick;
+        Board.OnTileSequenceEnded += UpdateMergedTile;
         InitializeTileType();
     }
 
     private void OnDisable()
     {
-        Board.OnTileSequenceEnded -= ReenableClick;
+        Board.OnTileSequenceEnded -= UpdateMergedTile;
         ResetProperties();
     }
 
@@ -49,6 +51,21 @@ public class Tile : MonoBehaviour
 
         SelectTile();
     }
+
+    private void UpdateMergedTile()
+    {
+        if (!_isGoingToBeUpdated) return;
+
+        _selectedTile = _emptyTileSelection;
+
+        _canTilesBeClicked = true;
+        _isGoingToBeUpdated = false;
+        _pointsWorth *= 2;
+
+        UpdateTileText();
+        SetBackgroundColor();
+    }
+    private void UpdateTileText() => tileText.text = _pointsWorth.ToString();
 
     private void SelectTile()
     {
@@ -107,27 +124,11 @@ public class Tile : MonoBehaviour
         if (selectedTileOutline.OutlineColor != _outlineColorGreen) selectedTileOutline.enabled = false;
     }
 
-    private void ReenableClick()
-    {
-        _selectedTile = _emptyTileSelection;
-
-        if (_isGoingToBeUpdated)
-        {
-            _canTilesBeClicked = true;
-            _isGoingToBeUpdated = false;
-            _pointsWorth *= 2;
-
-            UpdateTileText();
-        }
-    }
-
     private void DeselectTile()
     {
         _selectedTile = _emptyTileSelection;
         outlineScript.enabled = false;
     }
-
-    private void UpdateTileText() => tileText.text = _pointsWorth.ToString();
 
     private void InitializeTileType()
     {
@@ -135,10 +136,33 @@ public class Tile : MonoBehaviour
 
         _pointsWorth = randomTile.PointsWorth;
         tileText.text = randomTile.PointsToString;
-        tileRenderer.material = randomTile.TileMaterial;
         transform.rotation = _initialRotation;
-
         TileType = randomTile;
+
+        SetBackgroundColor();
+    }
+
+    private void SetBackgroundColor()
+    {
+        int pointsAsTwoToThePower = PointsAsTwoToThePower();
+
+        float colorGradientPercentage = Mathf.Min((float)pointsAsTwoToThePower / (float)MAXED_COLOR_AT_TWO_TO_THE_POWER, 1);
+        backgroundText.color = tileBackgroundGradient.Evaluate(colorGradientPercentage);
+    }
+
+    private int PointsAsTwoToThePower()
+    {
+        int pointsAsTwoToThePower = _pointsWorth;
+        int powers = 0;
+
+        do
+        {
+            pointsAsTwoToThePower /= 2;
+            powers++;
+
+        } while (pointsAsTwoToThePower != 1);
+
+        return powers;
     }
 
     private TileType GetRandomTileType()

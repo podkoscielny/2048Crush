@@ -6,11 +6,9 @@ using UnityEngine;
 public class TileType : ScriptableObject
 {
     [SerializeField] int pointsWorth;
-    [SerializeField] Material tileMaterial;
 
     public int PointsWorth => pointsWorth;
     public string PointsToString { get; private set; }
-    public Material TileMaterial => tileMaterial;
 
     void OnValidate()
     {
