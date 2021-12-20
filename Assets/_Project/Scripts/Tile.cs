@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
 using OutlineEffect;
-using DG.Tweening;
-using Tags = TagSystem.Tags;
 
 public class Tile : MonoBehaviour
 {
@@ -16,13 +15,13 @@ public class Tile : MonoBehaviour
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] Outline outlineScript;
     [SerializeField] GridSystem gridSystem;
-    [SerializeField] TileType[] tileTypes;
 
     public TileType TileType { get; private set; }
 
     private static bool _canTilesBeClicked = true;
     private static SelectedTile _selectedTile;
 
+    private KeyValuePair<TileType, float>[] _tileTypes;
     private int _pointsWorth;
     private bool _isGoingToBeUpdated = false;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
@@ -43,7 +42,11 @@ public class Tile : MonoBehaviour
         ResetProperties();
     }
 
-    private void Awake() => InitializeTileSize();
+    private void Awake()
+    {
+        CacheTileTypes();
+        InitializeTileSize();
+    }
 
     private void OnMouseDown()
     {
@@ -133,8 +136,8 @@ public class Tile : MonoBehaviour
 
     private void InitializeTileType()
     {
-        int randomTileIndex = Random.Range(0, tileTypes.Length);
-        TileType randomTile = tileTypes[randomTileIndex];
+        int randomTileIndex = Random.Range(0, _tileTypes.Length);
+        TileType randomTile = _tileTypes[randomTileIndex].key;
 
         _pointsWorth = randomTile.PointsWorth;
         tileText.text = randomTile.PointsToString;
@@ -143,6 +146,18 @@ public class Tile : MonoBehaviour
 
         TileType = randomTile;
     }
+
+    //private void GetRandomTileType()
+    //{
+    //    float spawnProbabilitySum = 0;
+
+    //    foreach (var item in gridSystem.GridSize)
+    //    {
+
+    //    }
+
+    //    gridSystem.GridSize.TileTypes
+    //}
 
     private void InitializeTileSize()
     {
@@ -153,6 +168,8 @@ public class Tile : MonoBehaviour
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
     }
+
+    private void CacheTileTypes() => _tileTypes = gridSystem.GridSize.TileTypes;
 
     private void ResetProperties()
     {
