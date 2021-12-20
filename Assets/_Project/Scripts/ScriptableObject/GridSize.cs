@@ -14,12 +14,15 @@ public class GridSize : ScriptableObject
     public int Rows => rows;
     public int Columns => columns;
     public KeyValuePair<TileType, float>[] TileTypes => tileTypes;
+    public float ProbabilitySum { get; private set; }
 
     void OnValidate()
     {
         ClampRowsAndColumnsCount();
         ClampTileTypeProbability();
     }
+
+    void OnEnable() => CalculateProbabilitySum();
 
     private void ClampRowsAndColumnsCount()
     {
@@ -37,6 +40,18 @@ public class GridSize : ScriptableObject
 
     private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.value.CompareTo(y.value));
 
+    private void CalculateProbabilitySum()
+    {
+        float probability = 0;
+
+        foreach (var type in tileTypes)
+        {
+            probability += type.value;
+        }
+
+        ProbabilitySum = probability;
+    }
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(GridSize))]
     class CustomTypeEditor : Editor
@@ -47,7 +62,11 @@ public class GridSize : ScriptableObject
 
             GridSize gridSize = (GridSize)target;
 
-            if (!EditorGUIUtility.editingTextField) gridSize.SortTileTypesByProbability();
+            if (!EditorGUIUtility.editingTextField)
+            {
+                gridSize.SortTileTypesByProbability();
+                gridSize.CalculateProbabilitySum();
+            }
         }
     }
 
