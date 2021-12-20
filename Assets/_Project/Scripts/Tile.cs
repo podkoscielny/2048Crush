@@ -143,19 +143,19 @@ public class Tile : MonoBehaviour
 
     private TileType GetRandomTileType()
     {
-        KeyValuePair<TileType, float>[] tileTypes = gridSystem.GridSize.TileTypes;
+        TileProbabilityPair[] tileTypes = gridSystem.GridSize.TileTypes;
         float probabilitySum = gridSystem.GridSize.ProbabilitySum;
         float randomProbability = Random.Range(0, probabilitySum);
         float subtractFromSum = 0;
 
         for (int i = 0; i < tileTypes.Length; i++)
         {
-            if (randomProbability - subtractFromSum <= tileTypes[i].value) return tileTypes[i].key;
+            if (randomProbability - subtractFromSum <= tileTypes[i].probability) return tileTypes[i].tileType;
 
-            subtractFromSum -= tileTypes[i].value;
+            subtractFromSum -= tileTypes[i].probability;
         }
 
-        return tileTypes[tileTypes.Length - 1].key;
+        return tileTypes[tileTypes.Length - 1].tileType;
     }
 
     private void InitializeTileSize()

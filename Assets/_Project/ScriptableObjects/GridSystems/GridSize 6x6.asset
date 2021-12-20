@@ -15,9 +15,9 @@ MonoBehaviour:
   rows: 6
   columns: 6
   tileTypes:
-  - key: {fileID: 11400000, guid: 5bf5683a77c049143a97a118bc9742c9, type: 2}
-    value: 0.05
-  - key: {fileID: 11400000, guid: a63daa73d20f21d488f107e5786f6eef, type: 2}
-    value: 0.21
-  - key: {fileID: 11400000, guid: 907a97166f50a4f4c87557a661af63f8, type: 2}
-    value: 0.8
+  - tileType: {fileID: 11400000, guid: 5bf5683a77c049143a97a118bc9742c9, type: 2}
+    probability: 0.05
+  - tileType: {fileID: 11400000, guid: a63daa73d20f21d488f107e5786f6eef, type: 2}
+    probability: 0.21
+  - tileType: {fileID: 11400000, guid: 907a97166f50a4f4c87557a661af63f8, type: 2}
+    probability: 0.8

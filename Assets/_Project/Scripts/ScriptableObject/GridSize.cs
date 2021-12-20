@@ -9,11 +9,11 @@ public class GridSize : ScriptableObject
 {
     [SerializeField] int rows;
     [SerializeField] int columns;
-    [SerializeField] KeyValuePair<TileType, float>[] tileTypes;
+    [SerializeField] TileProbabilityPair[] tileTypes;
 
     public int Rows => rows;
     public int Columns => columns;
-    public KeyValuePair<TileType, float>[] TileTypes => tileTypes;
+    public TileProbabilityPair[] TileTypes => tileTypes;
     public float ProbabilitySum { get; private set; }
 
     void OnValidate()
@@ -34,11 +34,11 @@ public class GridSize : ScriptableObject
     {
         for (int i = 0; i < tileTypes.Length; i++)
         {
-            tileTypes[i].value = Mathf.Clamp(tileTypes[i].value, 0, 1);
+            tileTypes[i].probability = Mathf.Clamp(tileTypes[i].probability, 0, 1);
         }
     }
 
-    private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.value.CompareTo(y.value));
+    private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.probability.CompareTo(y.probability));
 
     private void CalculateProbabilitySum()
     {
@@ -46,7 +46,7 @@ public class GridSize : ScriptableObject
 
         foreach (var type in tileTypes)
         {
-            probability += type.value;
+            probability += type.probability;
         }
 
         ProbabilitySum = probability;
