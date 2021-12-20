@@ -21,7 +21,6 @@ public class Tile : MonoBehaviour
     private static bool _canTilesBeClicked = true;
     private static SelectedTile _selectedTile;
 
-    private KeyValuePair<TileType, float>[] _tileTypes;
     private int _pointsWorth;
     private bool _isGoingToBeUpdated = false;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
@@ -42,11 +41,7 @@ public class Tile : MonoBehaviour
         ResetProperties();
     }
 
-    private void Awake()
-    {
-        CacheTileTypes();
-        InitializeTileSize();
-    }
+    private void Awake() => InitializeTileSize();
 
     private void OnMouseDown()
     {
@@ -136,8 +131,7 @@ public class Tile : MonoBehaviour
 
     private void InitializeTileType()
     {
-        int randomTileIndex = Random.Range(0, _tileTypes.Length);
-        TileType randomTile = _tileTypes[randomTileIndex].key;
+        TileType randomTile = GetRandomTileType();
 
         _pointsWorth = randomTile.PointsWorth;
         tileText.text = randomTile.PointsToString;
@@ -147,17 +141,15 @@ public class Tile : MonoBehaviour
         TileType = randomTile;
     }
 
-    //private void GetRandomTileType()
-    //{
-    //    float spawnProbabilitySum = 0;
+    private TileType GetRandomTileType()
+    {
+        KeyValuePair<TileType, float>[] tileTypes = gridSystem.GridSize.TileTypes;
 
-    //    foreach (var item in gridSystem.GridSize)
-    //    {
+        int randomTileIndex = Random.Range(0, tileTypes.Length);
+        TileType randomTile = tileTypes[randomTileIndex].key;
 
-    //    }
-
-    //    gridSystem.GridSize.TileTypes
-    //}
+        return randomTile;
+    }
 
     private void InitializeTileSize()
     {
@@ -168,8 +160,6 @@ public class Tile : MonoBehaviour
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
     }
-
-    private void CacheTileTypes() => _tileTypes = gridSystem.GridSize.TileTypes;
 
     private void ResetProperties()
     {
