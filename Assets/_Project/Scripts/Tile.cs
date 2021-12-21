@@ -17,17 +17,18 @@ public class Tile : MonoBehaviour
     [SerializeField] GridSystem gridSystem;
     [SerializeField] Gradient tileBackgroundGradient;
 
-    public TileType TileType { get; private set; }
-
-    private static bool _canTilesBeClicked = true;
     private static SelectedTile _selectedTile;
+    private static bool _canTilesBeClicked = true;
 
     private int _pointsWorth = 2;
+    private Camera _mainCamera;
     private bool _isGoingToBeUpdated = false;
+    private Vector3 _mouseclickWorldPosition;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
     private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
 
+    private const float MOUSE_DRAG_DISTANCE_TO_MOVE = 0.6f;
     private const float CELL_SIZE_FACTOR = 0.8f;
     private const int MAXED_COLOR_AT_TWO_TO_THE_POWER = 13;
 
@@ -43,13 +44,67 @@ public class Tile : MonoBehaviour
         ResetProperties();
     }
 
-    private void Awake() => InitializeTileSize();
+    private void Awake()
+    {
+        _mainCamera = Camera.main;
+        InitializeTileSize();
+    }
 
     private void OnMouseDown()
     {
         if (!_canTilesBeClicked) return;
 
         SelectTile();
+        _mouseclickWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    private void OnMouseDrag()
+    {
+        if (!_canTilesBeClicked) return;
+
+        MoveTileInDirection();
+    }
+
+    private void MoveTileInDirection()
+    {
+        Vector3 mousePositionToWorld = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+        if (mousePositionToWorld.x - _mouseclickWorldPosition.x >= MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.x != gridSystem.GridCells.GetLength(0) - 1)
+        {
+            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x + 1, _selectedTile.TileCell.y].GetComponent<Tile>()._pointsWorth)
+            {
+                _canTilesBeClicked = false;
+                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x + 1, _selectedTile.TileCell.y].GetComponent<Tile>()._isGoingToBeUpdated = true;
+                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x + 1, _selectedTile.TileCell.y].transform);
+            }
+        }
+        else if (mousePositionToWorld.x - _mouseclickWorldPosition.x <= -MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.x != 0)
+        {
+            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x - 1, _selectedTile.TileCell.y].GetComponent<Tile>()._pointsWorth)
+            {
+                _canTilesBeClicked = false;
+                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x - 1, _selectedTile.TileCell.y].GetComponent<Tile>()._isGoingToBeUpdated = true;
+                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x - 1, _selectedTile.TileCell.y].transform);
+            }
+        }
+        else if (mousePositionToWorld.y - _mouseclickWorldPosition.y >= MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.y != gridSystem.GridCells.GetLength(1) - 1)
+        {
+            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y - 1].GetComponent<Tile>()._pointsWorth)
+            {
+                _canTilesBeClicked = false;
+                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y - 1].GetComponent<Tile>()._isGoingToBeUpdated = true;
+                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y - 1].transform);
+            }
+        }
+        else if (mousePositionToWorld.y - _mouseclickWorldPosition.y <= -MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.y != 0)
+        {
+            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y + 1].GetComponent<Tile>()._pointsWorth)
+            {
+                _canTilesBeClicked = false;
+                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y + 1].GetComponent<Tile>()._isGoingToBeUpdated = true;
+                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y + 1].transform);
+            }
+        }
     }
 
     private void UpdateMergedTile()
@@ -72,8 +127,7 @@ public class Tile : MonoBehaviour
         if (_selectedTile.TileObject == null)
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            SelectedTile tileToBeSelected = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
-            _selectedTile = tileToBeSelected;
+            _selectedTile = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
 
             SetOutline(_outlineColorGreen);
         }
@@ -137,7 +191,6 @@ public class Tile : MonoBehaviour
         _pointsWorth = randomTile.PointsWorth;
         tileText.text = randomTile.PointsToString;
         transform.rotation = _initialRotation;
-        TileType = randomTile;
 
         SetBackgroundColor();
     }
