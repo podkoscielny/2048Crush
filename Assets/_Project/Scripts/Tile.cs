@@ -20,13 +20,12 @@ public class Tile : MonoBehaviour
     private static SelectedTile _selectedTile;
     private static bool _canTilesBeClicked = true;
 
-    private int _pointsWorth = 2;
     private Camera _mainCamera;
-    private bool _isGoingToBeUpdated = false;
     private Vector3 _mouseclickWorldPosition;
+    private int _pointsWorth = 2;
+    private bool _isGoingToBeUpdated = false;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
-    private Color _outlineColorGreen = new Color(0.5607f, 1f, 0.5647f);
 
     private const float MOUSE_DRAG_DISTANCE_TO_MOVE = 0.6f;
     private const float CELL_SIZE_FACTOR = 0.8f;
@@ -54,57 +53,80 @@ public class Tile : MonoBehaviour
     {
         if (!_canTilesBeClicked) return;
 
-        SelectTile();
+        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+        _selectedTile = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
         _mouseclickWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    private void OnMouseUp()
+    {
+        if (!_isGoingToBeUpdated && !_canTilesBeClicked) _canTilesBeClicked = true;
     }
 
     private void OnMouseDrag()
     {
         if (!_canTilesBeClicked) return;
 
-        MoveTileInDirection();
+        DetectSwipeDirection();
     }
 
-    private void MoveTileInDirection()
+    private void DetectSwipeDirection()
     {
         Vector3 mousePositionToWorld = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-        if (mousePositionToWorld.x - _mouseclickWorldPosition.x >= MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.x != gridSystem.GridCells.GetLength(0) - 1)
+        if (Vector3.Distance(_mouseclickWorldPosition, mousePositionToWorld) <= MOUSE_DRAG_DISTANCE_TO_MOVE) return;
+
+        Vector2Int tileCellDirection = GetSwipeDirection();
+        int tileCellCoordinateX = _selectedTile.TileCell.x + tileCellDirection.x;
+        int tileCellCoordinateY = _selectedTile.TileCell.y + tileCellDirection.y;
+
+        if (tileCellCoordinateX < 0 || tileCellCoordinateY < 0 || tileCellCoordinateX >= gridSystem.GridCells.GetLength(0) || tileCellCoordinateY >= gridSystem.GridCells.GetLength(1))
+            PreventClickFromNotMatchedTiles();
+        else
         {
-            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x + 1, _selectedTile.TileCell.y].GetComponent<Tile>()._pointsWorth)
-            {
-                _canTilesBeClicked = false;
-                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x + 1, _selectedTile.TileCell.y].GetComponent<Tile>()._isGoingToBeUpdated = true;
-                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x + 1, _selectedTile.TileCell.y].transform);
-            }
+            GameObject tileToBeUpdated = gridSystem.TilesAtGridCells[tileCellCoordinateX, tileCellCoordinateY];
+            MatchTiles(tileToBeUpdated);
         }
-        else if (mousePositionToWorld.x - _mouseclickWorldPosition.x <= -MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.x != 0)
+    }
+
+    private Vector2Int GetSwipeDirection()
+    {
+        Vector3 mousePositionToWorld = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePositionDifference = mousePositionToWorld - _mouseclickWorldPosition;
+
+        Vector2Int tileCellToBeSwiped = Vector2Int.zero;
+
+        if (Mathf.Abs(mousePositionDifference.x) > Mathf.Abs(mousePositionDifference.y))
         {
-            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x - 1, _selectedTile.TileCell.y].GetComponent<Tile>()._pointsWorth)
-            {
-                _canTilesBeClicked = false;
-                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x - 1, _selectedTile.TileCell.y].GetComponent<Tile>()._isGoingToBeUpdated = true;
-                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x - 1, _selectedTile.TileCell.y].transform);
-            }
+            tileCellToBeSwiped.y = 0;
+            tileCellToBeSwiped.x = mousePositionDifference.x > 0 ? 1 : -1;
         }
-        else if (mousePositionToWorld.y - _mouseclickWorldPosition.y >= MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.y != gridSystem.GridCells.GetLength(1) - 1)
+        else
         {
-            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y - 1].GetComponent<Tile>()._pointsWorth)
-            {
-                _canTilesBeClicked = false;
-                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y - 1].GetComponent<Tile>()._isGoingToBeUpdated = true;
-                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y - 1].transform);
-            }
+            tileCellToBeSwiped.x = 0;
+            tileCellToBeSwiped.y = mousePositionDifference.y > 0 ? -1 : 1;
         }
-        else if (mousePositionToWorld.y - _mouseclickWorldPosition.y <= -MOUSE_DRAG_DISTANCE_TO_MOVE && _selectedTile.TileCell.y != 0)
+
+        return tileCellToBeSwiped;
+    }
+
+    private void MatchTiles(GameObject tileToBeUpdated)
+    {
+        if (_pointsWorth == tileToBeUpdated.GetComponent<Tile>()._pointsWorth)
         {
-            if (_pointsWorth == gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y + 1].GetComponent<Tile>()._pointsWorth)
-            {
-                _canTilesBeClicked = false;
-                gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y + 1].GetComponent<Tile>()._isGoingToBeUpdated = true;
-                OnTilesMatch?.Invoke(_selectedTile, gridSystem.TilesAtGridCells[_selectedTile.TileCell.x, _selectedTile.TileCell.y + 1].transform);
-            }
+            _canTilesBeClicked = false;
+            tileToBeUpdated.GetComponent<Tile>()._isGoingToBeUpdated = true;
+            OnTilesMatch?.Invoke(_selectedTile, tileToBeUpdated.transform);
         }
+        else
+            PreventClickFromNotMatchedTiles();
+    }
+
+    private void PreventClickFromNotMatchedTiles()
+    {
+        _canTilesBeClicked = false;
+        SetOutline(Color.red);
+        StartCoroutine(ResetOutlinesSelected());
     }
 
     private void UpdateMergedTile()
@@ -122,65 +144,16 @@ public class Tile : MonoBehaviour
     }
     private void UpdateTileText() => tileText.text = _pointsWorth.ToString();
 
-    private void SelectTile()
-    {
-        if (_selectedTile.TileObject == null)
-        {
-            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            _selectedTile = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
-
-            SetOutline(_outlineColorGreen);
-        }
-        else
-        {
-            if (_selectedTile.TileObject == gameObject)
-            {
-                DeselectTile();
-            }
-            else
-            {
-                CheckMatch();
-            }
-        }
-    }
-
-    private void CheckMatch()
-    {
-        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-
-        if (gridSystem.AreTilesClose(_selectedTile.TileCell, tileCell) && _selectedTile.PointsWorth == _pointsWorth)
-        {
-            _canTilesBeClicked = false;
-            _isGoingToBeUpdated = true;
-            OnTilesMatch?.Invoke(_selectedTile, transform);
-        }
-        else
-        {
-            StartCoroutine(ResetOutlinesSelected(_selectedTile.OutlineScript));
-
-            SetOutline(Color.red);
-            _selectedTile.OutlineScript.OutlineColor = Color.red;
-            _selectedTile = _emptyTileSelection;
-        }
-    }
-
     private void SetOutline(Color outlineColor)
     {
         outlineScript.enabled = true;
         outlineScript.OutlineColor = outlineColor;
     }
 
-    private IEnumerator ResetOutlinesSelected(Outline selectedTileOutline)
+    private IEnumerator ResetOutlinesSelected()
     {
         yield return new WaitForSeconds(0.3f);
 
-        if (outlineScript.OutlineColor != _outlineColorGreen) outlineScript.enabled = false;
-        if (selectedTileOutline.OutlineColor != _outlineColorGreen) selectedTileOutline.enabled = false;
-    }
-
-    private void DeselectTile()
-    {
-        _selectedTile = _emptyTileSelection;
         outlineScript.enabled = false;
     }
 
