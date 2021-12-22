@@ -81,8 +81,11 @@ public class Tile : MonoBehaviour
         Transform selectedTileTransform = _selectedTile.TileObject.transform;
         Transform swipedTileTransform = _tileToBeSwipedInto.TileObject.transform;
 
-        selectedTileTransform.transform.DODynamicLookAt(swipedTileTransform.position, 0.1f)
-            .OnComplete(() => selectedTileTransform.transform.DORotateQuaternion(_initialRotation, 0.1f).SetEase(Ease.InBack));
+        Vector3 direction = swipedTileTransform.position - selectedTileTransform.position;
+        Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
+        
+        selectedTileTransform.DORotateQuaternion(rotation, 0.1f)
+            .OnComplete(() => selectedTileTransform.DORotate(Vector3.zero, 0.1f).SetDelay(0.1f));
 
         _selectedTile = _emptyTileSelection;
         _tileToBeSwipedInto = _emptyTileSelection;
