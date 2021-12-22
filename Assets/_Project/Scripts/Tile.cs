@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
-using OutlineEffect;
+using DG.Tweening;
 
 public class Tile : MonoBehaviour
 {
@@ -13,21 +12,18 @@ public class Tile : MonoBehaviour
     [SerializeField] TextMeshPro tileText;
     [SerializeField] TextMeshPro backgroundText;
     [SerializeField] BoxCollider tileCollider;
-    [SerializeField] Outline outlineScript;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] Gradient tileBackgroundGradient;
 
     private static SelectedTile _selectedTile;
+    private static SelectedTile _tileToBeSwipedInto;
     private static bool _canTilesBeClicked = true;
 
-    private Camera _mainCamera;
-    private Vector3 _mouseclickWorldPosition;
     private int _pointsWorth = 2;
     private bool _isGoingToBeUpdated = false;
     private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
     private SelectedTile _emptyTileSelection = new SelectedTile();
 
-    private const float MOUSE_DRAG_DISTANCE_TO_MOVE = 0.6f;
     private const float CELL_SIZE_FACTOR = 0.8f;
     private const int MAXED_COLOR_AT_TWO_TO_THE_POWER = 13;
 
@@ -43,90 +39,53 @@ public class Tile : MonoBehaviour
         ResetProperties();
     }
 
-    private void Awake()
-    {
-        _mainCamera = Camera.main;
-        InitializeTileSize();
-    }
+    private void Awake() => InitializeTileSize();
 
     private void OnMouseDown()
     {
         if (!_canTilesBeClicked) return;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        _selectedTile = new SelectedTile(gameObject, _pointsWorth, tileCell, outlineScript);
-        _mouseclickWorldPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        _selectedTile = new SelectedTile(gameObject, _pointsWorth, tileCell);
     }
 
     private void OnMouseUp()
     {
-        if (!_isGoingToBeUpdated && !_canTilesBeClicked) _canTilesBeClicked = true;
+        if (!_isGoingToBeUpdated && !_canTilesBeClicked)
+            _canTilesBeClicked = true;
     }
 
-    private void OnMouseDrag()
+    private void OnMouseOver()
     {
-        if (!_canTilesBeClicked) return;
-
-        DetectSwipeDirection();
-    }
-
-    private void DetectSwipeDirection()
-    {
-        Vector3 mousePositionToWorld = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-        if (Vector3.Distance(_mouseclickWorldPosition, mousePositionToWorld) <= MOUSE_DRAG_DISTANCE_TO_MOVE) return;
-
-        Vector2Int tileCellDirection = GetSwipeDirection();
-        int tileCellCoordinateX = _selectedTile.TileCell.x + tileCellDirection.x;
-        int tileCellCoordinateY = _selectedTile.TileCell.y + tileCellDirection.y;
-
-        if (tileCellCoordinateX < 0 || tileCellCoordinateY < 0 || tileCellCoordinateX >= gridSystem.GridCells.GetLength(0) || tileCellCoordinateY >= gridSystem.GridCells.GetLength(1))
-            PreventClickFromNotMatchedTiles();
-        else
+        if (_selectedTile.TileObject != null && _selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null)
         {
-            GameObject tileToBeUpdated = gridSystem.TilesAtGridCells[tileCellCoordinateX, tileCellCoordinateY];
-            MatchTiles(tileToBeUpdated);
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            _tileToBeSwipedInto = new SelectedTile(gameObject, _pointsWorth, tileCell);
+
+            bool areTilesClose = gridSystem.AreTilesClose(_selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
+            bool areTilesWorthSame = _selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
+
+            if (areTilesClose && areTilesWorthSame)
+            {
+                _canTilesBeClicked = false;
+                _isGoingToBeUpdated = true;
+                OnTilesMatch?.Invoke(_selectedTile, transform);
+            }
+            else
+                SetNotMatchedTilesProperties();
         }
     }
 
-    private Vector2Int GetSwipeDirection()
+    private void SetNotMatchedTilesProperties()
     {
-        Vector3 mousePositionToWorld = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 mousePositionDifference = mousePositionToWorld - _mouseclickWorldPosition;
+        Transform selectedTileTransform = _selectedTile.TileObject.transform;
+        Transform swipedTileTransform = _tileToBeSwipedInto.TileObject.transform;
 
-        Vector2Int tileCellToBeSwiped = Vector2Int.zero;
+        selectedTileTransform.transform.DODynamicLookAt(swipedTileTransform.position, 0.1f)
+            .OnComplete(() => selectedTileTransform.transform.DORotateQuaternion(_initialRotation, 0.1f).SetEase(Ease.InBack));
 
-        if (Mathf.Abs(mousePositionDifference.x) > Mathf.Abs(mousePositionDifference.y))
-        {
-            tileCellToBeSwiped.y = 0;
-            tileCellToBeSwiped.x = mousePositionDifference.x > 0 ? 1 : -1;
-        }
-        else
-        {
-            tileCellToBeSwiped.x = 0;
-            tileCellToBeSwiped.y = mousePositionDifference.y > 0 ? -1 : 1;
-        }
-
-        return tileCellToBeSwiped;
-    }
-
-    private void MatchTiles(GameObject tileToBeUpdated)
-    {
-        if (_pointsWorth == tileToBeUpdated.GetComponent<Tile>()._pointsWorth)
-        {
-            _canTilesBeClicked = false;
-            tileToBeUpdated.GetComponent<Tile>()._isGoingToBeUpdated = true;
-            OnTilesMatch?.Invoke(_selectedTile, tileToBeUpdated.transform);
-        }
-        else
-            PreventClickFromNotMatchedTiles();
-    }
-
-    private void PreventClickFromNotMatchedTiles()
-    {
-        _canTilesBeClicked = false;
-        SetOutline(Color.red);
-        StartCoroutine(ResetOutlinesSelected());
+        _selectedTile = _emptyTileSelection;
+        _tileToBeSwipedInto = _emptyTileSelection;
     }
 
     private void UpdateMergedTile()
@@ -134,6 +93,7 @@ public class Tile : MonoBehaviour
         if (!_isGoingToBeUpdated) return;
 
         _selectedTile = _emptyTileSelection;
+        _tileToBeSwipedInto = _emptyTileSelection;
 
         _canTilesBeClicked = true;
         _isGoingToBeUpdated = false;
@@ -143,19 +103,6 @@ public class Tile : MonoBehaviour
         SetBackgroundColor();
     }
     private void UpdateTileText() => tileText.text = _pointsWorth.ToString();
-
-    private void SetOutline(Color outlineColor)
-    {
-        outlineScript.enabled = true;
-        outlineScript.OutlineColor = outlineColor;
-    }
-
-    private IEnumerator ResetOutlinesSelected()
-    {
-        yield return new WaitForSeconds(0.3f);
-
-        outlineScript.enabled = false;
-    }
 
     private void InitializeTileType()
     {
@@ -218,9 +165,5 @@ public class Tile : MonoBehaviour
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
     }
 
-    private void ResetProperties()
-    {
-        transform.rotation = _initialRotation;
-        outlineScript.enabled = false;
-    }
+    private void ResetProperties() => transform.rotation = _initialRotation;
 }

@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 5978196333470396332}
   - component: {fileID: 4610248557676912168}
   - component: {fileID: 4610248557676912169}
-  - component: {fileID: 4610248557676912174}
+  - component: {fileID: -4246324072427026848}
   - component: {fileID: 740246320}
   - component: {fileID: 2200593051386032726}
-  - component: {fileID: 6926719666818625641}
   m_Layer: 7
   m_Name: Tile
   m_TagString: Untagged
@@ -87,18 +86,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4610248557676912174
+--- !u!65 &-4246324072427026848
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4610248557676912175}
-  m_Material: {fileID: 13400000, guid: caa7e494680c6a5408a946cd3496d7ec, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.1, z: 1}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &740246320
 MonoBehaviour:
@@ -114,9 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileText: {fileID: 8686686540949471771}
   backgroundText: {fileID: 8709540908940644691}
-  tileRenderer: {fileID: 4610248557676912169}
-  tileCollider: {fileID: 4610248557676912174}
-  outlineScript: {fileID: 6926719666818625641}
+  tileCollider: {fileID: -4246324072427026848}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tileBackgroundGradient:
     serializedVersion: 2
@@ -160,24 +157,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tags: 01000000
---- !u!114 &6926719666818625641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4610248557676912175}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 0, b: 0.030630589, a: 1}
-  outlineWidth: 6
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1 &7720128090157756934
 GameObject:
   m_ObjectHideFlags: 0
