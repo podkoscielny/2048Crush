@@ -18,6 +18,7 @@ public class Tile : MonoBehaviour
     private static SelectedTile _selectedTile;
     private static SelectedTile _tileToBeSwipedInto;
     private static bool _canTilesBeClicked = true;
+    private static bool _isPointerDown = false;
 
     private int _pointsWorth = 2;
     private bool _isGoingToBeUpdated = false;
@@ -45,36 +46,35 @@ public class Tile : MonoBehaviour
     {
         if (!_canTilesBeClicked) return;
 
+        _isPointerDown = true;
+
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
         _selectedTile = new SelectedTile(gameObject, _pointsWorth, tileCell);
     }
 
-    private void OnMouseUp()
-    {
-        if (!_isGoingToBeUpdated && !_canTilesBeClicked)
-            _canTilesBeClicked = true;
-    }
+    private void OnMouseUp() => _isPointerDown = false;
 
     private void OnMouseOver()
     {
-        if (_selectedTile.TileObject != null && _selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null)
+        if (!CanTileBeSwiped()) return;
+
+        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+        _tileToBeSwipedInto = new SelectedTile(gameObject, _pointsWorth, tileCell);
+
+        bool areTilesClose = gridSystem.AreTilesClose(_selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
+        bool areTilesWorthSame = _selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
+
+        if (areTilesClose && areTilesWorthSame)
         {
-            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            _tileToBeSwipedInto = new SelectedTile(gameObject, _pointsWorth, tileCell);
-
-            bool areTilesClose = gridSystem.AreTilesClose(_selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
-            bool areTilesWorthSame = _selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
-
-            if (areTilesClose && areTilesWorthSame)
-            {
-                _canTilesBeClicked = false;
-                _isGoingToBeUpdated = true;
-                OnTilesMatch?.Invoke(_selectedTile, transform);
-            }
-            else
-                SetNotMatchedTilesProperties();
+            _canTilesBeClicked = false;
+            _isGoingToBeUpdated = true;
+            OnTilesMatch?.Invoke(_selectedTile, transform);
         }
+        else
+            SetNotMatchedTilesProperties();
     }
+
+    private bool CanTileBeSwiped() => _isPointerDown && _selectedTile.TileObject != null && _selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;
 
     private void SetNotMatchedTilesProperties()
     {
