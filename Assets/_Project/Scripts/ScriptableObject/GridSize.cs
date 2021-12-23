@@ -57,7 +57,7 @@ public class GridSize : ScriptableObject
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(GridSize))]
-    class CustomTypeEditor : Editor
+    class GridSizeEditor : Editor
     {
         public override void OnInspectorGUI()
         {

@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using UnityEditor;
 using TMPro;
 using Random = UnityEngine.Random;
 using DG.Tweening;
@@ -169,4 +169,12 @@ public class Tile : MonoBehaviour
     }
 
     private void ResetProperties() => transform.rotation = _initialRotation;
+
+#if UNITY_EDITOR
+    public void ChangeTilePointsWorth(int pointsToSet)
+    {
+        _pointsWorth = pointsToSet;
+        tileText.text = pointsToSet.ToString();
+    }
+#endif
 }
