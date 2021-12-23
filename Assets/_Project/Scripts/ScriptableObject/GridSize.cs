@@ -16,10 +16,12 @@ public class GridSize : ScriptableObject
     public TileProbabilityPair[] TileTypes => tileTypes;
     public float ProbabilitySum { get; private set; }
 
+    private const int MINIMUM_POINTS_WORTH = 2;
+
     void OnValidate()
     {
         ClampRowsAndColumnsCount();
-        ClampTileTypeProbability();
+        ClampTileProbabilityAndPoints();
     }
 
     void OnEnable() => CalculateProbabilitySum();
@@ -30,11 +32,12 @@ public class GridSize : ScriptableObject
         columns = Mathf.Max(1, columns);
     }
 
-    private void ClampTileTypeProbability()
+    private void ClampTileProbabilityAndPoints()
     {
         for (int i = 0; i < tileTypes.Length; i++)
         {
             tileTypes[i].probability = Mathf.Clamp(tileTypes[i].probability, 0, 1);
+            tileTypes[i].pointsWorth = tileTypes[i].pointsWorth % 2 == 0 ? Mathf.Max(2, tileTypes[i].pointsWorth) : MINIMUM_POINTS_WORTH;
         }
     }
 

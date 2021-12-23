@@ -79,9 +79,9 @@ public class Tile : MonoBehaviour
     private void SetNotMatchedTilesProperties()
     {
         Transform selectedTileTransform = _selectedTile.TileObject.transform;
-        Transform swipedTileTransform = _tileToBeSwipedInto.TileObject.transform;
+        Transform tileToBeSwipedIntoTransform = _tileToBeSwipedInto.TileObject.transform;
 
-        Vector3 direction = swipedTileTransform.position - selectedTileTransform.position;
+        Vector3 direction = tileToBeSwipedIntoTransform.position - selectedTileTransform.position;
         Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
         
         selectedTileTransform.DORotateQuaternion(rotation, 0.1f)
@@ -109,13 +109,30 @@ public class Tile : MonoBehaviour
 
     private void InitializeTileType()
     {
-        TileType randomTile = GetRandomTileType();
+        int randomPoints = GetRandomPointsWorth();
 
-        _pointsWorth = randomTile.PointsWorth;
-        tileText.text = randomTile.PointsToString;
+        _pointsWorth = randomPoints;
+        tileText.text = randomPoints.ToString();
         transform.rotation = _initialRotation;
 
         SetBackgroundColor();
+    }
+
+    private int GetRandomPointsWorth()
+    {
+        TileProbabilityPair[] tileTypes = gridSystem.GridSize.TileTypes;
+        float probabilitySum = gridSystem.GridSize.ProbabilitySum;
+        float randomProbability = Random.Range(0, probabilitySum);
+        float subtractFromSum = 0;
+
+        for (int i = 0; i < tileTypes.Length; i++)
+        {
+            if (randomProbability - subtractFromSum <= tileTypes[i].probability) return tileTypes[i].pointsWorth;
+
+            subtractFromSum -= tileTypes[i].probability;
+        }
+
+        return tileTypes[tileTypes.Length - 1].pointsWorth;
     }
 
     private void SetBackgroundColor()
@@ -139,23 +156,6 @@ public class Tile : MonoBehaviour
         } while (pointsAsTwoToThePower != 1);
 
         return powers;
-    }
-
-    private TileType GetRandomTileType()
-    {
-        TileProbabilityPair[] tileTypes = gridSystem.GridSize.TileTypes;
-        float probabilitySum = gridSystem.GridSize.ProbabilitySum;
-        float randomProbability = Random.Range(0, probabilitySum);
-        float subtractFromSum = 0;
-
-        for (int i = 0; i < tileTypes.Length; i++)
-        {
-            if (randomProbability - subtractFromSum <= tileTypes[i].probability) return tileTypes[i].tileType;
-
-            subtractFromSum -= tileTypes[i].probability;
-        }
-
-        return tileTypes[tileTypes.Length - 1].tileType;
     }
 
     private void InitializeTileSize()

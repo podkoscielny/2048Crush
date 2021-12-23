@@ -5,6 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public struct TileProbabilityPair
 {
-    public TileType tileType;
+    public int pointsWorth;
     public float probability;
 }
