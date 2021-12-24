@@ -47,7 +47,7 @@ public class GridSize : ScriptableObject
     {
         float probability = 0;
 
-        foreach (var type in tileTypes)
+        foreach (TileProbabilityPair type in tileTypes)
         {
             probability += type.probability;
         }
