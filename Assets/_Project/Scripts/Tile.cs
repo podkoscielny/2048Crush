@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] Gradient tileBackgroundGradient;
+    [SerializeField] Gradient tileTextGradient;
 
     private static SelectedTile _selectedTile;
     private static SelectedTile _tileToBeSwipedInto;
@@ -151,6 +152,7 @@ public class Tile : MonoBehaviour
 
         float colorGradientPercentage = Mathf.Min((float)pointsAsTwoToThePower / (float)MAXED_COLOR_AT_TWO_TO_THE_POWER, 1);
         backgroundText.color = tileBackgroundGradient.Evaluate(colorGradientPercentage);
+        tileText.color = tileTextGradient.Evaluate(colorGradientPercentage);
     }
 
     private int PointsAsTwoToThePower()
