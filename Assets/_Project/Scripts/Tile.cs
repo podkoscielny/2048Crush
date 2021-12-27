@@ -30,13 +30,17 @@ public class Tile : MonoBehaviour
 
     private void OnEnable()
     {
+        Board.OnGameOver += PreventTilesFromClick;
         Board.OnTileSequenceEnded += UpdateMergedTile;
+        Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
         InitializeTileType();
     }
 
     private void OnDisable()
     {
+        Board.OnGameOver -= PreventTilesFromClick;
         Board.OnTileSequenceEnded -= UpdateMergedTile;
+        Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
         ResetProperties();
     }
 
@@ -107,6 +111,12 @@ public class Tile : MonoBehaviour
     }
     private void UpdateTileText() => tileText.text = _pointsWorth.ToString();
 
+    private void AssignPointsWorthToCell()
+    {
+        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+        gridSystem.AssignPointsWorthToCell(_pointsWorth, tileCell);
+    }
+
     private void InitializeTileType()
     {
         int randomPoints = GetRandomPointsWorth();
@@ -167,6 +177,8 @@ public class Tile : MonoBehaviour
         transform.localScale = new Vector3(tileScaleX, tileScaleY, transform.localScale.z);
         tileCollider.size = new Vector3(boxColliderFactor, boxColliderFactor, tileCollider.size.z);
     }
+
+    private void PreventTilesFromClick() => _canTilesBeClicked = false;
 
     private void ResetProperties() => transform.rotation = _initialRotation;
 

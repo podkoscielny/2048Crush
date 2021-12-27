@@ -7,7 +7,9 @@ using Tags = TagSystem.Tags;
 
 public class Board : MonoBehaviour
 {
+    public static event Action OnAssignPointsWorthToCells;
     public static event Action OnTileSequenceEnded;
+    public static event Action OnGameOver;
 
     [SerializeField] Camera mainCamera;
     [SerializeField] GridSystem gridSystem;
@@ -53,6 +55,7 @@ public class Board : MonoBehaviour
         _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
         _tileMoveSequence.AppendCallback(() => UpdateScore(tileToBeDestroyed.PointsWorth * 2));
         _tileMoveSequence.AppendCallback(() => OnTileSequenceEnded?.Invoke());
+        _tileMoveSequence.AppendCallback(CheckPossibleMoves);
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
 
@@ -91,6 +94,29 @@ public class Board : MonoBehaviour
 
             gridSystem.AssignTileToCell(tileToBeMoved, nextGridCell);
         }
+    }
+
+    private void CheckPossibleMoves()
+    {
+        OnAssignPointsWorthToCells?.Invoke();
+
+        int rows = gridSystem.GridSize.Rows;
+        int columns = gridSystem.GridSize.Columns;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                int pointsWorthAtCell = gridSystem.PointsWorthAtGridCells[i, j];
+
+                bool canBeMargedInColumn = i < rows - 1 && gridSystem.PointsWorthAtGridCells[i + 1, j] == pointsWorthAtCell;
+                bool canBeMargedInRow = j < columns - 1 && gridSystem.PointsWorthAtGridCells[i, j + 1] == pointsWorthAtCell;
+
+                if (canBeMargedInColumn || canBeMargedInRow) return;
+            }
+        }
+
+        OnGameOver?.Invoke();
     }
 
     private void InitializeTiles()

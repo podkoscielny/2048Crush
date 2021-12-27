@@ -16,10 +16,12 @@ public class GridSystem : ScriptableObject
     public Vector3[,] GridCells => _gridCells;
     public Vector3 CubeSize => _cubeSize;
     public GameObject[,] TilesAtGridCells => _tilesAtGridCells;
+    public int[,] PointsWorthAtGridCells => _pointsWorthAtGridCells;
 
     private float _cellWidth;
     private float _cellHeight;
     private Vector3[,] _gridCells;
+    private int[,] _pointsWorthAtGridCells;
     private GameObject[,] _tilesAtGridCells;
     private Vector3 _cubeSize = new Vector3(0, 0, 0);
 
@@ -30,6 +32,8 @@ public class GridSystem : ScriptableObject
     public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
 
     public void AssignTileToCell(GameObject tile, Vector2Int cell) => _tilesAtGridCells[cell.x, cell.y] = tile;
+
+    public void AssignPointsWorthToCell(int pointsWorth, Vector2Int cell) => _pointsWorthAtGridCells[cell.x, cell.y] = pointsWorth;
 
     public Vector2Int GetTileGridCell(GameObject tileObject)
     {
@@ -67,6 +71,7 @@ public class GridSystem : ScriptableObject
 
         _gridCells = new Vector3[rows, columns];
         _tilesAtGridCells = new GameObject[rows, columns];
+        _pointsWorthAtGridCells = new int[rows, columns];
 
         float gridOffset = gridRenderer.bounds.size.x * 0.05f;
         float gridWidth = gridRenderer.bounds.size.x - gridOffset;
