@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,10 @@ public class GridSizeChanger : MonoBehaviour
     private GridSize _currentGridSize => gridSizes[_selectedGridSizeIndex];
 
     private int _selectedGridSizeIndex = 0;
+
+    private void OnValidate() => SortGridSizesByRows();
+
+    private void SortGridSizesByRows() => Array.Sort(gridSizes, (x, y) => x.Rows.CompareTo(y.Rows));
 
     private void Start() => SetGridSize();
 
