@@ -33,14 +33,13 @@ public class Board : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (gridSystem.GridCells != null)
+        if (gridSystem.GridCells == null) return;
+
+        for (int i = 0; i < gridSystem.GridCells.GetLength(0); i++)
         {
-            for (int i = 0; i < gridSystem.GridCells.GetLength(0); i++)
+            for (int j = 0; j < gridSystem.GridCells.GetLength(1); j++)
             {
-                for (int j = 0; j < gridSystem.GridCells.GetLength(1); j++)
-                {
-                    Gizmos.DrawWireCube(gridSystem.GridCells[i, j], gridSystem.CubeSize);
-                }
+                Gizmos.DrawWireCube(gridSystem.GridCells[i, j], gridSystem.CubeSize);
             }
         }
     }

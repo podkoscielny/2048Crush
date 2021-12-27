@@ -16,8 +16,8 @@ MonoBehaviour:
   columns: 6
   tileTypes:
   - pointsWorth: 8
-    probability: 0.05
+    probability: 0.02
   - pointsWorth: 4
-    probability: 0.21
+    probability: 0.1
   - pointsWorth: 2
     probability: 0.8

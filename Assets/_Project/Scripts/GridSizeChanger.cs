@@ -16,8 +16,6 @@ public class GridSizeChanger : MonoBehaviour
 
     private void OnValidate() => SortGridSizesByRows();
 
-    private void SortGridSizesByRows() => Array.Sort(gridSizes, (x, y) => x.Rows.CompareTo(y.Rows));
-
     private void Start() => SetGridSize();
 
     public void DecreaseGridSize()
@@ -31,6 +29,8 @@ public class GridSizeChanger : MonoBehaviour
         _selectedGridSizeIndex = Mathf.Min(_selectedGridSizeIndex + 1, gridSizes.Length - 1);
         SetGridSize();
     }
+
+    private void SortGridSizesByRows() => Array.Sort(gridSizes, (x, y) => x.Rows.CompareTo(y.Rows));
 
     private void SetGridSize()
     {
