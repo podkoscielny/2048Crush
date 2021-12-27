@@ -50,7 +50,7 @@ public class Board : MonoBehaviour
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdated.position, 0.1f));
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdated.position, 0.15f).SetEase(Ease.InBack));
         _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
-        _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell, tileToBeUpdated.position.z));
+        _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
         _tileMoveSequence.AppendCallback(() => UpdateScore(tileToBeDestroyed.PointsWorth * 2));
         _tileMoveSequence.AppendCallback(() => OnTileSequenceEnded?.Invoke());
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
@@ -60,11 +60,11 @@ public class Board : MonoBehaviour
 
     private void MoveTileToPool(GameObject tileToBeDisabled) => objectPool.AddToPool(Tags.Tile, tileToBeDisabled);
 
-    private void SpawnMissingTile(Vector2Int disabledTileGridCell, float spawnPositionZ)
+    private void SpawnMissingTile(Vector2Int disabledTileGridCell)
     {
-        Vector2Int firstCellInColumn = new Vector2Int(disabledTileGridCell.x, 0);
-        Vector3 firstGridCellPosition = gridSystem.GridCells[disabledTileGridCell.x, 0];
-        Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.15f), spawnPositionZ);
+        Vector2Int firstCellInColumn = new Vector2Int(0, disabledTileGridCell.y);
+        Vector3 firstGridCellPosition = gridSystem.GridCells[0, disabledTileGridCell.y];
+        Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.15f), tilePrefab.transform.position.z);
 
         GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
         spawnedTile.transform.position = spawnPosition;
@@ -77,16 +77,16 @@ public class Board : MonoBehaviour
 
     private void MoveTilesDown(Vector2Int disabledTileGridCell)
     {
-        int columnIndex = disabledTileGridCell.x;
+        int columnIndex = disabledTileGridCell.y;
 
-        if (disabledTileGridCell.y == 0) return;
+        if (disabledTileGridCell.x == 0) return;
 
-        for (int i = disabledTileGridCell.y - 1; i >= 0; i--)
+        for (int i = disabledTileGridCell.x - 1; i >= 0; i--)
         {
-            Vector2Int nextGridCell = new Vector2Int(columnIndex, i + 1);
-            float desiredPositionY = gridSystem.GridCells[columnIndex, i + 1].y;
+            Vector2Int nextGridCell = new Vector2Int(i + 1, columnIndex);
+            float desiredPositionY = gridSystem.GridCells[i + 1, columnIndex].y;
 
-            GameObject tileToBeMoved = gridSystem.TilesAtGridCells[columnIndex, i];
+            GameObject tileToBeMoved = gridSystem.TilesAtGridCells[i, columnIndex];
             tileToBeMoved.transform.DOMoveY(desiredPositionY, 0.2f);
 
             gridSystem.AssignTileToCell(tileToBeMoved, nextGridCell);

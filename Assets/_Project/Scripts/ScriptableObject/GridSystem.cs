@@ -23,15 +23,9 @@ public class GridSystem : ScriptableObject
     private GameObject[,] _tilesAtGridCells;
     private Vector3 _cubeSize = new Vector3(0, 0, 0);
 
-    private void OnEnable()
-    {
-        EditorApplication.playModeStateChanged += ResetDataOnPlayModeExit;
-    }
+    private void OnEnable() => EditorApplication.playModeStateChanged += ResetDataOnPlayModeExit;
 
-    private void OnDisable()
-    {
-        EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
-    }
+    private void OnDisable() => EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
 
     public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
 
@@ -89,11 +83,11 @@ public class GridSystem : ScriptableObject
 
         for (int i = 0; i < rows; i++)
         {
-            float xPosition = gridCenter.x - (gridWidth / 2) + (cellWidth / 2) + (i * cellWidth);
+            float yPosition = gridCenter.y + (gridHeight / 2) - (cellHeight / 2) - (i * cellHeight);
 
             for (int j = 0; j < columns; j++)
             {
-                float yPosition = gridCenter.y + (gridHeight / 2) - (cellHeight / 2) - (j * cellHeight);
+                float xPosition = gridCenter.x - (gridWidth / 2) + (cellWidth / 2) + (j * cellWidth);
 
                 _gridCells[i, j] = new Vector3(xPosition, yPosition, gridCenter.z);
             }
