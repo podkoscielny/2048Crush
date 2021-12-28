@@ -14,11 +14,11 @@ public class TileSwipe : MonoBehaviour
 
     public int PointsWorth
     {
-        get => PointsWorth;
+        get => _pointsWorth;
 
         private set
         {
-            PointsWorth = value;
+            _pointsWorth = value;
             OnPointsUpdated?.Invoke();
         }
     }
@@ -27,6 +27,7 @@ public class TileSwipe : MonoBehaviour
     private static SelectedTile _selectedTile;
     private static SelectedTile _tileToBeSwipedInto;
 
+    private int _pointsWorth = 2;
     private SelectedTile _emptyTileSelection = new SelectedTile();
 
     private void OnEnable()

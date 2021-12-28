@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4610248557676912168}
   - component: {fileID: 4610248557676912169}
   - component: {fileID: -4246324072427026848}
-  - component: {fileID: 740246320}
+  - component: {fileID: 7478645234131672006}
+  - component: {fileID: 1163389491736964277}
   - component: {fileID: 2200593051386032726}
   m_Layer: 7
   m_Name: Tile
@@ -99,7 +100,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &740246320
+--- !u!114 &7478645234131672006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,31 +109,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 4610248557676912175}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc8d9032a2df4964989b34bfad276d1f, type: 3}
+  m_Script: {fileID: 11500000, guid: c5d0647c833f64d4d97b59e57e5f10db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+--- !u!114 &1163389491736964277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4610248557676912175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfadbb25e4ef724479615f011498d3cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tileText: {fileID: 8686686540949471771}
   backgroundText: {fileID: 8709540908940644691}
   tileCollider: {fileID: -4246324072427026848}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  tileSwipe: {fileID: 7478645234131672006}
   tileBackgroundGradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 0.58198243, g: 1, b: 0.3254717, a: 1}
-    key2: {r: 0.96976846, g: 1, b: 0.33490568, a: 0}
-    key3: {r: 1, g: 0.5507574, b: 0.023584902, a: 0}
-    key4: {r: 1, g: 0.27951545, b: 0.042452812, a: 0}
-    key5: {r: 0.47358936, g: 0.026432883, b: 0.6226415, a: 0}
+    key1: {r: 0.5803922, g: 1, b: 0.3254902, a: 1}
+    key2: {r: 0.96862745, g: 1, b: 0.33333334, a: 0}
+    key3: {r: 1, g: 0.54901963, b: 0.023529412, a: 0}
+    key4: {r: 1, g: 0.2784314, b: 0.043137256, a: 0}
+    key5: {r: 0.4745098, g: 0.02745098, b: 0.62352943, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 3277
-    ctime1: 13685
-    ctime2: 22745
+    ctime1: 13697
+    ctime2: 22741
     ctime3: 36044
-    ctime4: 46838
-    ctime5: 57054
+    ctime4: 46858
+    ctime5: 57081
     ctime6: 65535
-    ctime7: 65535
+    ctime7: 0
     atime0: 0
     atime1: 65535
     atime2: 0
@@ -154,7 +169,7 @@ MonoBehaviour:
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 55512
+    ctime0: 55508
     ctime1: 65535
     ctime2: 0
     ctime3: 0

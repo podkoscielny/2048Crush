@@ -8,7 +8,6 @@ using Tags = TagSystem.Tags;
 public class Board : MonoBehaviour
 {
     public static event Action OnAssignPointsWorthToCells;
-    public static event Action OnTileSequenceEnded;
     public static event Action OnGameOver;
 
     [SerializeField] Camera mainCamera;
@@ -18,13 +17,13 @@ public class Board : MonoBehaviour
     [SerializeField] ObjectPool objectPool;
     [SerializeField] Score score;
 
-    public static bool CanTilesBeClicked { get; private set; }
+    public static bool CanTilesBeClicked { get; private set; } = true;
 
     private Sequence _tileMoveSequence;
     private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
 
-    private void OnEnable() => Tile.OnTilesMatch += MatchTiles;
-    private void OnDisable() => Tile.OnTilesMatch -= MatchTiles;
+    private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
+    private void OnDisable() => TileSwipe.OnTilesMatch -= MatchTiles;
 
     private void Awake()
     {
@@ -34,19 +33,6 @@ public class Board : MonoBehaviour
     }
 
     private void Start() => InitializeTiles();
-
-    void OnDrawGizmos()
-    {
-        if (gridSystem.GridCells == null) return;
-
-        for (int i = 0; i < gridSystem.GridCells.GetLength(0); i++)
-        {
-            for (int j = 0; j < gridSystem.GridCells.GetLength(1); j++)
-            {
-                Gizmos.DrawWireCube(gridSystem.GridCells[i, j], gridSystem.CubeSize);
-            }
-        }
-    }
 
     private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated)
     {
@@ -117,19 +103,13 @@ public class Board : MonoBehaviour
 
                 if (canBeMargedInColumn || canBeMargedInRow)
                 {
-                    EndSequence();
+                    CanTilesBeClicked = true;
                     return;
                 }
             }
         }
 
         EndGame();
-    }
-
-    private void EndSequence()
-    {
-        CanTilesBeClicked = true;
-        OnTileSequenceEnded?.Invoke();
     }
 
     private void EndGame()
