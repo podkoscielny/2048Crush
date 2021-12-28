@@ -190,5 +190,25 @@ public class Tile : MonoBehaviour
         _pointsWorth = pointsToSet;
         tileText.text = pointsToSet.ToString();
     }
+
+    bool IsPowerOfTwo(int x)
+    {
+        return (x != 0) && ((x & (x - 1)) == 0);
+    }
+
+    public void RandomizeTilePoints()
+    {
+        int randomPoints;
+
+        do
+        {
+            randomPoints = Random.Range(2, 512);
+
+        } while (!IsPowerOfTwo(randomPoints));
+
+        _pointsWorth = randomPoints;
+        SetBackgroundColor();
+        UpdateTileText();
+    }
 #endif
 }

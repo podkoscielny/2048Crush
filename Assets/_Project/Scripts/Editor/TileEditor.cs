@@ -20,11 +20,35 @@ public class TileEditor : Editor
     {
         Tile tile = (Tile)target;
 
+        SetTilePoints(tile);
+        RandomizeAllTilePoints();
+    }
+
+    private void SetTilePoints(Tile tile)
+    {
         GUILayout.BeginHorizontal();
 
         pointsToSet = EditorGUILayout.DelayedIntField("Points To Set", pointsToSet);
 
         if (GUILayout.Button("Set Points")) tile.ChangeTilePointsWorth(pointsToSet);
+
+        GUILayout.EndHorizontal();
+    }
+
+    private void RandomizeAllTilePoints()
+    {
+        GUILayout.BeginHorizontal();
+
+
+        if (GUILayout.Button("Randomize Points"))
+        {
+            Tile[] tiles = FindObjectsOfType<Tile>();
+
+            foreach (Tile tile in tiles)
+            {
+                tile.RandomizeTilePoints();
+            }
+        }
 
         GUILayout.EndHorizontal();
     }
