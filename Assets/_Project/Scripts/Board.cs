@@ -18,6 +18,8 @@ public class Board : MonoBehaviour
     [SerializeField] ObjectPool objectPool;
     [SerializeField] Score score;
 
+    public static bool CanTilesBeClicked { get; private set; }
+
     private Sequence _tileMoveSequence;
     private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
 
@@ -48,13 +50,14 @@ public class Board : MonoBehaviour
 
     private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated)
     {
+        CanTilesBeClicked = false;
+
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdated.position, 0.1f));
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdated.position, 0.15f).SetEase(Ease.InBack));
         _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
         _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
         _tileMoveSequence.AppendCallback(() => UpdateScore(tileToBeDestroyed.PointsWorth * 2));
-        _tileMoveSequence.AppendCallback(() => OnTileSequenceEnded?.Invoke());
         _tileMoveSequence.AppendCallback(CheckPossibleMoves);
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
@@ -112,10 +115,26 @@ public class Board : MonoBehaviour
                 bool canBeMargedInColumn = i < rows - 1 && gridSystem.PointsWorthAtGridCells[i + 1, j] == pointsWorthAtCell;
                 bool canBeMargedInRow = j < columns - 1 && gridSystem.PointsWorthAtGridCells[i, j + 1] == pointsWorthAtCell;
 
-                if (canBeMargedInColumn || canBeMargedInRow) return;
+                if (canBeMargedInColumn || canBeMargedInRow)
+                {
+                    EndSequence();
+                    return;
+                }
             }
         }
 
+        EndGame();
+    }
+
+    private void EndSequence()
+    {
+        CanTilesBeClicked = true;
+        OnTileSequenceEnded?.Invoke();
+    }
+
+    private void EndGame()
+    {
+        CanTilesBeClicked = false;
         OnGameOver?.Invoke();
     }
 

@@ -88,7 +88,7 @@ public class Tile : MonoBehaviour
 
         Vector3 direction = tileToBeSwipedIntoTransform.position - selectedTileTransform.position;
         Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
-        
+
         selectedTileTransform.DORotateQuaternion(rotation, 0.1f)
             .OnComplete(() => selectedTileTransform.DORotate(Vector3.zero, 0.1f).SetDelay(0.1f));
 
@@ -191,11 +191,6 @@ public class Tile : MonoBehaviour
         tileText.text = pointsToSet.ToString();
     }
 
-    bool IsPowerOfTwo(int x)
-    {
-        return (x != 0) && ((x & (x - 1)) == 0);
-    }
-
     public void RandomizeTilePoints()
     {
         int randomPoints;
@@ -210,5 +205,7 @@ public class Tile : MonoBehaviour
         SetBackgroundColor();
         UpdateTileText();
     }
+
+    private bool IsPowerOfTwo(int x) => (x != 0) && ((x & (x - 1)) == 0);
 #endif
 }

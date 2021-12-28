@@ -56,6 +56,8 @@ public class Score : ScriptableObject
         OnScoreUpdated.Invoke();
     }
 
+    private void ResetScore() => value = 0;
+
 #if UNITY_EDITOR
     private void ResetValuesOnEditorQuit(PlayModeStateChange changedState)
     {
@@ -65,6 +67,4 @@ public class Score : ScriptableObject
         }
     }
 #endif
-
-    private void ResetScore() => value = 0;
 }
