@@ -7,36 +7,16 @@ using Random = UnityEngine.Random;
 
 public class TileSwipe : MonoBehaviour
 {
-    public event Action OnPointsUpdated;
     public static event Action<SelectedTile, Transform> OnTilesMatch;
 
     [SerializeField] GridSystem gridSystem;
-
-    public int PointsWorth
-    {
-        get => _pointsWorth;
-
-        private set
-        {
-            _pointsWorth = value;
-            OnPointsUpdated?.Invoke();
-        }
-    }
+    [SerializeField] TilePoints tilePoints;
 
     private static bool _isPointerDown = false;
     private static SelectedTile _selectedTile;
     private static SelectedTile _tileToBeSwipedInto;
 
-    private int _pointsWorth = 2;
     private SelectedTile _emptyTileSelection = new SelectedTile();
-
-    private void OnEnable()
-    {
-        Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
-        InitializePoints();
-    }
-
-    private void OnDisable() => Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
 
     private void OnMouseDown()
     {
@@ -45,7 +25,7 @@ public class TileSwipe : MonoBehaviour
         _isPointerDown = true;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        _selectedTile = new SelectedTile(gameObject, PointsWorth, tileCell);
+        _selectedTile = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
     }
 
     private void OnMouseUp() => _isPointerDown = false;
@@ -55,7 +35,7 @@ public class TileSwipe : MonoBehaviour
         if (!CanTileBeSwiped()) return;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        _tileToBeSwipedInto = new SelectedTile(gameObject, PointsWorth, tileCell);
+        _tileToBeSwipedInto = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
 
         bool areTilesClose = gridSystem.AreTilesClose(_selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
         bool areTilesWorthSame = _selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
@@ -74,7 +54,7 @@ public class TileSwipe : MonoBehaviour
         yield return new WaitUntil(() => Board.CanTilesBeClicked);
 
         ClearSelectedTiles();
-        PointsWorth *= 2;
+        tilePoints.UpdatePoints(2);
     }
 
     private bool CanTileBeSwiped() => _isPointerDown && _selectedTile.TileObject != null && _selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;
@@ -102,31 +82,6 @@ public class TileSwipe : MonoBehaviour
     {
         selectedTileTransform.DORotateQuaternion(rotation, 0.1f)
             .OnComplete(() => selectedTileTransform.DORotate(Vector3.zero, 0.1f).SetDelay(0.1f));
-    }
-
-    private void AssignPointsWorthToCell()
-    {
-        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        gridSystem.AssignPointsWorthToCell(PointsWorth, tileCell);
-    }
-
-    private void InitializePoints() => PointsWorth = GetRandomPointsWorth();
-
-    private int GetRandomPointsWorth()
-    {
-        TileProbabilityPair[] tileTypes = gridSystem.GridSize.TileTypes;
-        float probabilitySum = gridSystem.GridSize.ProbabilitySum;
-        float randomProbability = Random.Range(0, probabilitySum);
-        float subtractFromSum = 0;
-
-        for (int i = 0; i < tileTypes.Length; i++)
-        {
-            if (randomProbability - subtractFromSum <= tileTypes[i].probability) return tileTypes[i].pointsWorth;
-
-            subtractFromSum -= tileTypes[i].probability;
-        }
-
-        return tileTypes[tileTypes.Length - 1].pointsWorth;
     }
 
     private void ClearSelectedTiles() => _selectedTile = _tileToBeSwipedInto = _emptyTileSelection;

@@ -10,7 +10,7 @@ public class TileAppearance : MonoBehaviour
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] Renderer tileRenderer;
     [SerializeField] GridSystem gridSystem;
-    [SerializeField] TileSwipe tileSwipe;
+    [SerializeField] TilePoints tilePoints;
     [SerializeField] Gradient tileBackgroundGradient;
     [SerializeField] Gradient tileTextGradient;
 
@@ -21,11 +21,11 @@ public class TileAppearance : MonoBehaviour
 
     private void OnEnable()
     {
-        tileSwipe.OnPointsUpdated += UpdateTile;
+        tilePoints.OnPointsUpdated += UpdateTile;
         InitializeTileType();
     }
 
-    private void OnDisable() => tileSwipe.OnPointsUpdated -= UpdateTile;
+    private void OnDisable() => tilePoints.OnPointsUpdated -= UpdateTile;
 
     private void Awake() => InitializeTileSize();
 
@@ -43,7 +43,7 @@ public class TileAppearance : MonoBehaviour
         SetTileColor();
     }
 
-    private void UpdateTileText() => tileText.text = tileSwipe.PointsWorth.ToString();
+    private void UpdateTileText() => tileText.text = tilePoints.PointsWorth.ToString();
 
     private void SetTileColor()
     {
@@ -58,7 +58,7 @@ public class TileAppearance : MonoBehaviour
 
     private int PointsAsTwoToThePower()
     {
-        int pointsAsTwoToThePower = tileSwipe.PointsWorth;
+        int pointsAsTwoToThePower = tilePoints.PointsWorth;
         int powers = 0;
 
         do

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4610248557676912168}
   - component: {fileID: 4610248557676912169}
   - component: {fileID: -4246324072427026848}
+  - component: {fileID: 3994539253609184669}
   - component: {fileID: 7478645234131672006}
   - component: {fileID: 1163389491736964277}
   - component: {fileID: 2200593051386032726}
@@ -100,6 +101,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3994539253609184669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4610248557676912175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44b270a376ce884c986a6ad4453e8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
 --- !u!114 &7478645234131672006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  tilePoints: {fileID: 3994539253609184669}
 --- !u!114 &1163389491736964277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +145,7 @@ MonoBehaviour:
   tileCollider: {fileID: -4246324072427026848}
   tileRenderer: {fileID: 4610248557676912169}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
-  tileSwipe: {fileID: 7478645234131672006}
+  tilePoints: {fileID: 3994539253609184669}
   tileBackgroundGradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
