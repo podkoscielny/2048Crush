@@ -8,6 +8,7 @@ public class TileAppearance : MonoBehaviour
     [SerializeField] TextMeshPro tileText;
     [SerializeField] TextMeshPro backgroundText;
     [SerializeField] BoxCollider tileCollider;
+    [SerializeField] Renderer tileRenderer;
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TileSwipe tileSwipe;
     [SerializeField] Gradient tileBackgroundGradient;
@@ -31,7 +32,7 @@ public class TileAppearance : MonoBehaviour
     private void UpdateTile()
     {
         UpdateTileText();
-        SetBackgroundColor();
+        SetTileColor();
     }
 
     private void InitializeTileType()
@@ -39,17 +40,19 @@ public class TileAppearance : MonoBehaviour
         transform.rotation = _initialRotation;
 
         UpdateTileText();
-        SetBackgroundColor();
+        SetTileColor();
     }
 
     private void UpdateTileText() => tileText.text = tileSwipe.PointsWorth.ToString();
 
-    private void SetBackgroundColor()
+    private void SetTileColor()
     {
         int pointsAsTwoToThePower = PointsAsTwoToThePower();
-
         float colorGradientPercentage = Mathf.Min((float)pointsAsTwoToThePower / (float)MAXED_COLOR_AT_TWO_TO_THE_POWER, 1);
-        backgroundText.color = tileBackgroundGradient.Evaluate(colorGradientPercentage);
+        Color backgroundColor = tileBackgroundGradient.Evaluate(colorGradientPercentage);
+
+        backgroundText.color = backgroundColor;
+        tileRenderer.material.color = backgroundColor;
         tileText.color = tileTextGradient.Evaluate(colorGradientPercentage);
     }
 

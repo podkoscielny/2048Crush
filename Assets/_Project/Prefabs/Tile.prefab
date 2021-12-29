@@ -128,6 +128,7 @@ MonoBehaviour:
   tileText: {fileID: 8686686540949471771}
   backgroundText: {fileID: 8709540908940644691}
   tileCollider: {fileID: -4246324072427026848}
+  tileRenderer: {fileID: 4610248557676912169}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tileSwipe: {fileID: 7478645234131672006}
   tileBackgroundGradient:
@@ -326,8 +327,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21
-  m_fontSizeBase: 21
+  m_fontSize: 20.69
+  m_fontSizeBase: 20.69
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
