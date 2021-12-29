@@ -56,7 +56,7 @@ public class Board : MonoBehaviour
     {
         Vector2Int firstCellInColumn = new Vector2Int(0, disabledTileGridCell.y);
         Vector3 firstGridCellPosition = gridSystem.GridCells[0, disabledTileGridCell.y];
-        Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.15f), tilePrefab.transform.position.z);
+        Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f), tilePrefab.transform.position.z);
 
         GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
         spawnedTile.transform.position = spawnPosition;
