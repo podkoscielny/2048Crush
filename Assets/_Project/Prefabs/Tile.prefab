@@ -177,7 +177,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   tileTextGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 1}
+    key0: {r: 0.20784314, g: 0.17254902, b: 0.03529412, a: 1}
     key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -494,8 +494,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4278791221
+  m_fontColor: {r: 0.20784314, g: 0.17254902, b: 0.03529412, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
