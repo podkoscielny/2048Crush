@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class TileSwipe : MonoBehaviour
 {
-    public static event Action<SelectedTile, Transform> OnTilesMatch;
+    public static event Action<SelectedTile, Transform, TilePoints> OnTilesMatch;
 
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TilePoints tilePoints;
@@ -21,6 +21,7 @@ public class TileSwipe : MonoBehaviour
     {
         if (!Board.CanTilesBeClicked) return;
 
+        ClearSelectedTiles();
         _isPointerDown = true;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
@@ -41,19 +42,10 @@ public class TileSwipe : MonoBehaviour
 
         if (areTilesClose && areTilesWorthSame)
         {
-            OnTilesMatch?.Invoke(_selectedTile, transform);
-            StartCoroutine(UpdateTile());
+            OnTilesMatch?.Invoke(_selectedTile, transform, tilePoints);
         }
         else
             SetNotMatchedTilesProperties();
-    }
-
-    private IEnumerator UpdateTile()
-    {
-        yield return new WaitUntil(() => Board.CanTilesBeClicked);
-
-        ClearSelectedTiles();
-        tilePoints.UpdatePoints(2);
     }
 
     private bool CanTileBeSwiped() => _isPointerDown && _selectedTile.TileObject != null && _selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;

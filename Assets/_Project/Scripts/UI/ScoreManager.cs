@@ -14,6 +14,8 @@ public class ScoreManager : MonoBehaviour
 
     private void OnDisable() => Score.OnScoreUpdated -= UpdateScoreText;
 
+    private void Start() => InitializeScores();
+
     private void UpdateScoreText()
     {
         currentScoreText.text = score.Value.ToString();
@@ -23,5 +25,11 @@ public class ScoreManager : MonoBehaviour
             highscore.SetValue(score.Value);
             highscoreText.text = highscore.Value.ToString();
         }
+    }
+
+    private void InitializeScores()
+    {
+        currentScoreText.text = score.Value.ToString();
+        highscoreText.text = highscore.Value.ToString();
     }
 }

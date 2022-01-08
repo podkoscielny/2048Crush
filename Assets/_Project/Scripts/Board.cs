@@ -34,7 +34,7 @@ public class Board : MonoBehaviour
 
     private void Start() => InitializeTiles();
 
-    private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated)
+    private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated, TilePoints updatedTilePoints)
     {
         CanTilesBeClicked = false;
 
@@ -42,13 +42,17 @@ public class Board : MonoBehaviour
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdated.position, 0.1f));
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdated.position, 0.15f).SetEase(Ease.InBack));
         _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
+        _tileMoveSequence.AppendCallback(() => UpdateScore(2, updatedTilePoints));
         _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
-        _tileMoveSequence.AppendCallback(() => UpdateScore(tileToBeDestroyed.PointsWorth * 2));
         _tileMoveSequence.AppendCallback(CheckPossibleMoves);
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
 
-    private void UpdateScore(int pointsToAdd) => score.AddPoints(pointsToAdd);
+    private void UpdateScore(int pointsMultiplier, TilePoints tilePoints)
+    {
+        tilePoints.UpdatePoints(pointsMultiplier);
+        score.AddPoints(tilePoints.PointsWorth);
+    }
 
     private void MoveTileToPool(GameObject tileToBeDisabled) => objectPool.AddToPool(Tags.Tile, tileToBeDisabled);
 
