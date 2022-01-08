@@ -24,14 +24,25 @@ public class TilePoints : MonoBehaviour
     private void OnEnable()
     {
         Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
+        Board.OnTilesReverse += ReversePoints;
         InitializePoints();
     }
 
-    private void OnDisable() => Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
+    private void OnDisable()
+    {
+        Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
+        Board.OnTilesReverse -= ReversePoints;
+    }
 
     public void UpdatePoints(int multiplier) => PointsWorth *= multiplier;
 
     private void InitializePoints() => PointsWorth = GetRandomPointsWorth();
+
+    private void ReversePoints()
+    {
+        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+        PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
+    }
 
     private int GetRandomPointsWorth()
     {

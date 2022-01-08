@@ -8,6 +8,7 @@ using Tags = TagSystem.Tags;
 public class Board : MonoBehaviour
 {
     public static event Action OnAssignPointsWorthToCells;
+    public static event Action OnTilesReverse;
     public static event Action OnGameOver;
 
     [SerializeField] Camera mainCamera;
@@ -34,9 +35,18 @@ public class Board : MonoBehaviour
 
     private void Start() => InitializeTiles();
 
+    public void ReverseMove()
+    {
+        if (!CanTilesBeClicked || gridSystem.CachedPointsWorthAtCells == null) return;
+
+        OnTilesReverse?.Invoke();
+    }
+
     private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated, TilePoints updatedTilePoints)
     {
         CanTilesBeClicked = false;
+        OnAssignPointsWorthToCells?.Invoke();
+        gridSystem.CachePreviousPoints();
 
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
         _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdated.position, 0.1f));

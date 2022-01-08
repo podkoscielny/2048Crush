@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,11 +16,13 @@ public class GridSystem : ScriptableObject
     public Vector3 CubeSize => _cubeSize;
     public GameObject[,] TilesAtGridCells => _tilesAtGridCells;
     public int[,] PointsWorthAtGridCells => _pointsWorthAtGridCells;
+    public int[,] CachedPointsWorthAtCells => _cachedPointsWorthAtCells;
 
     private float _cellWidth;
     private float _cellHeight;
     private Vector3[,] _gridCells;
     private int[,] _pointsWorthAtGridCells;
+    private int[,] _cachedPointsWorthAtCells;
     private GameObject[,] _tilesAtGridCells;
     private Vector3 _cubeSize = new Vector3(0, 0, 0);
 
@@ -62,6 +63,24 @@ public class GridSystem : ScriptableObject
         }
 
         return areTilesClose;
+    }
+
+    public void CachePreviousPoints()
+    {
+        //Array.Copy(_pointsWorthAtGridCells, _cachedPointsWorthAtCells, _pointsWorthAtGridCells.Length);
+
+        int rows = gridSize.Rows;
+        int columns = gridSize.Columns;
+
+        _cachedPointsWorthAtCells = new int[rows, columns];
+
+        for (int i = 0; i < gridSize.Rows; i++)
+        {
+            for (int j = 0; j < gridSize.Columns; j++)
+            {
+                _cachedPointsWorthAtCells[i, j] = _pointsWorthAtGridCells[i, j];
+            }
+        }
     }
 
     public void InitializeGrid(MeshRenderer gridRenderer)
