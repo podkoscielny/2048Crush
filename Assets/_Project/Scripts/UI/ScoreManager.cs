@@ -10,15 +10,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] Score score;
     [SerializeField] Highscore highscore;
 
-    private void OnEnable()
-    {
-        Score.OnScoreUpdated += UpdateScoreText;
-    }
+    private void OnEnable() => Score.OnScoreUpdated += UpdateScoreText;
 
-    private void OnDisable()
-    {
-        Score.OnScoreUpdated -= UpdateScoreText;
-    }
+    private void OnDisable() => Score.OnScoreUpdated -= UpdateScoreText;
 
     private void UpdateScoreText()
     {

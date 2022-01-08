@@ -53,7 +53,7 @@ public class Score : ScriptableObject
     public void AddPoints(int pointsToAdd)
     {
         value += pointsToAdd;
-        OnScoreUpdated.Invoke();
+        OnScoreUpdated?.Invoke();
     }
 
     private void ResetScore() => value = 0;
