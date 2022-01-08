@@ -9,22 +9,14 @@ public class GridSystem : ScriptableObject
 {
     [SerializeField] GridSize gridSize;
 
-    public float CellWidth => _cellWidth;
-    public float CellHeight => _cellHeight;
     public GridSize GridSize => gridSize;
-    public Vector3[,] GridCells => _gridCells;
-    public Vector3 CubeSize => _cubeSize;
-    public GameObject[,] TilesAtGridCells => _tilesAtGridCells;
-    public int[,] PointsWorthAtGridCells => _pointsWorthAtGridCells;
-    public int[,] CachedPointsWorthAtCells => _cachedPointsWorthAtCells;
-
-    private float _cellWidth;
-    private float _cellHeight;
-    private Vector3[,] _gridCells;
-    private int[,] _pointsWorthAtGridCells;
-    private int[,] _cachedPointsWorthAtCells;
-    private GameObject[,] _tilesAtGridCells;
-    private Vector3 _cubeSize = new Vector3(0, 0, 0);
+    public float CellWidth { get; private set; }
+    public float CellHeight { get; private set; }
+    public Vector3[,] GridCells { get; private set; }
+    public GameObject[,] TilesAtGridCells { get; private set; }
+    public int[,] PointsWorthAtGridCells { get; private set; }
+    public int[,] CachedPointsWorthAtCells { get; private set; }
+    public Vector3 CubeSize { get; private set; } = new Vector3(0, 0, 0);
 
     private void OnEnable() => EditorApplication.playModeStateChanged += ResetDataOnPlayModeExit;
 
@@ -32,9 +24,9 @@ public class GridSystem : ScriptableObject
 
     public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
 
-    public void AssignTileToCell(GameObject tile, Vector2Int cell) => _tilesAtGridCells[cell.x, cell.y] = tile;
+    public void AssignTileToCell(GameObject tile, Vector2Int cell) => TilesAtGridCells[cell.x, cell.y] = tile;
 
-    public void AssignPointsWorthToCell(int pointsWorth, Vector2Int cell) => _pointsWorthAtGridCells[cell.x, cell.y] = pointsWorth;
+    public void AssignPointsWorthToCell(int pointsWorth, Vector2Int cell) => PointsWorthAtGridCells[cell.x, cell.y] = pointsWorth;
 
     public Vector2Int GetTileGridCell(GameObject tileObject)
     {
@@ -42,7 +34,7 @@ public class GridSystem : ScriptableObject
         {
             for (int j = 0; j < gridSize.Columns; j++)
             {
-                if (_tilesAtGridCells[i, j] == tileObject) return new Vector2Int(i, j);
+                if (TilesAtGridCells[i, j] == tileObject) return new Vector2Int(i, j);
             }
         }
 
@@ -67,20 +59,9 @@ public class GridSystem : ScriptableObject
 
     public void CachePreviousPoints()
     {
-        //Array.Copy(_pointsWorthAtGridCells, _cachedPointsWorthAtCells, _pointsWorthAtGridCells.Length);
+        CachedPointsWorthAtCells = new int[gridSize.Rows, gridSize.Columns];
 
-        int rows = gridSize.Rows;
-        int columns = gridSize.Columns;
-
-        _cachedPointsWorthAtCells = new int[rows, columns];
-
-        for (int i = 0; i < gridSize.Rows; i++)
-        {
-            for (int j = 0; j < gridSize.Columns; j++)
-            {
-                _cachedPointsWorthAtCells[i, j] = _pointsWorthAtGridCells[i, j];
-            }
-        }
+        Array.Copy(PointsWorthAtGridCells, CachedPointsWorthAtCells, PointsWorthAtGridCells.Length);
     }
 
     public void InitializeGrid(MeshRenderer gridRenderer)
@@ -88,32 +69,29 @@ public class GridSystem : ScriptableObject
         int rows = gridSize.Rows;
         int columns = gridSize.Columns;
 
-        _gridCells = new Vector3[rows, columns];
-        _tilesAtGridCells = new GameObject[rows, columns];
-        _pointsWorthAtGridCells = new int[rows, columns];
+        GridCells = new Vector3[rows, columns];
+        TilesAtGridCells = new GameObject[rows, columns];
+        PointsWorthAtGridCells = new int[rows, columns];
 
         float gridOffset = gridRenderer.bounds.size.x * 0.05f;
         float gridWidth = gridRenderer.bounds.size.x - gridOffset;
         float gridHeight = gridRenderer.bounds.size.y - gridOffset;
         Vector3 gridCenter = gridRenderer.bounds.center;
 
-        float cellWidth = gridWidth / rows;
-        float cellHeight = gridHeight / columns;
+        CellWidth = gridWidth / rows;
+        CellHeight = gridHeight / columns;
 
-        _cellWidth = cellWidth;
-        _cellHeight = cellHeight;
-
-        _cubeSize = new Vector3(cellWidth, cellHeight, 0.1f);
+        CubeSize = new Vector3(CellWidth, CellHeight, 0.1f);
 
         for (int i = 0; i < rows; i++)
         {
-            float yPosition = gridCenter.y + (gridHeight / 2) - (cellHeight / 2) - (i * cellHeight);
+            float yPosition = gridCenter.y + (gridHeight / 2) - (CellHeight / 2) - (i * CellHeight);
 
             for (int j = 0; j < columns; j++)
             {
-                float xPosition = gridCenter.x - (gridWidth / 2) + (cellWidth / 2) + (j * cellWidth);
+                float xPosition = gridCenter.x - (gridWidth / 2) + (CellWidth / 2) + (j * CellWidth);
 
-                _gridCells[i, j] = new Vector3(xPosition, yPosition, gridCenter.z);
+                GridCells[i, j] = new Vector3(xPosition, yPosition, gridCenter.z);
             }
         }
     }
