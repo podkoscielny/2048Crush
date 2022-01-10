@@ -11,9 +11,10 @@ public class TileSwipe : MonoBehaviour
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TilePoints tilePoints;
 
-    private static bool _isPointerDown = false;
-    private static SelectedTile _selectedTile;
+    public static SelectedTile _selectedTile { get; private set; }
+
     private static SelectedTile _tileToBeSwipedInto;
+    private static bool _isPointerDown = false;
 
     private SelectedTile _emptyTileSelection = new SelectedTile();
 
