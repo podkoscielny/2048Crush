@@ -17,4 +17,4 @@ MonoBehaviour:
   meshOffset: {x: 0, y: 0, z: 0}
   meshRotation: {x: 0, y: 0, z: 0}
   specialTileMaterial: {fileID: 2100000, guid: 1bfa79449576255428611bda6d4f62ea, type: 2}
-  specialBehaviours: 2
+  behaviourEnum: 2

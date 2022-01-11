@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows: 6
   columns: 6
+  specialTileProbabilitySpawn: 0.2
   tileTypes:
   - pointsWorth: 8
     probability: 0.02
@@ -21,3 +22,10 @@ MonoBehaviour:
     probability: 0.1
   - pointsWorth: 2
     probability: 0.8
+  specialTiles:
+  - specialTile: {fileID: 11400000, guid: be5b0aa8b96746441b1a473a9426b5af, type: 2}
+    probability: 0.01
+  - specialTile: {fileID: 11400000, guid: d7ccda3d49706ec47966b61c3c8c04b2, type: 2}
+    probability: 0.007
+  - specialTile: {fileID: 11400000, guid: 7a385360683ca2c4db974b60264592c8, type: 2}
+    probability: 0.001

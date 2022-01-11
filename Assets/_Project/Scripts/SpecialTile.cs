@@ -7,7 +7,11 @@ public class SpecialTile : MonoBehaviour
     [SerializeField] MeshFilter meshFilter;
     [SerializeField] MeshRenderer meshRenderer;
     [SerializeField] GameObject graphics;
-    [SerializeField] SpecialTileSO[] specialTiles;
+    [SerializeField] GridSystem gridSystem;
+
+    private SpecialTilePropability[] specialTiles;
+
+    private void Awake() => CacheSpecialTiles();
 
     private void OnEnable()
     {
@@ -19,12 +23,14 @@ public class SpecialTile : MonoBehaviour
         if (AreSpecialTilesDisabled()) return;
     }
 
+    private void CacheSpecialTiles() => specialTiles = gridSystem.GridSize.SpecialTiles;
+
     private bool AreSpecialTilesDisabled() => TileSwipe._selectedTile.TileObject == null && !Board.CanTilesBeClicked;
 
     private void ChangeTileProperties()
     {
         int randomIndex = Random.Range(0, specialTiles.Length);
-        SpecialTileSO currentSpecialTile = specialTiles[randomIndex];
+        SpecialTileSO currentSpecialTile = specialTiles[randomIndex].specialTile;
 
         meshFilter.mesh = currentSpecialTile.SpecialTileMesh;
         meshRenderer.material = currentSpecialTile.SpecialTileMaterial;

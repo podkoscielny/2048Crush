@@ -61,6 +61,7 @@ MonoBehaviour:
   meshFilter: {fileID: 7514766746144611575}
   meshRenderer: {fileID: 7514766746144611574}
   graphics: {fileID: 7514766746144611572}
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   specialTiles:
   - {fileID: 11400000, guid: be5b0aa8b96746441b1a473a9426b5af, type: 2}
   - {fileID: 11400000, guid: 7a385360683ca2c4db974b60264592c8, type: 2}
