@@ -10,7 +10,8 @@ public static class TagSystem
     public enum Tags
     {
         None = 0,
-        Tile = 1
+        Tile = 1,
+        SpecialTile = 2
     }
 
     private static Dictionary<Tags, List<GameObject>> TaggedObjects = new Dictionary<Tags, List<GameObject>>();

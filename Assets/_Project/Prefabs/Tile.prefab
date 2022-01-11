@@ -128,7 +128,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tilePoints: {fileID: 3994539253609184669}
-  score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
 --- !u!114 &1163389491736964277
 MonoBehaviour:
   m_ObjectHideFlags: 0
