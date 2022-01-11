@@ -11,9 +11,9 @@ public class SpecialTileSO : ScriptableObject
     [SerializeField] Vector3 meshOffset;
     [SerializeField] Vector3 meshRotation;
     [SerializeField] Material specialTileMaterial;
-    [SerializeField] SpecialBehaviours specialBehaviours;
+    [SerializeField] SpecialBehaviours behaviourEnum;
 
-    public List<SpecialTileBehaviour> SpecialTileBehaviours { get; private set; }
+    public SpecialTileBehaviour SpecialTileBehaviour { get; private set; }
     public Mesh SpecialTileMesh => specialTileMesh;
     public Vector3 SpecialTileScale => specialTileScale;
     public Vector3 MeshOffset => meshOffset;
@@ -27,12 +27,16 @@ public class SpecialTileSO : ScriptableObject
     {
         InitializeBehaviours();
 
-        SpecialTileBehaviours = new List<SpecialTileBehaviour>();
-
         foreach (Behaviour behaviour in behaviours)
         {
-            if (specialBehaviours.HasFlag(behaviour.BehaviourEnum)) SpecialTileBehaviours.Add(behaviour.SpecialBehaviour);
+            if (behaviourEnum == behaviour.BehaviourEnum)
+            {
+                SpecialTileBehaviour = behaviour.SpecialBehaviour;
+                break;
+            }
         }
+
+        SpecialTileBehaviour();
     }
 
     private void MultiplyAnyTile()
@@ -62,12 +66,11 @@ public class SpecialTileSO : ScriptableObject
 
 public delegate void SpecialTileBehaviour();
 
-[Flags]
 public enum SpecialBehaviours
 {
-    MultiplyAnyTile = 1 << 0,
-    MatchAnyTile = 1 << 1,
-    BombNearbyTiles = 1 << 2
+    MultiplyAnyTile,
+    MatchAnyTile,
+    BombNearbyTiles
 }
 
 public struct Behaviour
