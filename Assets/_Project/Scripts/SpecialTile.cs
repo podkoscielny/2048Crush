@@ -9,14 +9,9 @@ public class SpecialTile : MonoBehaviour
     [SerializeField] GameObject graphics;
     [SerializeField] SpecialTileSO[] specialTiles;
 
-    private int _currentIndex = 0;
-
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ChangeTileProperties();
-        }
+        ChangeTileProperties();
     }
 
     private void OnMouseOver()
@@ -28,9 +23,8 @@ public class SpecialTile : MonoBehaviour
 
     private void ChangeTileProperties()
     {
-        _currentIndex = _currentIndex + 1 >= specialTiles.Length ? 0 : _currentIndex + 1;
-
-        SpecialTileSO currentSpecialTile = specialTiles[_currentIndex];
+        int randomIndex = Random.Range(0, specialTiles.Length);
+        SpecialTileSO currentSpecialTile = specialTiles[randomIndex];
 
         meshFilter.mesh = currentSpecialTile.SpecialTileMesh;
         meshRenderer.material = currentSpecialTile.SpecialTileMaterial;
