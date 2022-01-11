@@ -8,6 +8,7 @@ using Tags = TagSystem.Tags;
 public class Board : MonoBehaviour
 {
     public static event Action OnAssignPointsWorthToCells;
+    public static event Action OnTileMatchEnded;
     public static event Action OnTilesReverse;
     public static event Action OnGameOver;
 
@@ -23,8 +24,16 @@ public class Board : MonoBehaviour
     private Sequence _tileMoveSequence;
     private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
 
-    private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
-    private void OnDisable() => TileSwipe.OnTilesMatch -= MatchTiles;
+    private void OnEnable()
+    {
+        TileSwipe.OnTilesMatch += MatchTiles;
+        SpecialTile.OnSpecialTileUsed += MatchWithSpecialTile;
+    }
+    private void OnDisable()
+    {
+        TileSwipe.OnTilesMatch -= MatchTiles;
+        SpecialTile.OnSpecialTileUsed -= MatchWithSpecialTile;
+    }
 
     private void Awake()
     {
@@ -55,7 +64,18 @@ public class Board : MonoBehaviour
         _tileMoveSequence.AppendCallback(() => UpdateScore(2, updatedTilePoints));
         _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
         _tileMoveSequence.AppendCallback(CheckPossibleMoves);
+        _tileMoveSequence.AppendCallback(() => OnTileMatchEnded?.Invoke());
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
+    }
+
+    private void MatchWithSpecialTile(SelectedTile selectedTile, SpecialTileBehaviour tileBehaviour, Transform specialTileTransform)
+    {
+        _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
+        _tileMoveSequence.Append(selectedTile.TileObject.transform.DODynamicLookAt(specialTileTransform.position, 0.1f));
+        _tileMoveSequence.Append(selectedTile.TileObject.transform.DOMove(specialTileTransform.position, 0.15f).SetEase(Ease.InBack));
+        _tileMoveSequence.AppendCallback(() => tileBehaviour(selectedTile, specialTileTransform));
+        _tileMoveSequence.AppendCallback(() => SpawnMissingTile(selectedTile.TileCell));
+        _tileMoveSequence.AppendCallback(CheckPossibleMoves);
     }
 
     private void UpdateScore(int pointsMultiplier, TilePoints tilePoints)

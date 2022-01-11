@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [CreateAssetMenu(fileName = "SpecialTileSO", menuName = "ScriptableObjects/SpecialTileSO")]
 public class SpecialTileSO : ScriptableObject
@@ -19,14 +20,15 @@ public class SpecialTileSO : ScriptableObject
     public Vector3 MeshRotation => meshRotation;
     public Material SpecialTileMaterial => specialTileMaterial;
 
-    private Behaviour[] behaviours;
+    private Behaviour[] _behaviours;
+    private Sequence _tileMoveSequence;
 
 
     private void OnValidate()
     {
         InitializeBehaviours();
 
-        foreach (Behaviour behaviour in behaviours)
+        foreach (Behaviour behaviour in _behaviours)
         {
             if (behaviourEnum == behaviour.BehaviourEnum)
             {
@@ -36,32 +38,37 @@ public class SpecialTileSO : ScriptableObject
         }   
     }
 
-    private void MultiplyAnyTile()
+    private void MultiplyAnyTile(SelectedTile selectedTile, Transform specialTileTransform)
     {
         Debug.Log("Multiply");
     }
 
-    private void MatchAnyTile()
+    private void MatchAnyTile(SelectedTile selectedTile, Transform specialTileTransform)
     {
         Debug.Log("Blank");
+        //Do that in special tile
+        //_tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
+        //_tileMoveSequence.Append(selectedTile.TileObject.transform.DODynamicLookAt(specialTileTransform.position, 0.1f));
+        //_tileMoveSequence.Append(selectedTile.TileObject.transform.DOMove(specialTileTransform.position, 0.15f).SetEase(Ease.InBack));
+
     }
 
-    private void BombNearbyTiles()
+    private void BombNearbyTiles(SelectedTile selectedTile, Transform specialTileTransform)
     {
         Debug.Log("Bomb");
     }
 
     private void InitializeBehaviours()
     {
-        behaviours = new Behaviour[3];
+        _behaviours = new Behaviour[3];
 
-        behaviours[0] = new Behaviour(SpecialBehaviours.BombNearbyTiles, BombNearbyTiles);
-        behaviours[1] = new Behaviour(SpecialBehaviours.MatchAnyTile, MatchAnyTile);
-        behaviours[2] = new Behaviour(SpecialBehaviours.MultiplyAnyTile, MultiplyAnyTile);
+        _behaviours[0] = new Behaviour(SpecialBehaviours.BombNearbyTiles, BombNearbyTiles);
+        _behaviours[1] = new Behaviour(SpecialBehaviours.MatchAnyTile, MatchAnyTile);
+        _behaviours[2] = new Behaviour(SpecialBehaviours.MultiplyAnyTile, MultiplyAnyTile);
     }
 }
 
-public delegate void SpecialTileBehaviour();
+public delegate void SpecialTileBehaviour(SelectedTile selectedTile, Transform specialTileTransform);
 
 public enum SpecialBehaviours
 {

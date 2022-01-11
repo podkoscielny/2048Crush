@@ -1,16 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpecialTile : MonoBehaviour
 {
+    public static event Action<SelectedTile, SpecialTileBehaviour, Transform> OnSpecialTileUsed;
+
     [SerializeField] MeshFilter meshFilter;
     [SerializeField] MeshRenderer meshRenderer;
     [SerializeField] BoxCollider tileCollider;
     [SerializeField] GameObject graphics;
     [SerializeField] GridSystem gridSystem;
 
-    private bool _canBeInvoked = true; 
+    private bool _canBeInvoked = true;
     private SpecialTileBehaviour tileBehaviour;
     private SpecialTilePropability[] specialTiles;
 
@@ -31,17 +34,18 @@ public class SpecialTile : MonoBehaviour
     {
         if (AreSpecialTilesDisabled()) return;
 
-        tileBehaviour();
+        //tileBehaviour(TileSwipe.selectedTile, transform);
+        OnSpecialTileUsed?.Invoke(TileSwipe.selectedTile, tileBehaviour, transform);
         _canBeInvoked = false;
     }
 
     private void CacheSpecialTiles() => specialTiles = gridSystem.GridSize.SpecialTiles;
 
-    private bool AreSpecialTilesDisabled() => TileSwipe._selectedTile.TileObject == null || !Board.CanTilesBeClicked || !_canBeInvoked;
+    private bool AreSpecialTilesDisabled() => TileSwipe.selectedTile.TileObject == null || !Board.CanTilesBeClicked || !_canBeInvoked;
 
     private void ChangeTileProperties()
     {
-        int randomIndex = Random.Range(0, specialTiles.Length);
+        int randomIndex = UnityEngine.Random.Range(0, specialTiles.Length);
         SpecialTileSO currentSpecialTile = specialTiles[randomIndex].specialTile;
 
         meshFilter.mesh = currentSpecialTile.SpecialTileMesh;

@@ -11,12 +11,16 @@ public class TileSwipe : MonoBehaviour
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TilePoints tilePoints;
 
-    public static SelectedTile _selectedTile { get; private set; }
+    public static SelectedTile selectedTile { get; private set; }
 
     private static SelectedTile _tileToBeSwipedInto;
     private static bool _isPointerDown = false;
 
     private SelectedTile _emptyTileSelection = new SelectedTile();
+
+    private void OnEnable() => Board.OnTileMatchEnded += ClearSelectedTiles;
+
+    private void OnDisable() => Board.OnTileMatchEnded -= ClearSelectedTiles;
 
     private void OnMouseDown()
     {
@@ -26,10 +30,14 @@ public class TileSwipe : MonoBehaviour
         _isPointerDown = true;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        _selectedTile = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
+        selectedTile = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
     }
 
-    private void OnMouseUp() => _isPointerDown = false;
+    private void OnMouseUp()
+    {
+        _isPointerDown = false;
+        ClearSelectedTiles();
+    }
 
     private void OnMouseOver()
     {
@@ -38,22 +46,22 @@ public class TileSwipe : MonoBehaviour
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
         _tileToBeSwipedInto = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
 
-        bool areTilesClose = gridSystem.AreTilesClose(_selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
-        bool areTilesWorthSame = _selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
+        bool areTilesClose = gridSystem.AreTilesClose(selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
+        bool areTilesWorthSame = selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
 
         if (areTilesClose && areTilesWorthSame)
         {
-            OnTilesMatch?.Invoke(_selectedTile, transform, tilePoints);
+            OnTilesMatch?.Invoke(selectedTile, transform, tilePoints);
         }
         else
             SetNotMatchedTilesProperties();
     }
 
-    private bool CanTileBeSwiped() => _isPointerDown && _selectedTile.TileObject != null && _selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;
+    private bool CanTileBeSwiped() => _isPointerDown && selectedTile.TileObject != null && selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;
 
     private void SetNotMatchedTilesProperties()
     {
-        Transform selectedTileTransform = _selectedTile.TileObject.transform;
+        Transform selectedTileTransform = selectedTile.TileObject.transform;
         Transform tileToBeSwipedIntoTransform = _tileToBeSwipedInto.TileObject.transform;
 
         Quaternion rotation = GetDirectionOfRotation(selectedTileTransform.position, tileToBeSwipedIntoTransform.position);
@@ -76,5 +84,5 @@ public class TileSwipe : MonoBehaviour
             .OnComplete(() => selectedTileTransform.DORotate(Vector3.zero, 0.1f).SetDelay(0.1f));
     }
 
-    private void ClearSelectedTiles() => _selectedTile = _tileToBeSwipedInto = _emptyTileSelection;
+    private void ClearSelectedTiles() => selectedTile = _tileToBeSwipedInto = _emptyTileSelection;
 }
