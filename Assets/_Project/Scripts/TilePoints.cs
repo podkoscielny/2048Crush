@@ -34,7 +34,9 @@ public class TilePoints : MonoBehaviour
         Board.OnTilesReverse -= ReversePoints;
     }
 
-    public void UpdatePoints(int multiplier) => PointsWorth *= multiplier;
+    public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
+
+    public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
 
     private void InitializePoints() => PointsWorth = GetRandomPointsWorth();
 

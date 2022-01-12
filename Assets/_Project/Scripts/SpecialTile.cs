@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpecialTile : MonoBehaviour
 {
-    public static event Action<SelectedTile, SpecialTileBehaviour, Transform> OnSpecialTileUsed;
+    public static event Action<SelectedTile, SpecialTileBehaviour, GameObject> OnSpecialTileUsed;
 
     [SerializeField] MeshFilter meshFilter;
     [SerializeField] MeshRenderer meshRenderer;
@@ -34,8 +34,7 @@ public class SpecialTile : MonoBehaviour
     {
         if (AreSpecialTilesDisabled()) return;
 
-        //tileBehaviour(TileSwipe.selectedTile, transform);
-        OnSpecialTileUsed?.Invoke(TileSwipe.selectedTile, tileBehaviour, transform);
+        OnSpecialTileUsed?.Invoke(TileSwipe.selectedTile, tileBehaviour, gameObject);
         _canBeInvoked = false;
     }
 

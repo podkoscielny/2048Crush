@@ -68,19 +68,22 @@ public class Board : MonoBehaviour
         _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
 
-    private void MatchWithSpecialTile(SelectedTile selectedTile, SpecialTileBehaviour tileBehaviour, Transform specialTileTransform)
+    private void MatchWithSpecialTile(SelectedTile selectedTile, SpecialTileBehaviour tileBehaviour, GameObject specialTile)
     {
+        CanTilesBeClicked = false;
+        Transform specialTileTransform = specialTile.transform;
+
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
         _tileMoveSequence.Append(selectedTile.TileObject.transform.DODynamicLookAt(specialTileTransform.position, 0.1f));
         _tileMoveSequence.Append(selectedTile.TileObject.transform.DOMove(specialTileTransform.position, 0.15f).SetEase(Ease.InBack));
-        _tileMoveSequence.AppendCallback(() => tileBehaviour(selectedTile, specialTileTransform));
+        _tileMoveSequence.AppendCallback(() => tileBehaviour(selectedTile, specialTile));
         _tileMoveSequence.AppendCallback(() => SpawnMissingTile(selectedTile.TileCell));
         _tileMoveSequence.AppendCallback(CheckPossibleMoves);
     }
 
     private void UpdateScore(int pointsMultiplier, TilePoints tilePoints)
     {
-        tilePoints.UpdatePoints(pointsMultiplier);
+        tilePoints.MultiplyPoints(pointsMultiplier);
         score.AddPoints(tilePoints.PointsWorth);
     }
 

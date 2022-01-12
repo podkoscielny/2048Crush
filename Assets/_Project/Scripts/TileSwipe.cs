@@ -30,7 +30,7 @@ public class TileSwipe : MonoBehaviour
         _isPointerDown = true;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        selectedTile = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
+        selectedTile = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell, tilePoints);
     }
 
     private void OnMouseUp()
@@ -44,7 +44,7 @@ public class TileSwipe : MonoBehaviour
         if (!CanTileBeSwiped()) return;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        _tileToBeSwipedInto = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell);
+        _tileToBeSwipedInto = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell, tilePoints);
 
         bool areTilesClose = gridSystem.AreTilesClose(selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
         bool areTilesWorthSame = selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;

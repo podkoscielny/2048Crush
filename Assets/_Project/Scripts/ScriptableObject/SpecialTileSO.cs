@@ -10,6 +10,8 @@ public class SpecialTileSO : ScriptableObject
     [SerializeField] Vector3 specialTileScale;
     [SerializeField] Vector3 meshOffset;
     [SerializeField] Vector3 meshRotation;
+    [SerializeField] ObjectPool objectPool;
+    [SerializeField] GridSystem gridSystem;
     [SerializeField] Material specialTileMaterial;
     [SerializeField] SpecialBehaviours behaviourEnum;
 
@@ -35,25 +37,33 @@ public class SpecialTileSO : ScriptableObject
                 SpecialTileBehaviour = behaviour.SpecialBehaviour;
                 break;
             }
-        }   
+        }
     }
 
-    private void MultiplyAnyTile(SelectedTile selectedTile, Transform specialTileTransform)
+    private void MultiplyAnyTile(SelectedTile selectedTile, GameObject specialTile)
     {
         Debug.Log("Multiply");
     }
 
-    private void MatchAnyTile(SelectedTile selectedTile, Transform specialTileTransform)
+    private void MatchAnyTile(SelectedTile selectedTile, GameObject specialTile)
     {
         Debug.Log("Blank");
-        //Do that in special tile
-        //_tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
-        //_tileMoveSequence.Append(selectedTile.TileObject.transform.DODynamicLookAt(specialTileTransform.position, 0.1f));
-        //_tileMoveSequence.Append(selectedTile.TileObject.transform.DOMove(specialTileTransform.position, 0.15f).SetEase(Ease.InBack));
 
+        GameObject spawnedTile = objectPool.GetFromPool(TagSystem.Tags.Tile);
+        Vector2Int specialTileCell = gridSystem.GetTileGridCell(specialTile);
+        Vector3 specialTilePosition = gridSystem.GridCells[specialTileCell.x, specialTileCell.y];
+
+        spawnedTile.transform.SetPositionAndRotation(specialTilePosition, new Quaternion(0, 0, 0, 0));
+        spawnedTile.GetComponent<TilePoints>().SetPoints(selectedTile.TilePoints.PointsWorth);
+        gridSystem.AssignTileToCell(spawnedTile, specialTileCell);
+
+        specialTile.SetActive(false);
+        selectedTile.TileObject.SetActive(false);
+
+        spawnedTile.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1);
     }
 
-    private void BombNearbyTiles(SelectedTile selectedTile, Transform specialTileTransform)
+    private void BombNearbyTiles(SelectedTile selectedTile, GameObject specialTile)
     {
         Debug.Log("Bomb");
     }
@@ -68,7 +78,7 @@ public class SpecialTileSO : ScriptableObject
     }
 }
 
-public delegate void SpecialTileBehaviour(SelectedTile selectedTile, Transform specialTileTransform);
+public delegate void SpecialTileBehaviour(SelectedTile selectedTile, GameObject specialTile);
 
 public enum SpecialBehaviours
 {

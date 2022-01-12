@@ -14,4 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   specialTileMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   specialTileScale: {x: 1, y: 1, z: 1}
+  meshOffset: {x: 0, y: 0, z: 0}
+  meshRotation: {x: 0, y: 0, z: 0}
+  objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   specialTileMaterial: {fileID: 2100000, guid: 1bfa79449576255428611bda6d4f62ea, type: 2}
+  behaviourEnum: 0
