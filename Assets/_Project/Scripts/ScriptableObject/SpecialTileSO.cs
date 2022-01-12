@@ -12,6 +12,7 @@ public class SpecialTileSO : ScriptableObject
     [SerializeField] Vector3 meshRotation;
     [SerializeField] ObjectPool objectPool;
     [SerializeField] GridSystem gridSystem;
+    [SerializeField] Score score;
     [SerializeField] Material specialTileMaterial;
     [SerializeField] SpecialBehaviours behaviourEnum;
 
@@ -43,6 +44,23 @@ public class SpecialTileSO : ScriptableObject
     private void MultiplyAnyTile(SelectedTile selectedTile, GameObject specialTile)
     {
         Debug.Log("Multiply");
+
+        GameObject spawnedTile = objectPool.GetFromPool(TagSystem.Tags.Tile);
+        Vector2Int specialTileCell = gridSystem.GetTileGridCell(specialTile);
+        Vector3 specialTilePosition = gridSystem.GridCells[specialTileCell.x, specialTileCell.y];
+        Vector3 spawnedTilePosition = new Vector3(specialTilePosition.x, specialTilePosition.y, spawnedTile.transform.position.z);
+
+        spawnedTile.transform.SetPositionAndRotation(spawnedTilePosition, new Quaternion(0, 0, 0, 0));
+        TilePoints tilePoints = spawnedTile.GetComponent<TilePoints>();
+        tilePoints.SetPoints(selectedTile.TilePoints.PointsWorth);
+        tilePoints.MultiplyPoints(4);
+        UpdatePoints(tilePoints.PointsWorth);
+        gridSystem.AssignTileToCell(spawnedTile, specialTileCell);
+
+        specialTile.SetActive(false);
+        selectedTile.TileObject.SetActive(false);
+
+        spawnedTile.transform.DOPunchScale(new Vector3(0.4f, 0.4f, 0.4f), 0.3f, 1);
     }
 
     private void MatchAnyTile(SelectedTile selectedTile, GameObject specialTile)
@@ -52,9 +70,12 @@ public class SpecialTileSO : ScriptableObject
         GameObject spawnedTile = objectPool.GetFromPool(TagSystem.Tags.Tile);
         Vector2Int specialTileCell = gridSystem.GetTileGridCell(specialTile);
         Vector3 specialTilePosition = gridSystem.GridCells[specialTileCell.x, specialTileCell.y];
+        Vector3 spawnedTilePosition = new Vector3(specialTilePosition.x, specialTilePosition.y, spawnedTile.transform.position.z);
 
-        spawnedTile.transform.SetPositionAndRotation(specialTilePosition, new Quaternion(0, 0, 0, 0));
-        spawnedTile.GetComponent<TilePoints>().SetPoints(selectedTile.TilePoints.PointsWorth);
+        spawnedTile.transform.SetPositionAndRotation(spawnedTilePosition, new Quaternion(0, 0, 0, 0));
+        TilePoints tilePoints = spawnedTile.GetComponent<TilePoints>();
+        tilePoints.SetPoints(selectedTile.TilePoints.PointsWorth);
+        UpdatePoints(tilePoints.PointsWorth);
         gridSystem.AssignTileToCell(spawnedTile, specialTileCell);
 
         specialTile.SetActive(false);
@@ -67,6 +88,8 @@ public class SpecialTileSO : ScriptableObject
     {
         Debug.Log("Bomb");
     }
+
+    private void UpdatePoints(int pointsToAdd) => score.AddPoints(pointsToAdd);
 
     private void InitializeBehaviours()
     {

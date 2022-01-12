@@ -18,5 +18,6 @@ MonoBehaviour:
   meshRotation: {x: 0, y: 0, z: 0}
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
   specialTileMaterial: {fileID: 2100000, guid: 1bfa79449576255428611bda6d4f62ea, type: 2}
   behaviourEnum: 0
