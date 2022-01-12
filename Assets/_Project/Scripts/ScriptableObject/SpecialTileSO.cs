@@ -87,6 +87,30 @@ public class SpecialTileSO : ScriptableObject
     private void BombNearbyTiles(SelectedTile selectedTile, GameObject specialTile)
     {
         Debug.Log("Bomb");
+
+        Vector2Int specialTileCell = gridSystem.GetTileGridCell(specialTile);
+        Vector3 specialTilePosition = gridSystem.GridCells[specialTileCell.x, specialTileCell.y];
+
+        //Vector2Int upTileCell = new Vector2Int(specialTileCell.x, specialTileCell.y - 1);
+        //Vector2Int downTileCell = new Vector2Int(specialTileCell.x, specialTileCell.y + 1);
+        //Vector2Int leftTileCell = new Vector2Int(specialTileCell.x - 1, specialTileCell.y);
+        //Vector2Int rightTileCell = new Vector2Int(specialTileCell.x + 1, specialTileCell.y);
+
+        Vector2Int[] surroundingCells =
+        {
+            specialTileCell,
+            new Vector2Int(specialTileCell.x, specialTileCell.y - 1),
+            new Vector2Int(specialTileCell.x, specialTileCell.y + 1),
+            new Vector2Int(specialTileCell.x - 1, specialTileCell.y),
+            new Vector2Int(specialTileCell.x + 1, specialTileCell.y)
+        };
+
+        foreach (Vector2Int cell in surroundingCells)
+        {
+            if (cell.x < 0 || cell.y < 0) continue;
+
+            gridSystem.TilesAtGridCells[cell.x, cell.y].SetActive(false);
+        }
     }
 
     private void UpdatePoints(int pointsToAdd) => score.AddPoints(pointsToAdd);
