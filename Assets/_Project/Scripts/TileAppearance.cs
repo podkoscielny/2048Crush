@@ -61,6 +61,8 @@ public class TileAppearance : MonoBehaviour
         int pointsAsTwoToThePower = tilePoints.PointsWorth;
         int powers = 0;
 
+        if (pointsAsTwoToThePower <= 0) return 0; 
+
         do
         {
             pointsAsTwoToThePower /= 2;

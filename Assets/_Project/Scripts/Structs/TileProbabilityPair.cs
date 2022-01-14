@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct TileProbabilityPair
 {
-    public int pointsWorth;
-    public float probability;
+    public float spawnProbability;
+    public TileType tileType;
 }

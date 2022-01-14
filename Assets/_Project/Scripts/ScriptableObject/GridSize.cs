@@ -9,7 +9,7 @@ public class GridSize : ScriptableObject
 {
     [SerializeField] int rows;
     [SerializeField] int columns;
-    [Range(0,1)] [SerializeField] float specialTileProbabilitySpawn;
+    [Range(0, 1)] [SerializeField] float specialTileProbabilitySpawn;
     [SerializeField] TileProbabilityPair[] tileTypes;
     [SerializeField] SpecialTilePropability[] specialTiles;
 
@@ -20,12 +20,11 @@ public class GridSize : ScriptableObject
     public TileProbabilityPair[] TileTypes => tileTypes;
     public float ProbabilitySum { get; private set; }
 
-    private const int MINIMUM_POINTS_WORTH = 2;
 
     void OnValidate()
     {
         ClampRowsAndColumnsCount();
-        ClampTileProbabilityAndPoints();
+        ClampTileProbability();
     }
 
     void OnEnable() => CalculateProbabilitySum();
@@ -36,16 +35,15 @@ public class GridSize : ScriptableObject
         columns = Mathf.Max(1, columns);
     }
 
-    private void ClampTileProbabilityAndPoints()
+    private void ClampTileProbability() // Check making Mathf.Max instead of Clamp or Add Range attribute
     {
         for (int i = 0; i < tileTypes.Length; i++)
         {
-            tileTypes[i].probability = Mathf.Clamp(tileTypes[i].probability, 0, 1);
-            tileTypes[i].pointsWorth = tileTypes[i].pointsWorth % 2 == 0 ? Mathf.Max(2, tileTypes[i].pointsWorth) : MINIMUM_POINTS_WORTH;
+            tileTypes[i].spawnProbability = Mathf.Clamp(tileTypes[i].spawnProbability, 0, 1);
         }
     }
 
-    private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.probability.CompareTo(y.probability));
+    private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.spawnProbability.CompareTo(y.spawnProbability));
 
     private void CalculateProbabilitySum()
     {
@@ -53,7 +51,7 @@ public class GridSize : ScriptableObject
 
         foreach (TileProbabilityPair type in tileTypes)
         {
-            probability += type.probability;
+            probability += type.spawnProbability;
         }
 
         ProbabilitySum = probability;

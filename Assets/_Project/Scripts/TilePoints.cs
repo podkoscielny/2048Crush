@@ -55,12 +55,12 @@ public class TilePoints : MonoBehaviour
 
         for (int i = 0; i < tileTypes.Length; i++)
         {
-            if (randomProbability - subtractFromSum <= tileTypes[i].probability) return tileTypes[i].pointsWorth;
+            if (randomProbability - subtractFromSum <= tileTypes[i].spawnProbability) return tileTypes[i].tileType.PointsWorth;
 
-            subtractFromSum -= tileTypes[i].probability;
+            subtractFromSum -= tileTypes[i].spawnProbability;
         }
 
-        return tileTypes[tileTypes.Length - 1].pointsWorth;
+        return tileTypes[tileTypes.Length - 1].tileType.PointsWorth;
     }
 
     private void AssignPointsWorthToCell()
