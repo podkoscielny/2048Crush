@@ -6,10 +6,11 @@ using DG.Tweening;
 
 public class TileSwipe : MonoBehaviour
 {
-    public static event Action<SelectedTile, Transform, TilePoints> OnTilesMatch;
+    public static event Action<SelectedTile, SelectedTile> OnTilesMatch;
 
     [SerializeField] GridSystem gridSystem;
     [SerializeField] TilePoints tilePoints;
+    [SerializeField] TileBehaviour tileBehaviour;
 
     public static SelectedTile selectedTile { get; private set; }
 
@@ -30,7 +31,7 @@ public class TileSwipe : MonoBehaviour
         _isPointerDown = true;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        selectedTile = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell, tilePoints, false);
+        selectedTile = new SelectedTile(gameObject, tileCell, tilePoints, tileBehaviour);
     }
 
     private void OnMouseUp()
@@ -44,18 +45,20 @@ public class TileSwipe : MonoBehaviour
         if (!CanTileBeSwiped()) return;
 
         Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        _tileToBeSwipedInto = new SelectedTile(gameObject, tilePoints.PointsWorth, tileCell, tilePoints, false);
+        _tileToBeSwipedInto = new SelectedTile(gameObject, tileCell, tilePoints, tileBehaviour);
 
         bool areTilesClose = gridSystem.AreTilesClose(selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
-        bool areTilesWorthSame = selectedTile.PointsWorth == _tileToBeSwipedInto.PointsWorth;
+        bool areTilesWorthSame = selectedTile.TilePoints.PointsWorth == _tileToBeSwipedInto.TilePoints.PointsWorth;
 
-        if (areTilesClose && areTilesWorthSame)
+        if (areTilesClose && (!HasDefaultBehaviour() || (HasDefaultBehaviour() && areTilesWorthSame)))
         {
-            OnTilesMatch?.Invoke(selectedTile, transform, tilePoints);
+            OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto);
         }
         else
             SetNotMatchedTilesProperties();
     }
+
+    private bool HasDefaultBehaviour() => tileBehaviour.BehaviourEnum == Behaviours.Default;
 
     private bool CanTileBeSwiped() => _isPointerDown && selectedTile.TileObject != null && selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;
 

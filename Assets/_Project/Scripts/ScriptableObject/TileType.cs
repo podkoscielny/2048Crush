@@ -10,7 +10,7 @@ public class TileType : ScriptableObject
     [SerializeField] int pointsWorth;
     [SerializeField] bool isSpecial;
     [SerializeField] Image image;
-    [SerializeField] TileBehaviour tileBehaviour;
+    [SerializeField] Behaviours tileBehaviour;
 
     public int PointsWorth => pointsWorth;
 
@@ -19,8 +19,6 @@ public class TileType : ScriptableObject
     private void OnValidate() => ClampPointsWorth();
 
     private void ClampPointsWorth() => pointsWorth = pointsWorth % 2 == 0 ? Mathf.Max(MINIMUM_POINTS_WORTH, pointsWorth) : MINIMUM_POINTS_WORTH;
-
-
 
 
 #if UNITY_EDITOR
@@ -36,12 +34,12 @@ public class TileType : ScriptableObject
             if (tileType.isSpecial)
             {
                 tileType.image = (Image)EditorGUILayout.ObjectField("Image", tileType.image, typeof(Image), false);
-                tileType.tileBehaviour = (TileBehaviour)EditorGUILayout.EnumPopup("Tile Behaviour", tileType.tileBehaviour);
+                tileType.tileBehaviour = (Behaviours)EditorGUILayout.EnumPopup("Tile Behaviour", tileType.tileBehaviour);
             }
             else
             {
                 tileType.pointsWorth = EditorGUILayout.DelayedIntField("Points Worth", tileType.pointsWorth);
-                tileType.tileBehaviour = TileBehaviour.Default;
+                tileType.tileBehaviour = Behaviours.Default;
             }
 
 
@@ -50,7 +48,7 @@ public class TileType : ScriptableObject
 #endif
 }
 
-public enum TileBehaviour
+public enum Behaviours
 {
     Default,
     MultiplyAnyTile,

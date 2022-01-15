@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3994539253609184669}
   - component: {fileID: 7478645234131672006}
   - component: {fileID: 1163389491736964277}
+  - component: {fileID: 7528390063450246262}
   - component: {fileID: 2200593051386032726}
   m_Layer: 7
   m_Name: Tile
@@ -128,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tilePoints: {fileID: 3994539253609184669}
+  tileBehaviour: {fileID: 7528390063450246262}
 --- !u!114 &1163389491736964277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +206,21 @@ MonoBehaviour:
     m_Mode: 1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+--- !u!114 &7528390063450246262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4610248557676912175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd42d37dc69c31459dd09f15ac2e448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
+  objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
+  tilePoints: {fileID: 3994539253609184669}
 --- !u!114 &2200593051386032726
 MonoBehaviour:
   m_ObjectHideFlags: 0

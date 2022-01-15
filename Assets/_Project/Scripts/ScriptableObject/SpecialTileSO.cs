@@ -14,7 +14,7 @@ public class SpecialTileSO : ScriptableObject
     [SerializeField] GridSystem gridSystem;
     [SerializeField] Score score;
     [SerializeField] Material specialTileMaterial;
-    [SerializeField] TileBehaviour behaviourEnum;
+    [SerializeField] Behaviours behaviourEnum;
 
     public SpecialTileBehaviour SpecialTileBehaviour { get; private set; }
     public Mesh SpecialTileMesh => specialTileMesh;
@@ -119,9 +119,9 @@ public class SpecialTileSO : ScriptableObject
     {
         _behaviours = new Behaviour[3];
 
-        _behaviours[0] = new Behaviour(TileBehaviour.BombNearbyTiles, BombNearbyTiles);
-        _behaviours[1] = new Behaviour(TileBehaviour.MatchAnyTile, MatchAnyTile);
-        _behaviours[2] = new Behaviour(TileBehaviour.MultiplyAnyTile, MultiplyAnyTile);
+        _behaviours[0] = new Behaviour(Behaviours.BombNearbyTiles, BombNearbyTiles);
+        _behaviours[1] = new Behaviour(Behaviours.MatchAnyTile, MatchAnyTile);
+        _behaviours[2] = new Behaviour(Behaviours.MultiplyAnyTile, MultiplyAnyTile);
     }
 }
 
@@ -129,10 +129,10 @@ public delegate void SpecialTileBehaviour(SelectedTile selectedTile, GameObject 
 
 public struct Behaviour
 {
-    public TileBehaviour BehaviourEnum { get; private set; }
+    public Behaviours BehaviourEnum { get; private set; }
     public SpecialTileBehaviour SpecialBehaviour { get; private set; }
 
-    public Behaviour(TileBehaviour behaviourEnum, SpecialTileBehaviour specialBehaviour)
+    public Behaviour(Behaviours behaviourEnum, SpecialTileBehaviour specialBehaviour)
     {
         BehaviourEnum = behaviourEnum;
         SpecialBehaviour = specialBehaviour;

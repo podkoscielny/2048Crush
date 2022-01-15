@@ -17,23 +17,15 @@ public class Board : MonoBehaviour
     [SerializeField] MeshRenderer gridRenderer;
     [SerializeField] GameObject tilePrefab;
     [SerializeField] ObjectPool objectPool;
-    [SerializeField] Score score;
 
     public static bool CanTilesBeClicked { get; private set; } = true;
 
     private Sequence _tileMoveSequence;
     private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
 
-    private void OnEnable()
-    {
-        TileSwipe.OnTilesMatch += MatchTiles;
-        SpecialTile.OnSpecialTileUsed += MatchWithSpecialTile;
-    }
-    private void OnDisable()
-    {
-        TileSwipe.OnTilesMatch -= MatchTiles;
-        SpecialTile.OnSpecialTileUsed -= MatchWithSpecialTile;
-    }
+    private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
+
+    private void OnDisable() => TileSwipe.OnTilesMatch -= MatchTiles;
 
     private void Awake()
     {
@@ -51,40 +43,23 @@ public class Board : MonoBehaviour
         OnTilesReverse?.Invoke();
     }
 
-    private void MatchTiles(SelectedTile tileToBeDestroyed, Transform tileToBeUpdated, TilePoints updatedTilePoints)
+    private void MatchTiles(SelectedTile tileToBeDestroyed, SelectedTile tileToBeUpdated)
     {
+        Transform tileToBeUpdatedTransform = tileToBeUpdated.TileObject.transform;
+
         CanTilesBeClicked = false;
         OnAssignPointsWorthToCells?.Invoke();
         gridSystem.CachePreviousPoints();
 
         _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
-        _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdated.position, 0.1f));
-        _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdated.position, 0.15f).SetEase(Ease.InBack));
+        _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdatedTransform.position, 0.1f));
+        _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdatedTransform.position, 0.15f).SetEase(Ease.InBack));
         _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
-        _tileMoveSequence.AppendCallback(() => UpdateScore(2, updatedTilePoints));
+        _tileMoveSequence.AppendCallback(() => tileToBeUpdated.TileBehaviour.Behaviour(_tileMoveSequence, tileToBeDestroyed));
         _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
         _tileMoveSequence.AppendCallback(CheckPossibleMoves);
         _tileMoveSequence.AppendCallback(() => OnTileMatchEnded?.Invoke());
-        _tileMoveSequence.Append(tileToBeUpdated.DOPunchScale(_enlargedTileScale, 0.3f, 1));
-    }
-
-    private void MatchWithSpecialTile(SelectedTile selectedTile, SpecialTileBehaviour tileBehaviour, GameObject specialTile)
-    {
-        CanTilesBeClicked = false;
-        Transform specialTileTransform = specialTile.transform;
-
-        _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
-        _tileMoveSequence.Append(selectedTile.TileObject.transform.DODynamicLookAt(specialTileTransform.position, 0.1f));
-        _tileMoveSequence.Append(selectedTile.TileObject.transform.DOMove(specialTileTransform.position, 0.15f).SetEase(Ease.InBack));
-        _tileMoveSequence.AppendCallback(() => tileBehaviour(selectedTile, specialTile));
-        _tileMoveSequence.AppendCallback(() => SpawnMissingTile(selectedTile.TileCell));
-        _tileMoveSequence.AppendCallback(CheckPossibleMoves);
-    }
-
-    private void UpdateScore(int pointsMultiplier, TilePoints tilePoints)
-    {
-        tilePoints.MultiplyPoints(pointsMultiplier);
-        score.AddPoints(tilePoints.PointsWorth);
+        _tileMoveSequence.Append(tileToBeUpdatedTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1));
     }
 
     private void MoveTileToPool(GameObject tileToBeDisabled) => objectPool.AddToPool(Tags.Tile, tileToBeDisabled);
