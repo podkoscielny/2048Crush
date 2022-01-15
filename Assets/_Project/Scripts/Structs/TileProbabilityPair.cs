@@ -6,6 +6,6 @@ using UnityEngine.UI;
 [System.Serializable]
 public struct TileProbabilityPair
 {
-    public float spawnProbability;
+    [Range(0,1)] public float spawnProbability;
     public TileType tileType;
 }

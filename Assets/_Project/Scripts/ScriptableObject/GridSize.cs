@@ -74,6 +74,5 @@ public class GridSize : ScriptableObject
             }
         }
     }
-
 #endif
 }

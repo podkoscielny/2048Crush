@@ -7,7 +7,7 @@ using UnityEditor;
 [CustomEditor(typeof(TilePoints))]
 public class TilePointsEditor : Editor
 {
-    int pointsToSet = 2;
+    private int pointsToSet = 2;
 
     public override void OnInspectorGUI()
     {

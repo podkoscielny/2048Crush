@@ -48,19 +48,19 @@ public class TilePoints : MonoBehaviour
 
     private int GetRandomPointsWorth()
     {
-        TileProbabilityPair[] tileTypes = gridSystem.GridSize.TileTypes;
+        TileProbabilityPair[] tileTypePairs = gridSystem.GridSize.TileTypes;
         float probabilitySum = gridSystem.GridSize.ProbabilitySum;
         float randomProbability = Random.Range(0, probabilitySum);
         float subtractFromSum = 0;
 
-        for (int i = 0; i < tileTypes.Length; i++)
+        for (int i = 0; i < tileTypePairs.Length; i++)
         {
-            if (randomProbability - subtractFromSum <= tileTypes[i].spawnProbability) return tileTypes[i].tileType.PointsWorth;
+            if (randomProbability - subtractFromSum <= tileTypePairs[i].spawnProbability) return tileTypePairs[i].tileType.PointsWorth;
 
-            subtractFromSum -= tileTypes[i].spawnProbability;
+            subtractFromSum -= tileTypePairs[i].spawnProbability;
         }
 
-        return tileTypes[tileTypes.Length - 1].tileType.PointsWorth;
+        return tileTypePairs[tileTypePairs.Length - 1].tileType.PointsWorth;
     }
 
     private void AssignPointsWorthToCell()

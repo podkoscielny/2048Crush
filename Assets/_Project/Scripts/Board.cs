@@ -96,7 +96,6 @@ public class Board : MonoBehaviour
         Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f), tilePrefab.transform.position.z);
 
         GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
-        //GameObject spawnedTile = objectPool.GetFromPool(Tags.SpecialTile);
         spawnedTile.transform.position = spawnPosition;
         spawnedTile.transform.DOMoveY(firstGridCellPosition.y, 0.2f).SetDelay(0.1f);
 
