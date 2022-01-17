@@ -4,53 +4,56 @@ using UnityEngine;
 using UnityEditor;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(TilePoints))]
-public class TilePointsEditor : Editor
+namespace Crush2048
 {
-    private int pointsToSet = 2;
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(TilePoints))]
+    public class TilePointsEditor : Editor
     {
-        base.OnInspectorGUI();
+        private int pointsToSet = 2;
 
-        DrawSetPointsUI();
-    }
-
-    private void DrawSetPointsUI()
-    {
-        TilePoints tilePoints = (TilePoints)target;
-
-        SetTilePoints(tilePoints);
-        RandomizeAllTilePoints();
-    }
-
-    private void SetTilePoints(TilePoints tilePoints)
-    {
-        GUILayout.BeginHorizontal();
-
-        pointsToSet = EditorGUILayout.DelayedIntField("Points To Set", pointsToSet);
-
-        if (GUILayout.Button("Set Points")) tilePoints.ChangeTilePointsWorth(pointsToSet);
-
-        GUILayout.EndHorizontal();
-    }
-
-    private void RandomizeAllTilePoints()
-    {
-        GUILayout.BeginHorizontal();
-
-
-        if (GUILayout.Button("Randomize Points"))
+        public override void OnInspectorGUI()
         {
-            TilePoints[] tiles = FindObjectsOfType<TilePoints>();
+            base.OnInspectorGUI();
 
-            foreach (TilePoints tile in tiles)
-            {
-                tile.RandomizeTilePoints();
-            }
+            DrawSetPointsUI();
         }
 
-        GUILayout.EndHorizontal();
+        private void DrawSetPointsUI()
+        {
+            TilePoints tilePoints = (TilePoints)target;
+
+            SetTilePoints(tilePoints);
+            RandomizeAllTilePoints();
+        }
+
+        private void SetTilePoints(TilePoints tilePoints)
+        {
+            GUILayout.BeginHorizontal();
+
+            pointsToSet = EditorGUILayout.DelayedIntField("Points To Set", pointsToSet);
+
+            if (GUILayout.Button("Set Points")) tilePoints.ChangeTilePointsWorth(pointsToSet);
+
+            GUILayout.EndHorizontal();
+        }
+
+        private void RandomizeAllTilePoints()
+        {
+            GUILayout.BeginHorizontal();
+
+
+            if (GUILayout.Button("Randomize Points"))
+            {
+                TilePoints[] tiles = FindObjectsOfType<TilePoints>();
+
+                foreach (TilePoints tile in tiles)
+                {
+                    tile.RandomizeTilePoints();
+                }
+            }
+
+            GUILayout.EndHorizontal();
+        }
     }
 }
 #endif

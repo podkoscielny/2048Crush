@@ -2,89 +2,92 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class TilePoints : MonoBehaviour
+namespace Crush2048
 {
-    public event Action OnPointsUpdated;
-
-    [SerializeField] GridSystem gridSystem;
-
-    public int PointsWorth
+    public class TilePoints : MonoBehaviour
     {
-        get => _pointsWorth;
+        public event Action OnPointsUpdated;
 
-        private set
+        [SerializeField] GridSystem gridSystem;
+
+        public int PointsWorth
         {
-            _pointsWorth = value;
-            OnPointsUpdated?.Invoke();
-        }
-    }
+            get => _pointsWorth;
 
-    private int _pointsWorth = 2;
-
-    private void OnEnable()
-    {
-        Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
-        Board.OnTilesReverse += ReversePoints;
-        InitializePoints();
-    }
-
-    private void OnDisable()
-    {
-        Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
-        Board.OnTilesReverse -= ReversePoints;
-    }
-
-    public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
-
-    public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
-
-    private void InitializePoints() => PointsWorth = GetRandomPointsWorth();
-
-    private void ReversePoints()
-    {
-        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
-    }
-
-    private int GetRandomPointsWorth()
-    {
-        TileProbabilityPair[] tileTypePairs = gridSystem.GridSize.TileTypes;
-        float probabilitySum = gridSystem.GridSize.ProbabilitySum;
-        float randomProbability = Random.Range(0, probabilitySum);
-        float subtractFromSum = 0;
-
-        for (int i = 0; i < tileTypePairs.Length; i++)
-        {
-            if (randomProbability - subtractFromSum <= tileTypePairs[i].spawnProbability) return tileTypePairs[i].tileType.PointsWorth;
-
-            subtractFromSum -= tileTypePairs[i].spawnProbability;
+            private set
+            {
+                _pointsWorth = value;
+                OnPointsUpdated?.Invoke();
+            }
         }
 
-        return tileTypePairs[tileTypePairs.Length - 1].tileType.PointsWorth;
-    }
+        private int _pointsWorth = 2;
 
-    private void AssignPointsWorthToCell()
-    {
-        Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-        gridSystem.AssignPointsWorthToCell(PointsWorth, tileCell);
-    }
+        private void OnEnable()
+        {
+            Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
+            Board.OnTilesReverse += ReversePoints;
+            InitializePoints();
+        }
+
+        private void OnDisable()
+        {
+            Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
+            Board.OnTilesReverse -= ReversePoints;
+        }
+
+        public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
+
+        public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
+
+        private void InitializePoints() => PointsWorth = GetRandomPointsWorth();
+
+        private void ReversePoints()
+        {
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
+        }
+
+        private int GetRandomPointsWorth()
+        {
+            TileProbabilityPair[] tileTypePairs = gridSystem.GridSize.TileTypes;
+            float probabilitySum = gridSystem.GridSize.ProbabilitySum;
+            float randomProbability = Random.Range(0, probabilitySum);
+            float subtractFromSum = 0;
+
+            for (int i = 0; i < tileTypePairs.Length; i++)
+            {
+                if (randomProbability - subtractFromSum <= tileTypePairs[i].spawnProbability) return tileTypePairs[i].tileType.PointsWorth;
+
+                subtractFromSum -= tileTypePairs[i].spawnProbability;
+            }
+
+            return tileTypePairs[tileTypePairs.Length - 1].tileType.PointsWorth;
+        }
+
+        private void AssignPointsWorthToCell()
+        {
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            gridSystem.AssignPointsWorthToCell(PointsWorth, tileCell);
+        }
 
 #if UNITY_EDITOR
-    public void ChangeTilePointsWorth(int pointsToSet) => PointsWorth = pointsToSet;
+        public void ChangeTilePointsWorth(int pointsToSet) => PointsWorth = pointsToSet;
 
-    public void RandomizeTilePoints()
-    {
-        int randomPoints;
-
-        do
+        public void RandomizeTilePoints()
         {
-            randomPoints = Random.Range(2, 512);
+            int randomPoints;
 
-        } while (!IsPowerOfTwo(randomPoints));
+            do
+            {
+                randomPoints = Random.Range(2, 512);
 
-        PointsWorth = randomPoints;
-    }
+            } while (!IsPowerOfTwo(randomPoints));
 
-    private bool IsPowerOfTwo(int x) => (x != 0) && ((x & (x - 1)) == 0);
+            PointsWorth = randomPoints;
+        }
+
+        private bool IsPowerOfTwo(int x) => (x != 0) && ((x & (x - 1)) == 0);
 #endif
+    }
 }

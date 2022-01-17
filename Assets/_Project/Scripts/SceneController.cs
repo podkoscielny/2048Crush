@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour
+namespace Crush2048
 {
-    public void GoToPlayScene() => SceneManager.LoadScene("Main");
+    public class SceneController : MonoBehaviour
+    {
+        public void GoToPlayScene() => SceneManager.LoadScene("Main");
+    }
 }

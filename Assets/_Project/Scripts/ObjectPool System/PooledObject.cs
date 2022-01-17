@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tags = TagSystem.Tags;
+using Tags = TagSystem.TagSystem.Tags;
 
-public class PooledObject : MonoBehaviour
+namespace Crush2048
 {
-    public Tags PoolTag { get; private set; }
+    public class PooledObject : MonoBehaviour
+    {
+        public Tags PoolTag { get; private set; }
 
-    public void SetPoolTag(Tags tag) => PoolTag = tag;
+        public void SetPoolTag(Tags tag) => PoolTag = tag;
+    }
 }

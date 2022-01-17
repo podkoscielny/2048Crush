@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Tags = TagSystem.Tags;
+using Tags = TagSystem.TagSystem.Tags;
 
-public class TagManager : MonoBehaviour
+namespace TagSystem
 {
-    [SerializeField] List<Tags> tags;
-
-    void OnEnable()
+    public class TagManager : MonoBehaviour
     {
-        this.CacheObjectToTagSystem(gameObject, tags);
-    }
+        [SerializeField] List<Tags> tags;
 
-    void OnDisable()
-    {
-        this.RemoveObjectFromTagSystem(gameObject, tags);
-    }
+        void OnEnable()
+        {
+            this.CacheObjectToTagSystem(gameObject, tags);
+        }
 
-    public bool HasTag(Tags tag) => tags.Contains(tag);
+        void OnDisable()
+        {
+            this.RemoveObjectFromTagSystem(gameObject, tags);
+        }
+
+        public bool HasTag(Tags tag) => tags.Contains(tag);
+    }
 }

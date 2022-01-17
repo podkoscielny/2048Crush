@@ -7,64 +7,67 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = "Score", menuName = "ScriptableObjects/Score")]
-public class Score : ScriptableObject
+namespace Crush2048
 {
-    public static event Action OnScoreUpdated;
-
-    [SerializeField] int value;
-
-    public int Value => value;
-
-    private void OnEnable()
+    [CreateAssetMenu(fileName = "Score", menuName = "ScriptableObjects/Score")]
+    public class Score : ScriptableObject
     {
-        //SceneController.OnSceneChange += ResetScore;
+        public static event Action OnScoreUpdated;
 
+        [SerializeField] int value;
 
-#if UNITY_EDITOR
-        EditorApplication.playModeStateChanged += ResetValuesOnEditorQuit;
-#endif
-    }
+        public int Value => value;
 
-    private void OnDisable()
-    {
-        ResetScore();
-
-        //SceneController.OnSceneChange -= ResetScore;
-
-#if UNITY_EDITOR
-        EditorApplication.playModeStateChanged -= ResetValuesOnEditorQuit;
-#endif
-    }
-
-    void OnValidate()
-    {
-        if(EditorApplication.isPlaying)
+        private void OnEnable()
         {
-            value = Mathf.Max(value, 0);
-            OnScoreUpdated?.Invoke();
-        }
-        else
-        {
-            value = 0;
-        }
-    }
+            //SceneController.OnSceneChange += ResetScore;
 
-    public void AddPoints(int pointsToAdd)
-    {
-        value += pointsToAdd;
-        OnScoreUpdated?.Invoke();
-    }
-
-    private void ResetScore() => value = 0;
 
 #if UNITY_EDITOR
-    private void ResetValuesOnEditorQuit(PlayModeStateChange changedState)
-    {
-        if (changedState == PlayModeStateChange.ExitingPlayMode)
+            EditorApplication.playModeStateChanged += ResetValuesOnEditorQuit;
+#endif
+        }
+
+        private void OnDisable()
         {
             ResetScore();
-        }
-    }
+
+            //SceneController.OnSceneChange -= ResetScore;
+
+#if UNITY_EDITOR
+            EditorApplication.playModeStateChanged -= ResetValuesOnEditorQuit;
 #endif
+        }
+
+        void OnValidate()
+        {
+            if (EditorApplication.isPlaying)
+            {
+                value = Mathf.Max(value, 0);
+                OnScoreUpdated?.Invoke();
+            }
+            else
+            {
+                value = 0;
+            }
+        }
+
+        public void AddPoints(int pointsToAdd)
+        {
+            value += pointsToAdd;
+            OnScoreUpdated?.Invoke();
+        }
+
+        private void ResetScore() => value = 0;
+
+#if UNITY_EDITOR
+        private void ResetValuesOnEditorQuit(PlayModeStateChange changedState)
+        {
+            if (changedState == PlayModeStateChange.ExitingPlayMode)
+            {
+                ResetScore();
+            }
+        }
+#endif
+    }
 }

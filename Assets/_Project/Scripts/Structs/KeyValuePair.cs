@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct KeyValuePair<TKey, TValue>
+namespace Crush2048
 {
-    public TKey key;
-    public TValue value;
+    [System.Serializable]
+    public struct KeyValuePair<TKey, TValue>
+    {
+        public TKey key;
+        public TValue value;
+    }
 }

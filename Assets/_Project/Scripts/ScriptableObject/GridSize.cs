@@ -4,75 +4,78 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GridSize", menuName = "ScriptableObjects/GridSize")]
-public class GridSize : ScriptableObject
+namespace Crush2048
 {
-    [SerializeField] int rows;
-    [SerializeField] int columns;
-    [Range(0, 1)] [SerializeField] float specialTileProbabilitySpawn;
-    [SerializeField] TileProbabilityPair[] tileTypes;
-    [SerializeField] SpecialTilePropability[] specialTiles;
-
-    public int Rows => rows;
-    public int Columns => columns;
-    public float SpecialTileProbabilitySpawn => specialTileProbabilitySpawn;
-    public SpecialTilePropability[] SpecialTiles => specialTiles;
-    public TileProbabilityPair[] TileTypes => tileTypes;
-    public float ProbabilitySum { get; private set; }
-
-
-    void OnValidate()
+    [CreateAssetMenu(fileName = "GridSize", menuName = "ScriptableObjects/GridSize")]
+    public class GridSize : ScriptableObject
     {
-        ClampRowsAndColumnsCount();
-        ClampTileProbability();
-    }
+        [SerializeField] int rows;
+        [SerializeField] int columns;
+        [Range(0, 1)] [SerializeField] float specialTileProbabilitySpawn;
+        [SerializeField] TileProbabilityPair[] tileTypes;
+        [SerializeField] SpecialTilePropability[] specialTiles;
 
-    void OnEnable() => CalculateProbabilitySum();
+        public int Rows => rows;
+        public int Columns => columns;
+        public float SpecialTileProbabilitySpawn => specialTileProbabilitySpawn;
+        public SpecialTilePropability[] SpecialTiles => specialTiles;
+        public TileProbabilityPair[] TileTypes => tileTypes;
+        public float ProbabilitySum { get; private set; }
 
-    private void ClampRowsAndColumnsCount()
-    {
-        rows = Mathf.Max(1, rows);
-        columns = Mathf.Max(1, columns);
-    }
 
-    private void ClampTileProbability() // Check making Mathf.Max instead of Clamp or Add Range attribute
-    {
-        for (int i = 0; i < tileTypes.Length; i++)
+        void OnValidate()
         {
-            tileTypes[i].spawnProbability = Mathf.Clamp(tileTypes[i].spawnProbability, 0, 1);
-        }
-    }
-
-    private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.spawnProbability.CompareTo(y.spawnProbability));
-
-    private void CalculateProbabilitySum()
-    {
-        float probability = 0;
-
-        foreach (TileProbabilityPair type in tileTypes)
-        {
-            probability += type.spawnProbability;
+            ClampRowsAndColumnsCount();
+            ClampTileProbability();
         }
 
-        ProbabilitySum = probability;
-    }
+        void OnEnable() => CalculateProbabilitySum();
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(GridSize))]
-    class GridSizeEditor : Editor
-    {
-        public override void OnInspectorGUI()
+        private void ClampRowsAndColumnsCount()
         {
-            base.OnInspectorGUI();
+            rows = Mathf.Max(1, rows);
+            columns = Mathf.Max(1, columns);
+        }
 
-            GridSize gridSize = (GridSize)target;
-
-            if (!EditorGUIUtility.editingTextField)
+        private void ClampTileProbability() // Check making Mathf.Max instead of Clamp or Add Range attribute
+        {
+            for (int i = 0; i < tileTypes.Length; i++)
             {
-                gridSize.SortTileTypesByProbability();
-                gridSize.CalculateProbabilitySum();
+                tileTypes[i].spawnProbability = Mathf.Clamp(tileTypes[i].spawnProbability, 0, 1);
             }
         }
-    }
+
+        private void SortTileTypesByProbability() => Array.Sort(tileTypes, (x, y) => x.spawnProbability.CompareTo(y.spawnProbability));
+
+        private void CalculateProbabilitySum()
+        {
+            float probability = 0;
+
+            foreach (TileProbabilityPair type in tileTypes)
+            {
+                probability += type.spawnProbability;
+            }
+
+            ProbabilitySum = probability;
+        }
+
+#if UNITY_EDITOR
+        [CustomEditor(typeof(GridSize))]
+        class GridSizeEditor : Editor
+        {
+            public override void OnInspectorGUI()
+            {
+                base.OnInspectorGUI();
+
+                GridSize gridSize = (GridSize)target;
+
+                if (!EditorGUIUtility.editingTextField)
+                {
+                    gridSize.SortTileTypesByProbability();
+                    gridSize.CalculateProbabilitySum();
+                }
+            }
+        }
 #endif
+    }
 }

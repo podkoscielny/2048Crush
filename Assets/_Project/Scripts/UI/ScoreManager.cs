@@ -3,33 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ScoreManager : MonoBehaviour
+namespace Crush2048
 {
-    [SerializeField] TextMeshProUGUI currentScoreText;
-    [SerializeField] TextMeshProUGUI highscoreText;
-    [SerializeField] Score score;
-    [SerializeField] Highscore highscore;
-
-    private void OnEnable() => Score.OnScoreUpdated += UpdateScoreText;
-
-    private void OnDisable() => Score.OnScoreUpdated -= UpdateScoreText;
-
-    private void Start() => InitializeScores();
-
-    private void UpdateScoreText()
+    public class ScoreManager : MonoBehaviour
     {
-        currentScoreText.text = score.Value.ToString();
+        [SerializeField] TextMeshProUGUI currentScoreText;
+        [SerializeField] TextMeshProUGUI highscoreText;
+        [SerializeField] Score score;
+        [SerializeField] Highscore highscore;
 
-        if (score.Value > highscore.Value)
+        private void OnEnable() => Score.OnScoreUpdated += UpdateScoreText;
+
+        private void OnDisable() => Score.OnScoreUpdated -= UpdateScoreText;
+
+        private void Start() => InitializeScores();
+
+        private void UpdateScoreText()
         {
-            highscore.SetValue(score.Value);
+            currentScoreText.text = score.Value.ToString();
+
+            if (score.Value > highscore.Value)
+            {
+                highscore.SetValue(score.Value);
+                highscoreText.text = highscore.Value.ToString();
+            }
+        }
+
+        private void InitializeScores()
+        {
+            currentScoreText.text = score.Value.ToString();
             highscoreText.text = highscore.Value.ToString();
         }
-    }
-
-    private void InitializeScores()
-    {
-        currentScoreText.text = score.Value.ToString();
-        highscoreText.text = highscore.Value.ToString();
     }
 }

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public struct TileProbabilityPair
+namespace Crush2048
 {
-    [Range(0,1)] public float spawnProbability;
-    public TileType tileType;
+    [System.Serializable]
+    public struct TileProbabilityPair
+    {
+        [Range(0, 1)] public float spawnProbability;
+        public TileType tileType;
+    }
 }

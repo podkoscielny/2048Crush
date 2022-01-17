@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct SelectedTile
+namespace Crush2048
 {
-    public GameObject TileObject { get; private set; }
-    public Vector2Int TileCell { get; private set; }
-    public TilePoints TilePoints { get; private set; }
-    public TileBehaviour TileBehaviour { get; private set; }
-
-    public SelectedTile(GameObject tileObject, Vector2Int tileCell, TilePoints tilePoints, TileBehaviour tileBehaviour)
+    public struct SelectedTile
     {
-        TileObject = tileObject;
-        TileCell = tileCell;
-        TilePoints = tilePoints;
-        TileBehaviour = tileBehaviour;
+        public GameObject TileObject { get; private set; }
+        public Vector2Int TileCell { get; private set; }
+        public TilePoints TilePoints { get; private set; }
+        public TileBehaviour TileBehaviour { get; private set; }
+
+        public SelectedTile(GameObject tileObject, Vector2Int tileCell, TilePoints tilePoints, TileBehaviour tileBehaviour)
+        {
+            TileObject = tileObject;
+            TileCell = tileCell;
+            TilePoints = tilePoints;
+            TileBehaviour = tileBehaviour;
+        }
     }
 }

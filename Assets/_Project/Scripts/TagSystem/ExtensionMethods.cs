@@ -1,43 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tags = TagSystem.Tags;
+using Tags = TagSystem.TagSystem.Tags;
 
-public static class ExtensionMethods
+namespace TagSystem
 {
-    public static bool HasTag(this GameObject gameObject, Tags tag)
+    public static class ExtensionMethods
     {
-        bool hasTag = false;
-
-        if (gameObject.TryGetComponent(out TagManager tagManager))
+        public static bool HasTag(this GameObject gameObject, Tags tag)
         {
-            hasTag = tagManager.HasTag(tag);
+            bool hasTag = false;
+
+            if (gameObject.TryGetComponent(out TagManager tagManager))
+            {
+                hasTag = tagManager.HasTag(tag);
+            }
+
+            return hasTag;
         }
 
-        return hasTag;
-    }
-
-    public static bool HasTag(this Collision2D collision, Tags tag)
-    {
-        bool hasTag = false;
-
-        if (collision.gameObject.TryGetComponent(out TagManager tagManager))
+        public static bool HasTag(this Collision2D collision, Tags tag)
         {
-            hasTag = tagManager.HasTag(tag);
+            bool hasTag = false;
+
+            if (collision.gameObject.TryGetComponent(out TagManager tagManager))
+            {
+                hasTag = tagManager.HasTag(tag);
+            }
+
+            return hasTag;
         }
 
-        return hasTag;
-    }
-
-    public static bool HasTag(this Collider2D collision, Tags tag)
-    {
-        bool hasTag = false;
-
-        if (collision.TryGetComponent(out TagManager tagManager))
+        public static bool HasTag(this Collider2D collision, Tags tag)
         {
-            hasTag = tagManager.HasTag(tag);
-        }
+            bool hasTag = false;
 
-        return hasTag;
+            if (collision.TryGetComponent(out TagManager tagManager))
+            {
+                hasTag = tagManager.HasTag(tag);
+            }
+
+            return hasTag;
+        }
     }
 }

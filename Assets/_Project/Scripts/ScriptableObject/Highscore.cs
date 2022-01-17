@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Highscore", menuName = "ScriptableObjects/Highscore")]
-public class Highscore : ScriptableObject
+namespace Crush2048
 {
-    public int Value => _value;
+    [CreateAssetMenu(fileName = "Highscore", menuName = "ScriptableObjects/Highscore")]
+    public class Highscore : ScriptableObject
+    {
+        public int Value => _value;
 
-    private int _value = 0;
+        private int _value = 0;
 
-    public void SetValue(int value) => _value = value;
+        public void SetValue(int value) => _value = value;
+    }
 }
