@@ -11,14 +11,10 @@ namespace Crush2048
     {
         [SerializeField] int rows;
         [SerializeField] int columns;
-        [Range(0, 1)] [SerializeField] float specialTileProbabilitySpawn;
         [SerializeField] TileProbabilityPair[] tileTypes;
-        [SerializeField] SpecialTilePropability[] specialTiles;
 
         public int Rows => rows;
         public int Columns => columns;
-        public float SpecialTileProbabilitySpawn => specialTileProbabilitySpawn;
-        public SpecialTilePropability[] SpecialTiles => specialTiles;
         public TileProbabilityPair[] TileTypes => tileTypes;
         public float ProbabilitySum { get; private set; }
 
