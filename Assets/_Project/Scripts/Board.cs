@@ -58,45 +58,67 @@ namespace Crush2048
             _tileMoveSequence.Append(firstSelectedTransform.DODynamicLookAt(secondSelectedTransform.position, 0.1f));
             _tileMoveSequence.Append(firstSelectedTransform.DOMove(secondSelectedTransform.position, 0.15f).SetEase(Ease.InBack));
             _tileMoveSequence.AppendCallback(() => tileBehaviour(firstSelectedTile, secondSelectedTile));
-            _tileMoveSequence.AppendCallback(() => SpawnMissingTile(firstSelectedTile.TileCell));
+            _tileMoveSequence.AppendCallback(SpawnMissingTile);
             _tileMoveSequence.AppendCallback(CheckPossibleMoves);
             _tileMoveSequence.AppendCallback(() => OnTileMatchEnded?.Invoke());
         }
 
-        private void SpawnMissingTile(Vector2Int disabledTileGridCell)
+        private void SpawnMissingTile()
         {
-            Vector2Int emptyTileCell = gridSystem.GetEmptyTileCell();
+            for (int i = 0; i < gridSystem.GridSize.Columns; i++)
+            {
+                List<Vector2Int> emptyCellsInColumn = new List<Vector2Int>();
+                List<TileToCellPair> tilesToBeAssigned = new List<TileToCellPair>();
 
-            if (emptyTileCell.x < 0 || emptyTileCell.y < 0) return;
+                for (int j = 0; j < gridSystem.GridSize.Rows; j++)
+                {
+                    if (gridSystem.TilesAtGridCells[j, i] == null) emptyCellsInColumn.Add(new Vector2Int(j, i));
+                }
 
-            Vector2Int firstCellInColumn = new Vector2Int(0, emptyTileCell.y);
-            Vector3 firstGridCellPosition = gridSystem.GridCells[0, emptyTileCell.y];
-            Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f), tilePrefab.transform.position.z);
+                for (int j = 0; j < gridSystem.GridSize.Rows; j++)
+                {
+                    GameObject tile = gridSystem.TilesAtGridCells[j, i];
 
-            GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
-            spawnedTile.transform.position = spawnPosition;
-            spawnedTile.transform.DOMoveY(firstGridCellPosition.y, 0.2f).SetDelay(0.1f);
+                    if (tile != null)
+                    {
+                        List<Vector2Int> emptyCellsBeneath = emptyCellsInColumn.FindAll(cell => cell.x > j);
 
-            MoveTilesDown(emptyTileCell);
+                        if (emptyCellsBeneath.Count == 0) continue;
+                        
+                        Vector2Int desiredCell = new Vector2Int(j + emptyCellsBeneath.Count, i);
+                        float desiredYPosition = gridSystem.GridCells[desiredCell.x, desiredCell.y].y;
 
-            gridSystem.AssignTileToCell(spawnedTile, firstCellInColumn);
+                        tile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f);
+                        tilesToBeAssigned.Add(new TileToCellPair(tile, desiredCell));
+                    }
+                }
+
+                Vector3 firstGridCellPosition = gridSystem.GridCells[0, i];
+
+                for (int j = 0; j < emptyCellsInColumn.Count; j++)
+                {
+                    GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
+
+                    Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f * (j + 1)), tilePrefab.transform.position.z);
+                    spawnedTile.transform.position = spawnPosition;
+
+                    Vector2Int desiredCell = new Vector2Int(emptyCellsInColumn.Count - 1 - j, i);
+                    float desiredYPosition = gridSystem.GridCells[desiredCell.x, desiredCell.y].y;
+                    spawnedTile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f);
+
+                    tilesToBeAssigned.Add(new TileToCellPair(spawnedTile, desiredCell));
+                }
+
+                AssignTilesToCells(tilesToBeAssigned);
+                emptyCellsInColumn.Clear();
+            }
         }
 
-        private void MoveTilesDown(Vector2Int disabledTileGridCell)
+        private void AssignTilesToCells(List<TileToCellPair> tilesToBeAssigned)
         {
-            int columnIndex = disabledTileGridCell.y;
-
-            if (disabledTileGridCell.x == 0) return;
-
-            for (int i = disabledTileGridCell.x - 1; i >= 0; i--)
+            foreach (TileToCellPair pair in tilesToBeAssigned)
             {
-                Vector2Int nextGridCell = new Vector2Int(i + 1, columnIndex);
-                float desiredPositionY = gridSystem.GridCells[i + 1, columnIndex].y;
-
-                GameObject tileToBeMoved = gridSystem.TilesAtGridCells[i, columnIndex];
-                tileToBeMoved.transform.DOMoveY(desiredPositionY, 0.2f);
-
-                gridSystem.AssignTileToCell(tileToBeMoved, nextGridCell);
+                gridSystem.AssignTileToCell(pair.Tile, pair.Cell);
             }
         }
 

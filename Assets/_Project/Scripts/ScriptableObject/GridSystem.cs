@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -30,19 +32,19 @@ namespace Crush2048
 
         public void DeAssignTileFromCell(Vector2Int cell) => TilesAtGridCells[cell.x, cell.y] = null;
 
-        public Vector2Int GetEmptyTileCell()
+        public List<Vector2Int> GetEmptyTileCells()
         {
-            Vector2Int emptyCell = new Vector2Int(-1, -1);
+            List<Vector2Int> emptyCells = new List<Vector2Int>();
 
             for (int i = 0; i < gridSize.Rows; i++)
             {
                 for (int j = 0; j < gridSize.Columns; j++)
                 {
-                    if (TilesAtGridCells[i, j] == null) return new Vector2Int(i, j);
+                    if (TilesAtGridCells[i, j] == null) emptyCells.Add(new Vector2Int(i, j));
                 }
             }
 
-            return emptyCell;
+            return emptyCells;
         }
 
         public void AssignPointsWorthToCell(int pointsWorth, Vector2Int cell) => PointsWorthAtGridCells[cell.x, cell.y] = pointsWorth;
