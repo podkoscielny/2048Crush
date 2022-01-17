@@ -7,12 +7,20 @@ namespace Crush2048
 {
     public class TileAppearance : MonoBehaviour
     {
+        [Header("3D UI")]
         [SerializeField] TextMeshPro tileText;
         [SerializeField] TextMeshPro backgroundText;
+
+        [Header("Components attached to Tile")]
         [SerializeField] BoxCollider tileCollider;
         [SerializeField] Renderer tileRenderer;
-        [SerializeField] GridSystem gridSystem;
         [SerializeField] TilePoints tilePoints;
+        [SerializeField] TileTypePicker tileTypePicker;
+
+        [Header("Systems")]
+        [SerializeField] GridSystem gridSystem;
+
+        [Header("Gradients")]
         [SerializeField] Gradient tileBackgroundGradient;
         [SerializeField] Gradient tileTextGradient;
 
@@ -24,10 +32,15 @@ namespace Crush2048
         private void OnEnable()
         {
             tilePoints.OnPointsUpdated += UpdateTile;
+            tileTypePicker.OnTileTypePicked += SetTileUI;
             InitializeTileType();
         }
 
-        private void OnDisable() => tilePoints.OnPointsUpdated -= UpdateTile;
+        private void OnDisable()
+        {
+            tilePoints.OnPointsUpdated -= UpdateTile;
+            tileTypePicker.OnTileTypePicked -= SetTileUI;
+        }
 
         private void Awake() => InitializeTileSize();
 
@@ -43,6 +56,18 @@ namespace Crush2048
 
             UpdateTileText();
             SetTileColor();
+        }
+
+        private void SetTileUI(TileType tileType)
+        {
+            if (tileType.IsSpecial)
+            {
+                tileText.gameObject.SetActive(false);
+            }
+            else
+            {
+                tileText.gameObject.SetActive(true);
+            }
         }
 
         private void UpdateTileText() => tileText.text = tilePoints.PointsWorth.ToString();

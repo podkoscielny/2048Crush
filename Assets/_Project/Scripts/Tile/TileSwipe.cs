@@ -8,7 +8,7 @@ namespace Crush2048
 {
     public class TileSwipe : MonoBehaviour
     {
-        public static event Action<SelectedTile, SelectedTile> OnTilesMatch;
+        public static event Action<SelectedTile, SelectedTile, BehaviourDelegate> OnTilesMatch;
 
         [SerializeField] GridSystem gridSystem;
         [SerializeField] TilePoints tilePoints;
@@ -46,6 +46,11 @@ namespace Crush2048
         {
             if (!CanTileBeSwiped()) return;
 
+            CheckTilesMatch();
+        }
+
+        private void CheckTilesMatch()
+        {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
             _tileToBeSwipedInto = new SelectedTile(gameObject, tileCell, tilePoints, tileBehaviour);
 
@@ -54,7 +59,19 @@ namespace Crush2048
 
             if (areTilesClose && (!HasDefaultBehaviour() || (HasDefaultBehaviour() && areTilesWorthSame)))
             {
-                OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto);
+                if (HasDefaultBehaviour() && areTilesWorthSame)
+                {
+                    OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, _tileToBeSwipedInto.TileBehaviour.Behaviour);
+                }
+                else if (!HasDefaultBehaviour() && selectedTile.TileBehaviour.BehaviourEnum == Behaviours.Default)
+                {
+                    OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, tileBehaviour.Behaviour);
+                }
+                else if(HasDefaultBehaviour() && selectedTile.TileBehaviour.BehaviourEnum != Behaviours.Default)
+                {
+                    OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, selectedTile.TileBehaviour.Behaviour);
+                }
+                else return;
             }
             else
                 SetNotMatchedTilesProperties();

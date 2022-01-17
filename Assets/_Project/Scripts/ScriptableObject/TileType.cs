@@ -15,6 +15,8 @@ namespace Crush2048
         [SerializeField] Behaviours tileBehaviour;
 
         public int PointsWorth => pointsWorth;
+        public bool IsSpecial => isSpecial;
+        public Behaviours TileBehaviour => tileBehaviour;
 
         private const int MINIMUM_POINTS_WORTH = 0;
 
@@ -48,13 +50,5 @@ namespace Crush2048
             }
         }
 #endif
-    }
-
-    public enum Behaviours
-    {
-        Default,
-        MultiplyAnyTile,
-        MatchAnyTile,
-        BombNearbyTiles
     }
 }

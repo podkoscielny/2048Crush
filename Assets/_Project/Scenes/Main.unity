@@ -2156,7 +2156,6 @@ MonoBehaviour:
   gridRenderer: {fileID: 1824453147}
   tilePrefab: {fileID: 4610248557676912175, guid: 22925b6ec069b98429de4574df8063f0, type: 3}
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
-  score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
 --- !u!1 &1943868898
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,7 +45,7 @@ namespace Crush2048
             OnTilesReverse?.Invoke();
         }
 
-        private void MatchTiles(SelectedTile tileToBeDestroyed, SelectedTile tileToBeUpdated)
+        private void MatchTiles(SelectedTile tileToBeDestroyed, SelectedTile tileToBeUpdated, BehaviourDelegate tileBehaviour)
         {
             Transform tileToBeUpdatedTransform = tileToBeUpdated.TileObject.transform;
 
@@ -57,7 +57,7 @@ namespace Crush2048
             _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdatedTransform.position, 0.1f));
             _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdatedTransform.position, 0.15f).SetEase(Ease.InBack));
             _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
-            _tileMoveSequence.AppendCallback(() => tileToBeUpdated.TileBehaviour.Behaviour(_tileMoveSequence, tileToBeDestroyed));
+            _tileMoveSequence.AppendCallback(() => tileBehaviour(_tileMoveSequence, tileToBeDestroyed));
             _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
             _tileMoveSequence.AppendCallback(CheckPossibleMoves);
             _tileMoveSequence.AppendCallback(() => OnTileMatchEnded?.Invoke());

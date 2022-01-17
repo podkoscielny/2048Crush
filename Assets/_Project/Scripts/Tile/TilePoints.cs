@@ -8,6 +8,7 @@ namespace Crush2048
     {
         public event Action OnPointsUpdated;
 
+        [SerializeField] TileTypePicker tileTypePicker;
         [SerializeField] GridSystem gridSystem;
 
         public int PointsWorth
@@ -27,42 +28,26 @@ namespace Crush2048
         {
             Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
             Board.OnTilesReverse += ReversePoints;
-            InitializePoints();
+            tileTypePicker.OnTileTypePicked += InitializePoints;
         }
 
         private void OnDisable()
         {
             Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
             Board.OnTilesReverse -= ReversePoints;
+            tileTypePicker.OnTileTypePicked -= InitializePoints;
         }
 
         public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
 
         public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
 
-        private void InitializePoints() => PointsWorth = GetRandomPointsWorth();
+        private void InitializePoints(TileType tileType) => PointsWorth = tileType.PointsWorth;
 
         private void ReversePoints()
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
             PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
-        }
-
-        private int GetRandomPointsWorth()
-        {
-            TileProbabilityPair[] tileTypePairs = gridSystem.GridSize.TileTypes;
-            float probabilitySum = gridSystem.GridSize.ProbabilitySum;
-            float randomProbability = Random.Range(0, probabilitySum);
-            float subtractFromSum = 0;
-
-            for (int i = 0; i < tileTypePairs.Length; i++)
-            {
-                if (randomProbability - subtractFromSum <= tileTypePairs[i].spawnProbability) return tileTypePairs[i].tileType.PointsWorth;
-
-                subtractFromSum -= tileTypePairs[i].spawnProbability;
-            }
-
-            return tileTypePairs[tileTypePairs.Length - 1].tileType.PointsWorth;
         }
 
         private void AssignPointsWorthToCell()
