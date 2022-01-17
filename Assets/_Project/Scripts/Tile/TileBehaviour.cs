@@ -10,6 +10,7 @@ namespace Crush2048
     {
         [SerializeField] Score score;
         [SerializeField] ObjectPool objectPool;
+        [SerializeField] GridSystem gridSystem;
         [SerializeField] TilePoints tilePoints;
         [SerializeField] TileTypePicker tileTypePicker;
 
@@ -17,33 +18,63 @@ namespace Crush2048
         public BehaviourDelegate Behaviour { get; private set; }
         public Behaviours BehaviourEnum { get; private set; } = Behaviours.Default;
 
+        private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
+        private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
+
         private void OnEnable() => tileTypePicker.OnTileTypePicked += CacheTileBehaviour;
 
         private void OnDisable() => tileTypePicker.OnTileTypePicked -= CacheTileBehaviour;
 
-        private void DefaultBehaviour(Sequence tileMoveSequence, SelectedTile tileToBeDestroyed)
+        private void DefaultBehaviour(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
             tilePoints.MultiplyPoints(2);
             score.AddPoints(tilePoints.PointsWorth);
+
+            gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
+            objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
+
+            MakePunchScale(secondSelectedTile.TileObject.transform);
         }
 
-        private void MatchAnyTile(Sequence tileMoveSequence, SelectedTile tileToBeDestroyed)
+        private void MatchAnyTile(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
-            Debug.Log("Blank");
+            if (secondSelectedTile.TileBehaviour.IsSpecial)
+            {
+                Transform firstSelectedTransform = firstSelectedTile.TileObject.transform;
+
+                firstSelectedTransform.rotation = _initialRotation;
+
+                gridSystem.AssignTileToCell(firstSelectedTile.TileObject, secondSelectedTile.TileCell);
+                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
+                objectPool.AddToPool(Tags.Tile, gameObject);
+
+                MakePunchScale(firstSelectedTransform);
+            }
+            else
+            {
+                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
+                objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
+
+                MakePunchScale(secondSelectedTile.TileObject.transform);
+            }
         }
 
-        private void MultiplyTilePoints(Sequence tileMoveSequence, SelectedTile tileToBeDestroyed)
+        private void MultiplyTilePoints(SelectedTile tileToBeDestroyed, SelectedTile secondSelectedTile)
         {
 
         }
 
-        private void BombNearbyTiles(Sequence tileMoveSequence, SelectedTile tileToBeDestroyed)
+        private void BombNearbyTiles(SelectedTile tileToBeDestroyed, SelectedTile secondSelectedTile)
         {
 
         }
+
+        private void MakePunchScale(Transform tileTransform) => tileTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1);
 
         private void CacheTileBehaviour(TileType tileType)
         {
+            IsSpecial = tileType.IsSpecial;
+
             if (!tileType.IsSpecial)
             {
                 Behaviour = DefaultBehaviour;
@@ -82,5 +113,5 @@ namespace Crush2048
         BombNearbyTiles
     }
 
-    public delegate void BehaviourDelegate(Sequence tileMoveSequence, SelectedTile tileToBeDestroyed);
+    public delegate void BehaviourDelegate(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile);
 }

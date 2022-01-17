@@ -28,6 +28,23 @@ namespace Crush2048
 
         public void AssignTileToCell(GameObject tile, Vector2Int cell) => TilesAtGridCells[cell.x, cell.y] = tile;
 
+        public void DeAssignTileFromCell(Vector2Int cell) => TilesAtGridCells[cell.x, cell.y] = null;
+
+        public Vector2Int GetEmptyTileCell()
+        {
+            Vector2Int emptyCell = new Vector2Int(-1, -1);
+
+            for (int i = 0; i < gridSize.Rows; i++)
+            {
+                for (int j = 0; j < gridSize.Columns; j++)
+                {
+                    if (TilesAtGridCells[i, j] == null) return new Vector2Int(i, j);
+                }
+            }
+
+            return emptyCell;
+        }
+
         public void AssignPointsWorthToCell(int pointsWorth, Vector2Int cell) => PointsWorthAtGridCells[cell.x, cell.y] = pointsWorth;
 
         public Vector2Int GetTileGridCell(GameObject tileObject)

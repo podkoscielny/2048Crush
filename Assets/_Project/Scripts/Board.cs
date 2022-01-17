@@ -45,38 +45,39 @@ namespace Crush2048
             OnTilesReverse?.Invoke();
         }
 
-        private void MatchTiles(SelectedTile tileToBeDestroyed, SelectedTile tileToBeUpdated, BehaviourDelegate tileBehaviour)
+        private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
         {
-            Transform tileToBeUpdatedTransform = tileToBeUpdated.TileObject.transform;
+            Transform firstSelectedTransform = firstSelectedTile.TileObject.transform;
+            Transform secondSelectedTransform = secondSelectedTile.TileObject.transform;
 
             CanTilesBeClicked = false;
             OnAssignPointsWorthToCells?.Invoke();
             gridSystem.CachePreviousPoints();
 
             _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
-            _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DODynamicLookAt(tileToBeUpdatedTransform.position, 0.1f));
-            _tileMoveSequence.Append(tileToBeDestroyed.TileObject.transform.DOMove(tileToBeUpdatedTransform.position, 0.15f).SetEase(Ease.InBack));
-            _tileMoveSequence.AppendCallback(() => MoveTileToPool(tileToBeDestroyed.TileObject));
-            _tileMoveSequence.AppendCallback(() => tileBehaviour(_tileMoveSequence, tileToBeDestroyed));
-            _tileMoveSequence.AppendCallback(() => SpawnMissingTile(tileToBeDestroyed.TileCell));
+            _tileMoveSequence.Append(firstSelectedTransform.DODynamicLookAt(secondSelectedTransform.position, 0.1f));
+            _tileMoveSequence.Append(firstSelectedTransform.DOMove(secondSelectedTransform.position, 0.15f).SetEase(Ease.InBack));
+            _tileMoveSequence.AppendCallback(() => tileBehaviour(firstSelectedTile, secondSelectedTile));
+            _tileMoveSequence.AppendCallback(() => SpawnMissingTile(firstSelectedTile.TileCell));
             _tileMoveSequence.AppendCallback(CheckPossibleMoves);
             _tileMoveSequence.AppendCallback(() => OnTileMatchEnded?.Invoke());
-            _tileMoveSequence.Append(tileToBeUpdatedTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1));
         }
-
-        private void MoveTileToPool(GameObject tileToBeDisabled) => objectPool.AddToPool(Tags.Tile, tileToBeDisabled);
 
         private void SpawnMissingTile(Vector2Int disabledTileGridCell)
         {
-            Vector2Int firstCellInColumn = new Vector2Int(0, disabledTileGridCell.y);
-            Vector3 firstGridCellPosition = gridSystem.GridCells[0, disabledTileGridCell.y];
+            Vector2Int emptyTileCell = gridSystem.GetEmptyTileCell();
+
+            if (emptyTileCell.x < 0 || emptyTileCell.y < 0) return;
+
+            Vector2Int firstCellInColumn = new Vector2Int(0, emptyTileCell.y);
+            Vector3 firstGridCellPosition = gridSystem.GridCells[0, emptyTileCell.y];
             Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f), tilePrefab.transform.position.z);
 
             GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
             spawnedTile.transform.position = spawnPosition;
             spawnedTile.transform.DOMoveY(firstGridCellPosition.y, 0.2f).SetDelay(0.1f);
 
-            MoveTilesDown(disabledTileGridCell);
+            MoveTilesDown(emptyTileCell);
 
             gridSystem.AssignTileToCell(spawnedTile, firstCellInColumn);
         }

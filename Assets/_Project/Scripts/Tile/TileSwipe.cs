@@ -56,28 +56,27 @@ namespace Crush2048
 
             bool areTilesClose = gridSystem.AreTilesClose(selectedTile.TileCell, _tileToBeSwipedInto.TileCell);
             bool areTilesWorthSame = selectedTile.TilePoints.PointsWorth == _tileToBeSwipedInto.TilePoints.PointsWorth;
+            bool isTileSpecial = tileBehaviour.IsSpecial;
+            bool isSelectedTileSpecial = selectedTile.TileBehaviour.IsSpecial;
 
-            if (areTilesClose && (!HasDefaultBehaviour() || (HasDefaultBehaviour() && areTilesWorthSame)))
+            if (areTilesClose)
             {
-                if (HasDefaultBehaviour() && areTilesWorthSame)
-                {
-                    OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, _tileToBeSwipedInto.TileBehaviour.Behaviour);
-                }
-                else if (!HasDefaultBehaviour() && selectedTile.TileBehaviour.BehaviourEnum == Behaviours.Default)
+                if (!isTileSpecial && !isSelectedTileSpecial && areTilesWorthSame)
                 {
                     OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, tileBehaviour.Behaviour);
                 }
-                else if(HasDefaultBehaviour() && selectedTile.TileBehaviour.BehaviourEnum != Behaviours.Default)
+                else if (isTileSpecial && !isSelectedTileSpecial)
+                {
+                    OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, tileBehaviour.Behaviour);
+                }
+                else if (!isTileSpecial && isSelectedTileSpecial)
                 {
                     OnTilesMatch?.Invoke(selectedTile, _tileToBeSwipedInto, selectedTile.TileBehaviour.Behaviour);
                 }
-                else return;
+                else
+                    SetNotMatchedTilesProperties();
             }
-            else
-                SetNotMatchedTilesProperties();
         }
-
-        private bool HasDefaultBehaviour() => tileBehaviour.BehaviourEnum == Behaviours.Default;
 
         private bool CanTileBeSwiped() => _isPointerDown && selectedTile.TileObject != null && selectedTile.TileObject != gameObject && _tileToBeSwipedInto.TileObject == null;
 
