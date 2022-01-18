@@ -58,12 +58,12 @@ namespace Crush2048
             _tileMoveSequence.Append(firstSelectedTransform.DODynamicLookAt(secondSelectedTransform.position, 0.1f));
             _tileMoveSequence.Append(firstSelectedTransform.DOMove(secondSelectedTransform.position, 0.15f).SetEase(Ease.InBack));
             _tileMoveSequence.AppendCallback(() => tileBehaviour(firstSelectedTile, secondSelectedTile));
-            _tileMoveSequence.AppendCallback(SpawnMissingTile);
+            _tileMoveSequence.AppendCallback(SpawnMissingTiles);
             _tileMoveSequence.AppendCallback(CheckPossibleMoves);
             _tileMoveSequence.AppendCallback(() => OnTileMatchEnded?.Invoke());
         }
 
-        private void SpawnMissingTile()
+        private void SpawnMissingTiles()
         {
             for (int i = 0; i < gridSystem.GridSize.Columns; i++)
             {

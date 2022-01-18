@@ -33,7 +33,7 @@ namespace Crush2048
             gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
             objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
 
-            MakePunchScale(secondSelectedTile.TileObject.transform);
+            DoPunchScale(secondSelectedTile.TileObject.transform);
         }
 
         private void MatchAnyTile(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
@@ -48,28 +48,61 @@ namespace Crush2048
                 gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
                 objectPool.AddToPool(Tags.Tile, gameObject);
 
-                MakePunchScale(firstSelectedTransform);
+                DoPunchScale(firstSelectedTransform);
             }
             else
             {
                 gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
                 objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
 
-                MakePunchScale(secondSelectedTile.TileObject.transform);
+                DoPunchScale(secondSelectedTile.TileObject.transform);
             }
         }
 
-        private void MultiplyTilePoints(SelectedTile tileToBeDestroyed, SelectedTile secondSelectedTile)
+        private void MultiplyTilePoints(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
 
         }
 
-        private void BombNearbyTiles(SelectedTile tileToBeDestroyed, SelectedTile secondSelectedTile)
+        private void BombNearbyTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
+            Vector2Int specialTileCell = secondSelectedTile.TileBehaviour.IsSpecial ? secondSelectedTile.TileCell : firstSelectedTile.TileCell;
+            List <Vector2Int> nearbyTiles = GetNearbyTileCells(specialTileCell);
 
+            MoveNearbyTilesToPool(nearbyTiles);
         }
 
-        private void MakePunchScale(Transform tileTransform) => tileTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1);
+        private void DoPunchScale(Transform tileTransform) => tileTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1);
+
+        private List<Vector2Int> GetNearbyTileCells(Vector2Int tileCell)
+        {
+            List<Vector2Int> nearbyTiles = new List<Vector2Int>() 
+            { 
+                tileCell, 
+                new Vector2Int(tileCell.x + 1, tileCell.y) ,
+                new Vector2Int(tileCell.x - 1, tileCell.y) ,
+                new Vector2Int(tileCell.x, tileCell.y + 1) ,
+                new Vector2Int(tileCell.x, tileCell.y - 1) ,
+            };
+
+            return nearbyTiles;
+        }
+
+        private void MoveNearbyTilesToPool(List<Vector2Int> nearbyTiles)
+        {
+            int rows = gridSystem.GridSize.Rows;
+            int columns = gridSystem.GridSize.Columns;
+
+            foreach (Vector2Int cell in nearbyTiles)
+            {
+                if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
+
+                GameObject tile = gridSystem.TilesAtGridCells[cell.x, cell.y];
+
+                gridSystem.DeAssignTileFromCell(cell);
+                objectPool.AddToPool(Tags.Tile, tile);
+            }
+        }
 
         private void CacheTileBehaviour(TileType tileType)
         {
