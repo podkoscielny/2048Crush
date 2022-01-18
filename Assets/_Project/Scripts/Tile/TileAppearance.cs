@@ -60,7 +60,7 @@ namespace Crush2048
 
         private void SetTileUI(TileType tileType)
         {
-            if (tileType.IsSpecial)
+            if (tileType.isSpecial)
             {
                 tileText.gameObject.SetActive(false);
             }

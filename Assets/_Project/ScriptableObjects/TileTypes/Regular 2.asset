@@ -15,3 +15,4 @@ MonoBehaviour:
   pointsWorth: 2
   isSpecial: 0
   image: {fileID: 0}
+  tileBehaviour: 0

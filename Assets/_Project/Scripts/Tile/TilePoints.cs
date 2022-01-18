@@ -42,7 +42,7 @@ namespace Crush2048
 
         public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
 
-        private void InitializePoints(TileType tileType) => PointsWorth = tileType.PointsWorth;
+        private void InitializePoints(TileType tileType) => PointsWorth = tileType.pointsWorth;
 
         private void ReversePoints()
         {

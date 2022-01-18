@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Blank
   m_EditorClassIdentifier: 
   pointsWorth: 0
-  isSpecial: 0
+  isSpecial: 1
   image: {fileID: 0}
-  tileBehaviour: 0
+  tileBehaviour: 2

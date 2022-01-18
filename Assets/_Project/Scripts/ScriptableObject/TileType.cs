@@ -9,14 +9,10 @@ namespace Crush2048
     [CreateAssetMenu(fileName = "TileType", menuName = "ScriptableObjects/TileType")]
     public class TileType : ScriptableObject
     {
-        [SerializeField] int pointsWorth;
-        [SerializeField] bool isSpecial;
-        [SerializeField] Image image;
-        [SerializeField] Behaviours tileBehaviour;
-
-        public int PointsWorth => pointsWorth;
-        public bool IsSpecial => isSpecial;
-        public Behaviours TileBehaviour => tileBehaviour;
+        public int pointsWorth;
+        public bool isSpecial;
+        public Image image;
+        public Behaviours tileBehaviour;
 
         private const int MINIMUM_POINTS_WORTH = 0;
 
@@ -29,22 +25,37 @@ namespace Crush2048
         [CustomEditor(typeof(TileType))]
         class TileTypeEditor : Editor
         {
+            SerializedProperty _isSpecial;
+            SerializedProperty _image;
+            SerializedProperty _pointsWorth;
+            SerializedProperty _tileBehaviour;
+
+            private void OnEnable()
+            {
+                _isSpecial = serializedObject.FindProperty("isSpecial");
+                _image = serializedObject.FindProperty("image");
+                _pointsWorth = serializedObject.FindProperty("pointsWorth");
+                _tileBehaviour = serializedObject.FindProperty("tileBehaviour");
+            }
+
             public override void OnInspectorGUI()
             {
-                TileType tileType = (TileType)target;
+                serializedObject.Update();
 
-                tileType.isSpecial = EditorGUILayout.Toggle("Is Special", tileType.isSpecial);
+                EditorGUILayout.PropertyField(_isSpecial);
 
-                if (tileType.isSpecial)
+                if(_isSpecial.boolValue)
                 {
-                    tileType.image = (Image)EditorGUILayout.ObjectField("Image", tileType.image, typeof(Image), false);
-                    tileType.tileBehaviour = (Behaviours)EditorGUILayout.EnumPopup("Tile Behaviour", tileType.tileBehaviour);
+                    EditorGUILayout.PropertyField(_image);
+                    EditorGUILayout.PropertyField(_tileBehaviour);
                 }
                 else
                 {
-                    tileType.pointsWorth = EditorGUILayout.DelayedIntField("Points Worth", tileType.pointsWorth);
-                    tileType.tileBehaviour = Behaviours.Default;
+                    EditorGUILayout.PropertyField(_pointsWorth);
+                    _tileBehaviour.enumValueIndex = (int)Behaviours.Default;
                 }
+
+                serializedObject.ApplyModifiedProperties();
             }
         }
 #endif

@@ -126,15 +126,15 @@ namespace Crush2048
 
         private void CacheTileBehaviour(TileType tileType)
         {
-            IsSpecial = tileType.IsSpecial;
+            IsSpecial = tileType.isSpecial;
 
-            if (!tileType.IsSpecial)
+            if (!tileType.isSpecial)
             {
                 Behaviour = DefaultBehaviour;
                 return;
             }
 
-            switch (tileType.TileBehaviour)
+            switch (tileType.tileBehaviour)
             {
                 case Behaviours.Default:
                     Behaviour = DefaultBehaviour;
