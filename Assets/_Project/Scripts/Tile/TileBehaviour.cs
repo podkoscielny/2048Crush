@@ -27,8 +27,7 @@ namespace Crush2048
 
         private void DefaultBehaviour(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
-            tilePoints.MultiplyPoints(2);
-            score.AddPoints(tilePoints.PointsWorth);
+            UpdateScore(tilePoints, 2);
 
             gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
             objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
@@ -61,7 +60,27 @@ namespace Crush2048
 
         private void MultiplyTilePoints(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
+            if (secondSelectedTile.TileBehaviour.IsSpecial)
+            {
+                Transform firstSelectedTransform = firstSelectedTile.TileObject.transform;
 
+                firstSelectedTransform.rotation = _initialRotation;
+
+                gridSystem.AssignTileToCell(firstSelectedTile.TileObject, secondSelectedTile.TileCell);
+                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
+                objectPool.AddToPool(Tags.Tile, gameObject);
+
+                UpdateScore(firstSelectedTile.TilePoints, 4);
+                DoPunchScale(firstSelectedTransform);
+            }
+            else
+            {
+                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
+                objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
+
+                UpdateScore(secondSelectedTile.TilePoints, 4);
+                DoPunchScale(secondSelectedTile.TileObject.transform);
+            }
         }
 
         private void BombNearbyTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
@@ -73,6 +92,12 @@ namespace Crush2048
         }
 
         private void DoPunchScale(Transform tileTransform) => tileTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1);
+
+        private void UpdateScore(TilePoints tilePointsToBeUpdated, int multiplier)
+        {
+            tilePointsToBeUpdated.MultiplyPoints(multiplier);
+            score.AddPoints(tilePointsToBeUpdated.PointsWorth);
+        }
 
         private List<Vector2Int> GetNearbyTileCells(Vector2Int tileCell)
         {
