@@ -27,11 +27,8 @@ namespace Crush2048
 
         private void DefaultBehaviour(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
+            MoveTileToPool(firstSelectedTile.TileCell, firstSelectedTile.TileObject);
             UpdateScore(tilePoints, 2);
-
-            gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
-            objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
-
             DoPunchScale(secondSelectedTile.TileObject.transform);
         }
 
@@ -40,20 +37,16 @@ namespace Crush2048
             if (secondSelectedTile.TileBehaviour.IsSpecial)
             {
                 Transform firstSelectedTransform = firstSelectedTile.TileObject.transform;
-
                 firstSelectedTransform.rotation = _initialRotation;
 
                 gridSystem.AssignTileToCell(firstSelectedTile.TileObject, secondSelectedTile.TileCell);
-                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
-                objectPool.AddToPool(Tags.Tile, gameObject);
+                MoveTileToPool(firstSelectedTile.TileCell, gameObject);
 
                 DoPunchScale(firstSelectedTransform);
             }
             else
             {
-                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
-                objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
-
+                MoveTileToPool(firstSelectedTile.TileCell, firstSelectedTile.TileObject);
                 DoPunchScale(secondSelectedTile.TileObject.transform);
             }
         }
@@ -63,20 +56,17 @@ namespace Crush2048
             if (secondSelectedTile.TileBehaviour.IsSpecial)
             {
                 Transform firstSelectedTransform = firstSelectedTile.TileObject.transform;
-
                 firstSelectedTransform.rotation = _initialRotation;
 
                 gridSystem.AssignTileToCell(firstSelectedTile.TileObject, secondSelectedTile.TileCell);
-                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
-                objectPool.AddToPool(Tags.Tile, gameObject);
+                MoveTileToPool(firstSelectedTile.TileCell, gameObject);
 
                 UpdateScore(firstSelectedTile.TilePoints, 4);
                 DoPunchScale(firstSelectedTransform);
             }
             else
             {
-                gridSystem.DeAssignTileFromCell(firstSelectedTile.TileCell);
-                objectPool.AddToPool(Tags.Tile, firstSelectedTile.TileObject);
+                MoveTileToPool(firstSelectedTile.TileCell, firstSelectedTile.TileObject);
 
                 UpdateScore(secondSelectedTile.TilePoints, 4);
                 DoPunchScale(secondSelectedTile.TileObject.transform);
@@ -124,9 +114,14 @@ namespace Crush2048
 
                 GameObject tile = gridSystem.TilesAtGridCells[cell.x, cell.y];
 
-                gridSystem.DeAssignTileFromCell(cell);
-                objectPool.AddToPool(Tags.Tile, tile);
+                MoveTileToPool(cell, tile);
             }
+        }
+
+        private void MoveTileToPool(Vector2Int cell, GameObject tile)
+        {
+            gridSystem.DeAssignTileFromCell(cell);
+            objectPool.AddToPool(Tags.Tile, tile);
         }
 
         private void CacheTileBehaviour(TileType tileType)

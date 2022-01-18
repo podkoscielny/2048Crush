@@ -45,8 +45,6 @@ namespace Crush2048
                     tileType.pointsWorth = EditorGUILayout.DelayedIntField("Points Worth", tileType.pointsWorth);
                     tileType.tileBehaviour = Behaviours.Default;
                 }
-
-
             }
         }
 #endif
