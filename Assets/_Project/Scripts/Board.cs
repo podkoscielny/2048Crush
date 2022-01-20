@@ -9,7 +9,7 @@ namespace Crush2048
 {
     public class Board : MonoBehaviour
     {
-        public static event Action OnAssignPointsWorthToCells;
+        public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
         public static event Action OnTilesReverse;
         public static event Action OnGameOver;
@@ -23,7 +23,6 @@ namespace Crush2048
         public static bool CanTilesBeClicked { get; private set; } = true;
 
         private Sequence _tileMoveSequence;
-        private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
 
         private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
 
@@ -40,7 +39,7 @@ namespace Crush2048
 
         public void ReverseMove()
         {
-            if (!CanTilesBeClicked || gridSystem.CachedPointsWorthAtCells == null) return;
+            if (!CanTilesBeClicked) return;
 
             OnTilesReverse?.Invoke();
         }
@@ -51,8 +50,7 @@ namespace Crush2048
             Transform secondSelectedTransform = secondSelectedTile.TileObject.transform;
 
             CanTilesBeClicked = false;
-            OnAssignPointsWorthToCells?.Invoke();
-            gridSystem.CachePreviousPoints();
+            OnCacheTileValues?.Invoke();
 
             _tileMoveSequence = DOTween.Sequence().SetAutoKill(false);
             _tileMoveSequence.Append(firstSelectedTransform.DODynamicLookAt(secondSelectedTransform.position, 0.1f));
@@ -124,29 +122,30 @@ namespace Crush2048
 
         private void CheckPossibleMoves()
         {
-            OnAssignPointsWorthToCells?.Invoke();
+            CanTilesBeClicked = true;
+            //OnAssignPointsWorthToCells?.Invoke();
 
-            int rows = gridSystem.GridSize.Rows;
-            int columns = gridSystem.GridSize.Columns;
+            //int rows = gridSystem.GridSize.Rows;
+            //int columns = gridSystem.GridSize.Columns;
 
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    int pointsWorthAtCell = gridSystem.PointsWorthAtGridCells[i, j];
+            //for (int i = 0; i < rows; i++)
+            //{
+            //    for (int j = 0; j < columns; j++)
+            //    {
+            //        int pointsWorthAtCell = gridSystem.PointsWorthAtGridCells[i, j];
 
-                    bool canBeMargedInColumn = i < rows - 1 && gridSystem.PointsWorthAtGridCells[i + 1, j] == pointsWorthAtCell;
-                    bool canBeMargedInRow = j < columns - 1 && gridSystem.PointsWorthAtGridCells[i, j + 1] == pointsWorthAtCell;
+            //        bool canBeMargedInColumn = i < rows - 1 && gridSystem.PointsWorthAtGridCells[i + 1, j] == pointsWorthAtCell;
+            //        bool canBeMargedInRow = j < columns - 1 && gridSystem.PointsWorthAtGridCells[i, j + 1] == pointsWorthAtCell;
 
-                    if (canBeMargedInColumn || canBeMargedInRow)
-                    {
-                        CanTilesBeClicked = true;
-                        return;
-                    }
-                }
-            }
+            //        if (canBeMargedInColumn || canBeMargedInRow)
+            //        {
+            //            CanTilesBeClicked = true;
+            //            return;
+            //        }
+            //    }
+            //}
 
-            EndGame();
+            //EndGame();
         }
 
         private void EndGame()

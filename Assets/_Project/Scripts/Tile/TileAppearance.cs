@@ -32,14 +32,14 @@ namespace Crush2048
         private void OnEnable()
         {
             tilePoints.OnPointsUpdated += UpdateTile;
-            tileTypePicker.OnTileTypePicked += SetTileUI;
+            tileTypePicker.OnTileTypePicked += (tileType, isKeepingPoints) => SetTileUI(tileType);
             InitializeTileType();
         }
 
         private void OnDisable()
         {
             tilePoints.OnPointsUpdated -= UpdateTile;
-            tileTypePicker.OnTileTypePicked -= SetTileUI;
+            tileTypePicker.OnTileTypePicked -= (tileType, isKeepingPoints) => SetTileUI(tileType);
         }
 
         private void Awake() => InitializeTileSize();

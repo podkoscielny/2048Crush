@@ -24,36 +24,17 @@ namespace Crush2048
 
         private int _pointsWorth = 2;
 
-        private void OnEnable()
-        {
-            Board.OnAssignPointsWorthToCells += AssignPointsWorthToCell;
-            Board.OnTilesReverse += ReversePoints;
-            tileTypePicker.OnTileTypePicked += InitializePoints;
-        }
+        private void OnEnable() => tileTypePicker.OnTileTypePicked += (tileType, isKeepingPoints) => InitializePoints(tileType, isKeepingPoints);
 
-        private void OnDisable()
-        {
-            Board.OnAssignPointsWorthToCells -= AssignPointsWorthToCell;
-            Board.OnTilesReverse -= ReversePoints;
-            tileTypePicker.OnTileTypePicked -= InitializePoints;
-        }
+        private void OnDisable() => tileTypePicker.OnTileTypePicked -= InitializePoints;
 
         public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
 
         public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
 
-        private void InitializePoints(TileType tileType) => PointsWorth = tileType.pointsWorth;
-
-        private void ReversePoints()
+        private void InitializePoints(TileType tileType, bool isKeepingPoints)
         {
-            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
-        }
-
-        private void AssignPointsWorthToCell()
-        {
-            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            gridSystem.AssignPointsWorthToCell(PointsWorth, tileCell);
+            if (!isKeepingPoints) PointsWorth = tileType.pointsWorth;
         }
 
 #if UNITY_EDITOR
