@@ -18,9 +18,12 @@ namespace Crush2048
 
         public int Value => value;
 
+        private int _cachedScore = 0;
+
         private void OnEnable()
         {
             //SceneController.OnSceneChange += ResetScore;
+            //Board.OnCacheTileValues +
 
 
 #if UNITY_EDITOR
@@ -57,6 +60,8 @@ namespace Crush2048
             value += pointsToAdd;
             OnScoreUpdated?.Invoke();
         }
+
+        private void CacheScore() => _cachedScore = value;
 
         private void ResetScore() => value = 0;
 

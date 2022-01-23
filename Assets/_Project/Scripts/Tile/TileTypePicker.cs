@@ -6,7 +6,8 @@ namespace Crush2048
 {
     public class TileTypePicker : MonoBehaviour
     {
-        public event Action<TileType, bool> OnTileTypePicked = (tileType, isKeepingPoints) => { };
+        public event Action<TileType, bool> OnTileTypePicked;
+        public event Action<TileType> OnGetCachedTileType;
 
         [SerializeField] GridSystem gridSystem;
 
@@ -37,8 +38,10 @@ namespace Crush2048
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
             TileType tileType = gridSystem.CachedTilesAtCells[tileCell.x, tileCell.y];
+            TileType = tileType;
 
-            OnTileTypePicked?.Invoke(TileType, true);
+            OnTileTypePicked?.Invoke(tileType, true);
+            //OnGetCachedTileType?.Invoke()
         }
 
         private TileType GetRandomTileType()

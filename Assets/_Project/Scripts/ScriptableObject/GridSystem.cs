@@ -19,6 +19,7 @@ namespace Crush2048
         public Vector3[,] GridCells { get; private set; }
         public GameObject[,] TilesAtGridCells { get; private set; }
         public TileType[,] CachedTilesAtCells { get; private set; }
+        public int[,] PointsWorthAtCells { get; private set; }
         public Vector3 CubeSize { get; private set; } = new Vector3(0, 0, 0);
 
         private void OnEnable() => EditorApplication.playModeStateChanged += ResetDataOnPlayModeExit;
@@ -77,14 +78,14 @@ namespace Crush2048
 
         public void CacheTileTypeAtCell(Vector2Int cell, TileType tileType) => CachedTilesAtCells[cell.x, cell.y] = tileType;
 
+        public void CachePointsWorthAtCell(Vector2Int cell, int pointsWorth) => PointsWorthAtCells[cell.x, cell.y] = pointsWorth;
+
         public void InitializeGrid(MeshRenderer gridRenderer)
         {
             int rows = gridSize.Rows;
             int columns = gridSize.Columns;
 
-            GridCells = new Vector3[rows, columns];
-            TilesAtGridCells = new GameObject[rows, columns];
-            CachedTilesAtCells = new TileType[rows, columns];
+            InitializeCellArrays(rows, columns);
 
             float gridOffset = gridRenderer.bounds.size.x * 0.05f;
             float gridWidth = gridRenderer.bounds.size.x - gridOffset;
@@ -107,6 +108,14 @@ namespace Crush2048
                     GridCells[i, j] = new Vector3(xPosition, yPosition, gridCenter.z);
                 }
             }
+        }
+
+        private void InitializeCellArrays(int rows, int columns)
+        {
+            GridCells = new Vector3[rows, columns];
+            TilesAtGridCells = new GameObject[rows, columns];
+            CachedTilesAtCells = new TileType[rows, columns];
+            PointsWorthAtCells = new int[rows, columns];
         }
 
 #if UNITY_EDITOR

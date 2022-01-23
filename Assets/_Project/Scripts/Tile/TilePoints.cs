@@ -24,17 +24,39 @@ namespace Crush2048
 
         private int _pointsWorth = 2;
 
-        private void OnEnable() => tileTypePicker.OnTileTypePicked += (tileType, isKeepingPoints) => InitializePoints(tileType, isKeepingPoints);
+        private void OnEnable()
+        {
+            Board.OnCacheTileValues += CachePointsWorthAtCell;
+            Board.OnTilesReverse += SetCachedPointsWorth;
+            tileTypePicker.OnTileTypePicked += InitializePoints;
+        }
 
-        private void OnDisable() => tileTypePicker.OnTileTypePicked -= InitializePoints;
+        private void OnDisable()
+        {
+            Board.OnCacheTileValues -= CachePointsWorthAtCell;
+            Board.OnTilesReverse -= SetCachedPointsWorth;
+            tileTypePicker.OnTileTypePicked -= InitializePoints;
+        }
 
         public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
 
         public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
 
-        private void InitializePoints(TileType tileType, bool isKeepingPoints)
+        private void CachePointsWorthAtCell()
         {
-            if (!isKeepingPoints) PointsWorth = tileType.pointsWorth;
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            gridSystem.CachePointsWorthAtCell(tileCell, PointsWorth);
+        }
+
+        private void SetCachedPointsWorth()
+        {
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            PointsWorth = gridSystem.PointsWorthAtCells[tileCell.x, tileCell.y];
+        }
+
+        private void InitializePoints(TileType tileType, bool isTileTypeCached)
+        {
+            if (!isTileTypeCached) PointsWorth = tileType.pointsWorth;
         }
 
 #if UNITY_EDITOR

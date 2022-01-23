@@ -82,7 +82,7 @@ namespace Crush2048
                         List<Vector2Int> emptyCellsBeneath = emptyCellsInColumn.FindAll(cell => cell.x > j);
 
                         if (emptyCellsBeneath.Count == 0) continue;
-                        
+
                         Vector2Int desiredCell = new Vector2Int(j + emptyCellsBeneath.Count, i);
                         float desiredYPosition = gridSystem.GridCells[desiredCell.x, desiredCell.y].y;
 
