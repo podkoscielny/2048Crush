@@ -23,8 +23,8 @@ namespace Crush2048
         private void OnEnable()
         {
             //SceneController.OnSceneChange += ResetScore;
-            //Board.OnCacheTileValues +
-
+            Board.OnCacheTileValues += CacheScore;
+            Board.OnTilesReverse += ReverseScoreToCached;
 
 #if UNITY_EDITOR
             EditorApplication.playModeStateChanged += ResetValuesOnEditorQuit;
@@ -33,9 +33,10 @@ namespace Crush2048
 
         private void OnDisable()
         {
-            ResetScore();
-
             //SceneController.OnSceneChange -= ResetScore;
+            Board.OnCacheTileValues -= CacheScore;
+            Board.OnTilesReverse -= ReverseScoreToCached;
+            ResetScore();
 
 #if UNITY_EDITOR
             EditorApplication.playModeStateChanged -= ResetValuesOnEditorQuit;
@@ -62,6 +63,12 @@ namespace Crush2048
         }
 
         private void CacheScore() => _cachedScore = value;
+
+        private void ReverseScoreToCached()
+        {
+            value = _cachedScore;
+            OnScoreUpdated?.Invoke();
+        }
 
         private void ResetScore() => value = 0;
 
