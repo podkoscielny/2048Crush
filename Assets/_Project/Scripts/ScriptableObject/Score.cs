@@ -16,7 +16,18 @@ namespace Crush2048
 
         [SerializeField] int value;
 
-        public int Value => value;
+        public int Value
+        {
+            get
+            {
+                return value;
+            }
+            private set
+            {
+                this.value = value;
+                OnScoreUpdated?.Invoke();
+            }
+        }
 
         private int _cachedScore = 0;
 
@@ -47,8 +58,7 @@ namespace Crush2048
         {
             if (EditorApplication.isPlaying)
             {
-                value = Mathf.Max(value, 0);
-                OnScoreUpdated?.Invoke();
+                Value = Mathf.Max(value, 0);
             }
             else
             {
@@ -56,19 +66,11 @@ namespace Crush2048
             }
         }
 
-        public void AddPoints(int pointsToAdd)
-        {
-            value += pointsToAdd;
-            OnScoreUpdated?.Invoke();
-        }
+        public void AddPoints(int pointsToAdd) => Value += pointsToAdd;
 
         private void CacheScore() => _cachedScore = value;
 
-        private void ReverseScoreToCached()
-        {
-            value = _cachedScore;
-            OnScoreUpdated?.Invoke();
-        }
+        private void ReverseScoreToCached() => Value = _cachedScore;
 
         private void ResetScore() => value = 0;
 
