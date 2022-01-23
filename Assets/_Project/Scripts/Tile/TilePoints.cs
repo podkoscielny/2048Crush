@@ -54,10 +54,7 @@ namespace Crush2048
             PointsWorth = gridSystem.PointsWorthAtCells[tileCell.x, tileCell.y];
         }
 
-        private void InitializePoints(TileType tileType, bool isTileTypeCached)
-        {
-            if (!isTileTypeCached) PointsWorth = tileType.pointsWorth;
-        }
+        private void InitializePoints(TileType tileType) => PointsWorth = tileType.pointsWorth;
 
 #if UNITY_EDITOR
         public void ChangeTilePointsWorth(int pointsToSet) => PointsWorth = pointsToSet;

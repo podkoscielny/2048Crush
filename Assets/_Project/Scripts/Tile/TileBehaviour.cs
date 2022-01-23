@@ -21,9 +21,17 @@ namespace Crush2048
         private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
         private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
 
-        private void OnEnable() => tileTypePicker.OnTileTypePicked += CacheTileBehaviour;
+        private void OnEnable()
+        {
+            tileTypePicker.OnTileTypePicked += CacheTileBehaviour;
+            tileTypePicker.OnGetCachedTileType += CacheTileBehaviour;
+        }
 
-        private void OnDisable() => tileTypePicker.OnTileTypePicked -= CacheTileBehaviour;
+        private void OnDisable()
+        {
+            tileTypePicker.OnTileTypePicked -= CacheTileBehaviour;
+            tileTypePicker.OnGetCachedTileType += CacheTileBehaviour;
+        }
 
         private void DefaultBehaviour(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
@@ -124,7 +132,7 @@ namespace Crush2048
             objectPool.AddToPool(Tags.Tile, tile);
         }
 
-        private void CacheTileBehaviour(TileType tileType, bool isTileTypeCached)
+        private void CacheTileBehaviour(TileType tileType)
         {
             IsSpecial = tileType.isSpecial;
 

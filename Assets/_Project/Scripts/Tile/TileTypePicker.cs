@@ -6,7 +6,7 @@ namespace Crush2048
 {
     public class TileTypePicker : MonoBehaviour
     {
-        public event Action<TileType, bool> OnTileTypePicked;
+        public event Action<TileType> OnTileTypePicked;
         public event Action<TileType> OnGetCachedTileType;
 
         [SerializeField] GridSystem gridSystem;
@@ -19,7 +19,7 @@ namespace Crush2048
             Board.OnTilesReverse += GetCachedTileType;
 
             TileType = GetRandomTileType();
-            OnTileTypePicked?.Invoke(TileType, false);
+            OnTileTypePicked?.Invoke(TileType);
         }
 
         private void OnDisable()
@@ -40,8 +40,7 @@ namespace Crush2048
             TileType tileType = gridSystem.CachedTilesAtCells[tileCell.x, tileCell.y];
             TileType = tileType;
 
-            OnTileTypePicked?.Invoke(tileType, true);
-            //OnGetCachedTileType?.Invoke()
+            OnGetCachedTileType?.Invoke(tileType);
         }
 
         private TileType GetRandomTileType()

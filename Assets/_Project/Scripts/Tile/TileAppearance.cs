@@ -33,6 +33,8 @@ namespace Crush2048
         {
             tilePoints.OnPointsUpdated += UpdateTile;
             tileTypePicker.OnTileTypePicked += SetTileUI;
+            tileTypePicker.OnGetCachedTileType += SetTileUI;
+
             InitializeTileType();
         }
 
@@ -40,6 +42,7 @@ namespace Crush2048
         {
             tilePoints.OnPointsUpdated -= UpdateTile;
             tileTypePicker.OnTileTypePicked -= SetTileUI;
+            tileTypePicker.OnGetCachedTileType += SetTileUI;
         }
 
         private void Awake() => InitializeTileSize();
@@ -58,7 +61,7 @@ namespace Crush2048
             SetTileColor();
         }
 
-        private void SetTileUI(TileType tileType, bool isTileTypeCached)
+        private void SetTileUI(TileType tileType)
         {
             if (tileType.isSpecial)
             {
