@@ -12,6 +12,7 @@ namespace Crush2048
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
         public static event Action OnTilesReverse;
+        public static event Action OnAssignTileValues;
         public static event Action OnGameOver;
 
         [SerializeField] Camera mainCamera;
@@ -122,30 +123,39 @@ namespace Crush2048
 
         private void CheckPossibleMoves()
         {
-            CanTilesBeClicked = true;
-            //OnAssignPointsWorthToCells?.Invoke();
+            OnAssignTileValues?.Invoke();
 
-            //int rows = gridSystem.GridSize.Rows;
-            //int columns = gridSystem.GridSize.Columns;
+            int rows = gridSystem.GridSize.Rows;
+            int columns = gridSystem.GridSize.Columns;
 
-            //for (int i = 0; i < rows; i++)
-            //{
-            //    for (int j = 0; j < columns; j++)
-            //    {
-            //        int pointsWorthAtCell = gridSystem.PointsWorthAtGridCells[i, j];
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    int pointsWorthAtCell = gridSystem.PointsWorthAtCells[i, j];
+                    bool isSpecial = gridSystem.TileTypeAtCell[i, j].isSpecial;
 
-            //        bool canBeMargedInColumn = i < rows - 1 && gridSystem.PointsWorthAtGridCells[i + 1, j] == pointsWorthAtCell;
-            //        bool canBeMargedInRow = j < columns - 1 && gridSystem.PointsWorthAtGridCells[i, j + 1] == pointsWorthAtCell;
+                    bool isntLastRow = i < rows - 1;
+                    bool isntLastColumn = j < columns - 1;
+                    bool areWorthSameInColumn = isntLastRow && gridSystem.PointsWorthAtCells[i + 1, j] == pointsWorthAtCell;
+                    bool areWorthSameInRow = isntLastColumn && gridSystem.PointsWorthAtCells[i, j + 1] == pointsWorthAtCell;
+                    bool areBothSpecialInColumn = isntLastRow && gridSystem.TileTypeAtCell[i + 1, j].isSpecial && isSpecial;
+                    bool areBothSpecialInRow = isntLastColumn && gridSystem.TileTypeAtCell[i, j + 1].isSpecial && isSpecial;
+                    bool isOneInColumnSpecial = isntLastRow && gridSystem.TileTypeAtCell[i + 1, j].isSpecial != isSpecial;
+                    bool isOneInRowSpecial = isntLastColumn && gridSystem.TileTypeAtCell[i, j + 1].isSpecial != isSpecial;
 
-            //        if (canBeMargedInColumn || canBeMargedInRow)
-            //        {
-            //            CanTilesBeClicked = true;
-            //            return;
-            //        }
-            //    }
-            //}
+                    bool canBeMergedInColumn = (!areBothSpecialInColumn && areWorthSameInColumn) || isOneInColumnSpecial;
+                    bool canBeMergedInRow = (!areBothSpecialInRow && areWorthSameInRow) || isOneInRowSpecial;
 
-            //EndGame();
+                    if (canBeMergedInColumn || canBeMergedInRow)
+                    {
+                        CanTilesBeClicked = true;
+                        return;
+                    }
+                }
+            }
+
+            EndGame();
         }
 
         private void EndGame()

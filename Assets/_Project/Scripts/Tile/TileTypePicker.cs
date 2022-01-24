@@ -17,6 +17,7 @@ namespace Crush2048
         {
             Board.OnCacheTileValues += CacheTileType;
             Board.OnTilesReverse += GetCachedTileType;
+            Board.OnAssignTileValues += AssignTileTypeToCell;
 
             TileType = GetRandomTileType();
             OnTileTypePicked?.Invoke(TileType);
@@ -26,6 +27,13 @@ namespace Crush2048
         {
             Board.OnCacheTileValues -= CacheTileType;
             Board.OnTilesReverse -= GetCachedTileType;
+            Board.OnAssignTileValues -= AssignTileTypeToCell;
+        }
+
+        private void AssignTileTypeToCell()
+        {
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            gridSystem.AssignTileTypeAtCell(tileCell, TileType);
         }
 
         private void CacheTileType()

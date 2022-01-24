@@ -28,6 +28,7 @@ namespace Crush2048
         {
             Board.OnCacheTileValues += CachePointsWorthAtCell;
             Board.OnTilesReverse += SetCachedPointsWorth;
+            Board.OnAssignTileValues += AssignPointsWorthToCell;
             tileTypePicker.OnTileTypePicked += InitializePoints;
         }
 
@@ -35,12 +36,19 @@ namespace Crush2048
         {
             Board.OnCacheTileValues -= CachePointsWorthAtCell;
             Board.OnTilesReverse -= SetCachedPointsWorth;
+            Board.OnAssignTileValues -= AssignPointsWorthToCell;
             tileTypePicker.OnTileTypePicked -= InitializePoints;
         }
 
         public void MultiplyPoints(int multiplier) => PointsWorth *= multiplier;
 
         public void SetPoints(int pointsAmount) => PointsWorth = pointsAmount;
+
+        private void AssignPointsWorthToCell()
+        {
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            gridSystem.AssignPointsWorthAtCell(tileCell, PointsWorth);
+        }
 
         private void CachePointsWorthAtCell()
         {
@@ -51,7 +59,7 @@ namespace Crush2048
         private void SetCachedPointsWorth()
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            PointsWorth = gridSystem.PointsWorthAtCells[tileCell.x, tileCell.y];
+            PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
         }
 
         private void InitializePoints(TileType tileType) => PointsWorth = tileType.pointsWorth;
