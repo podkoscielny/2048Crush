@@ -176,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScoreText: {fileID: 793935851}
   highscoreText: {fileID: 594729489}
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
   highscore: {fileID: 11400000, guid: 69eb12c3d5b794049bd6ff91e6a1dfe4, type: 2}
 --- !u!1 &165866903

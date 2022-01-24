@@ -18,7 +18,6 @@ namespace Crush2048
         public TileProbabilityPair[] TileTypes => tileTypes;
         public float ProbabilitySum { get; private set; }
 
-
         void OnValidate()
         {
             ClampRowsAndColumnsCount();

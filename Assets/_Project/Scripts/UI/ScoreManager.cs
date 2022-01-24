@@ -9,6 +9,7 @@ namespace Crush2048
     {
         [SerializeField] TextMeshProUGUI currentScoreText;
         [SerializeField] TextMeshProUGUI highscoreText;
+        [SerializeField] GridSystem gridSystem;
         [SerializeField] Score score;
         [SerializeField] Highscore highscore;
 
@@ -20,19 +21,23 @@ namespace Crush2048
 
         private void UpdateScoreText()
         {
-            currentScoreText.text = score.Value.ToString();
+            string scoreToString = score.Value.ToString();
+            currentScoreText.text = scoreToString;
 
             if (score.Value > highscore.Value)
             {
+                SaveSystem.Save(gridSystem.GridSize.name, score.Value);
                 highscore.SetValue(score.Value);
-                highscoreText.text = highscore.Value.ToString();
+                highscoreText.text = scoreToString;
             }
         }
 
         private void InitializeScores()
         {
+            int cachedHighscore = SaveSystem.Load(gridSystem.GridSize.name);
+
             currentScoreText.text = score.Value.ToString();
-            highscoreText.text = highscore.Value.ToString();
+            highscoreText.text = cachedHighscore.ToString();
         }
     }
 }
