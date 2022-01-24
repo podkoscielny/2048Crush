@@ -11,33 +11,40 @@ namespace Crush2048
         [SerializeField] TextMeshProUGUI highscoreText;
         [SerializeField] GridSystem gridSystem;
         [SerializeField] Score score;
-        [SerializeField] Highscore highscore;
+
+        private int _highscore = 0;
+        private string _savePath = "";
 
         private void OnEnable() => Score.OnScoreUpdated += UpdateScoreText;
 
         private void OnDisable() => Score.OnScoreUpdated -= UpdateScoreText;
 
+        private void Awake() => CacheSavePath();
+
         private void Start() => InitializeScores();
 
         private void UpdateScoreText()
         {
-            string scoreToString = score.Value.ToString();
-            currentScoreText.text = scoreToString;
+            currentScoreText.text = score.Value.ToString();
 
-            if (score.Value > highscore.Value)
-            {
-                SaveSystem.Save(gridSystem.GridSize.name, score.Value);
-                highscore.SetValue(score.Value);
-                highscoreText.text = scoreToString;
-            }
+            if (score.Value > _highscore) SetNewHighscore();
+        }
+
+        private void SetNewHighscore()
+        {
+            SaveSystem.Save(_savePath, score.Value);
+            _highscore = score.Value;
+            highscoreText.text = score.Value.ToString();
         }
 
         private void InitializeScores()
         {
-            int cachedHighscore = SaveSystem.Load(gridSystem.GridSize.name);
+            _highscore = SaveSystem.Load(_savePath);
 
             currentScoreText.text = score.Value.ToString();
-            highscoreText.text = cachedHighscore.ToString();
+            highscoreText.text = _highscore.ToString();
         }
+
+        private void CacheSavePath() => _savePath = gridSystem.GridSize.name;
     }
 }
