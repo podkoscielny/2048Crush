@@ -58,13 +58,8 @@ namespace Crush2048
         {
             for (int i = 0; i < gridSystem.GridSize.Columns; i++)
             {
-                List<Vector2Int> emptyCellsInColumn = new List<Vector2Int>();
+                List<Vector2Int> emptyCellsInColumn = gridSystem.GetEmptyCellsInColumn(i);
                 List<TileToCellPair> tilesToBeAssigned = new List<TileToCellPair>();
-
-                for (int j = 0; j < gridSystem.GridSize.Rows; j++)
-                {
-                    if (gridSystem.TilesAtGridCells[j, i] == null) emptyCellsInColumn.Add(new Vector2Int(j, i));
-                }
 
                 for (int j = 0; j < gridSystem.GridSize.Rows; j++)
                 {
@@ -77,9 +72,6 @@ namespace Crush2048
                         if (emptyCellsBeneath.Count == 0) continue;
 
                         Vector2Int desiredCell = new Vector2Int(j + emptyCellsBeneath.Count, i);
-                        float desiredYPosition = gridSystem.GridCells[desiredCell.x, desiredCell.y].y;
-
-                        tile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f);
                         tilesToBeAssigned.Add(new TileToCellPair(tile, desiredCell));
                     }
                 }
@@ -94,9 +86,6 @@ namespace Crush2048
                     spawnedTile.transform.position = spawnPosition;
 
                     Vector2Int desiredCell = new Vector2Int(emptyCellsInColumn.Count - 1 - j, i);
-                    float desiredYPosition = gridSystem.GridCells[desiredCell.x, desiredCell.y].y;
-                    spawnedTile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f);
-
                     tilesToBeAssigned.Add(new TileToCellPair(spawnedTile, desiredCell));
                 }
 
@@ -105,11 +94,36 @@ namespace Crush2048
             }
         }
 
+        private void MoveExistingTilesInColumnDown(int columnIndex, List<Vector2Int> emptyCellsInColumn, List<TileToCellPair> tilesToBeAssigned)
+        {
+            for (int j = 0; j < gridSystem.GridSize.Rows; j++)
+            {
+                GameObject tile = gridSystem.TilesAtGridCells[j, columnIndex];
+
+                if (tile != null)
+                {
+                    List<Vector2Int> emptyCellsBeneath = emptyCellsInColumn.FindAll(cell => cell.x > j);
+
+                    if (emptyCellsBeneath.Count == 0) continue;
+
+                    Vector2Int desiredCell = new Vector2Int(j + emptyCellsBeneath.Count, columnIndex);
+                    tilesToBeAssigned.Add(new TileToCellPair(tile, desiredCell));
+                }
+            }
+        }
+
         private void AssignTilesToCells(List<TileToCellPair> tilesToBeAssigned)
         {
+            Vector3[,] gridCells = gridSystem.GridCells;
+
             foreach (TileToCellPair pair in tilesToBeAssigned)
             {
-                gridSystem.AssignTileToCell(pair.Tile, pair.Cell);
+                Vector2Int cell = pair.Cell;
+                GameObject tile = pair.Tile;
+
+                float desiredYPosition = gridCells[cell.x, cell.y].y;
+                tile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f);
+                gridSystem.AssignTileToCell(tile, cell);
             }
         }
 
@@ -120,24 +134,27 @@ namespace Crush2048
             int rows = gridSystem.GridSize.Rows;
             int columns = gridSystem.GridSize.Columns;
 
+            int[,] pointsWorthAtGridCells = gridSystem.PointsWorthAtCells;
+            TileType[,] tileTypeAtCell = gridSystem.TileTypeAtCell;
+
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    int pointsWorthAtCell = gridSystem.PointsWorthAtCells[i, j];
-                    bool isSpecial = gridSystem.TileTypeAtCell[i, j].isSpecial;
+                    int pointsWorthAtCell = pointsWorthAtGridCells[i, j];
+                    bool isSpecial = tileTypeAtCell[i, j].isSpecial;
 
                     bool isntLastRow = i < rows - 1;
                     bool isntLastColumn = j < columns - 1;
 
-                    bool areWorthSameInColumn = isntLastRow && gridSystem.PointsWorthAtCells[i + 1, j] == pointsWorthAtCell;
-                    bool areWorthSameInRow = isntLastColumn && gridSystem.PointsWorthAtCells[i, j + 1] == pointsWorthAtCell;
+                    bool areWorthSameInColumn = isntLastRow && pointsWorthAtGridCells[i + 1, j] == pointsWorthAtCell;
+                    bool areWorthSameInRow = isntLastColumn && pointsWorthAtGridCells[i, j + 1] == pointsWorthAtCell;
 
-                    bool areBothSpecialInColumn = isntLastRow && gridSystem.TileTypeAtCell[i + 1, j].isSpecial && isSpecial;
-                    bool areBothSpecialInRow = isntLastColumn && gridSystem.TileTypeAtCell[i, j + 1].isSpecial && isSpecial;
+                    bool areBothSpecialInColumn = isntLastRow && tileTypeAtCell[i + 1, j].isSpecial && isSpecial;
+                    bool areBothSpecialInRow = isntLastColumn && tileTypeAtCell[i, j + 1].isSpecial && isSpecial;
 
-                    bool isOneInColumnSpecial = isntLastRow && gridSystem.TileTypeAtCell[i + 1, j].isSpecial != isSpecial;
-                    bool isOneInRowSpecial = isntLastColumn && gridSystem.TileTypeAtCell[i, j + 1].isSpecial != isSpecial;
+                    bool isOneInColumnSpecial = isntLastRow && tileTypeAtCell[i + 1, j].isSpecial != isSpecial;
+                    bool isOneInRowSpecial = isntLastColumn && tileTypeAtCell[i, j + 1].isSpecial != isSpecial;
 
                     bool canBeMergedInColumn = (!areBothSpecialInColumn && areWorthSameInColumn) || isOneInColumnSpecial;
                     bool canBeMergedInRow = (!areBothSpecialInRow && areWorthSameInRow) || isOneInRowSpecial;
@@ -168,8 +185,8 @@ namespace Crush2048
                 for (int j = 0; j < gridCells.GetLength(1); j++)
                 {
                     GameObject tile = objectPool.GetFromPool(Tags.Tile);
-                    Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, tilePrefab.transform.position.z);
 
+                    Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, tilePrefab.transform.position.z);
                     tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
                     gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
                 }

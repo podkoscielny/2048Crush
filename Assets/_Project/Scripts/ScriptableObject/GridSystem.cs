@@ -86,6 +86,18 @@ namespace Crush2048
 
         public void CachePointsWorthAtCell(Vector2Int cell, int pointsWorth) => CachedPointsWorthAtCells[cell.x, cell.y] = pointsWorth;
 
+        public List<Vector2Int> GetEmptyCellsInColumn(int columnIndex)
+        {
+            List<Vector2Int> emptyCellsInColumn = new List<Vector2Int>();
+
+            for (int j = 0; j < GridSize.Rows; j++)
+            {
+                if (TilesAtGridCells[j, columnIndex] == null) emptyCellsInColumn.Add(new Vector2Int(j, columnIndex));
+            }
+
+            return emptyCellsInColumn;
+        }
+
         public void InitializeGrid(MeshRenderer gridRenderer)
         {
             int rows = gridSize.Rows;
