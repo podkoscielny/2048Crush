@@ -86,6 +86,7 @@ namespace Crush2048
             Vector2Int specialTileCell = secondSelectedTile.TileBehaviour.IsSpecial ? secondSelectedTile.TileCell : firstSelectedTile.TileCell;
             List <Vector2Int> nearbyTiles = GetNearbyTileCells(specialTileCell);
 
+            AddScoreFromNearbyTiles(nearbyTiles);
             MoveNearbyTilesToPool(nearbyTiles);
         }
 
@@ -109,6 +110,26 @@ namespace Crush2048
             };
 
             return nearbyTiles;
+        }
+
+        private void AddScoreFromNearbyTiles(List<Vector2Int> nearbyTiles)
+        {
+            int rows = gridSystem.GridSize.Rows;
+            int columns = gridSystem.GridSize.Columns;
+
+            TileType[,] cachedTileValues = gridSystem.CachedTilesAtCells;
+            int[,] cachedPointsWorth = gridSystem.CachedPointsWorthAtCells;
+
+            int scoreToAdd = 0;
+
+            foreach (Vector2Int cell in nearbyTiles)
+            {
+                if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
+
+                if (!cachedTileValues[cell.x, cell.y].isSpecial) scoreToAdd += cachedPointsWorth[cell.x, cell.y];
+            }
+
+            score.AddPoints(scoreToAdd);
         }
 
         private void MoveNearbyTilesToPool(List<Vector2Int> nearbyTiles)
