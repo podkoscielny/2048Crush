@@ -61,36 +61,10 @@ namespace Crush2048
                 List<Vector2Int> emptyCellsInColumn = gridSystem.GetEmptyCellsInColumn(i);
                 List<TileToCellPair> tilesToBeAssigned = new List<TileToCellPair>();
 
-                for (int j = 0; j < gridSystem.GridSize.Rows; j++)
-                {
-                    GameObject tile = gridSystem.TilesAtGridCells[j, i];
-
-                    if (tile != null)
-                    {
-                        List<Vector2Int> emptyCellsBeneath = emptyCellsInColumn.FindAll(cell => cell.x > j);
-
-                        if (emptyCellsBeneath.Count == 0) continue;
-
-                        Vector2Int desiredCell = new Vector2Int(j + emptyCellsBeneath.Count, i);
-                        tilesToBeAssigned.Add(new TileToCellPair(tile, desiredCell));
-                    }
-                }
-
-                Vector3 firstGridCellPosition = gridSystem.GridCells[0, i];
-
-                for (int j = 0; j < emptyCellsInColumn.Count; j++)
-                {
-                    GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
-
-                    Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f * (j + 1)), tilePrefab.transform.position.z);
-                    spawnedTile.transform.position = spawnPosition;
-
-                    Vector2Int desiredCell = new Vector2Int(emptyCellsInColumn.Count - 1 - j, i);
-                    tilesToBeAssigned.Add(new TileToCellPair(spawnedTile, desiredCell));
-                }
+                MoveExistingTilesInColumnDown(i, emptyCellsInColumn, tilesToBeAssigned);
+                MoveSpawnedTilesInColumnDown(i, emptyCellsInColumn, tilesToBeAssigned);
 
                 AssignTilesToCells(tilesToBeAssigned);
-                emptyCellsInColumn.Clear();
             }
         }
 
@@ -109,6 +83,22 @@ namespace Crush2048
                     Vector2Int desiredCell = new Vector2Int(j + emptyCellsBeneath.Count, columnIndex);
                     tilesToBeAssigned.Add(new TileToCellPair(tile, desiredCell));
                 }
+            }
+        }
+
+        private void MoveSpawnedTilesInColumnDown(int columnIndex, List<Vector2Int> emptyCellsInColumn, List<TileToCellPair> tilesToBeAssigned)
+        {
+            Vector3 firstGridCellPosition = gridSystem.GridCells[0, columnIndex];
+
+            for (int j = 0; j < emptyCellsInColumn.Count; j++)
+            {
+                GameObject spawnedTile = objectPool.GetFromPool(Tags.Tile);
+
+                Vector3 spawnPosition = new Vector3(firstGridCellPosition.x, firstGridCellPosition.y + (gridSystem.CellHeight * 1.4f * (j + 1)), tilePrefab.transform.position.z);
+                spawnedTile.transform.position = spawnPosition;
+
+                Vector2Int desiredCell = new Vector2Int(emptyCellsInColumn.Count - 1 - j, columnIndex);
+                tilesToBeAssigned.Add(new TileToCellPair(spawnedTile, desiredCell));
             }
         }
 
