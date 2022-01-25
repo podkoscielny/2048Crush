@@ -16,7 +16,7 @@ namespace Crush2048
         private void OnEnable()
         {
             Board.OnCacheTileValues += CacheTileType;
-            Board.OnTilesReverse += GetCachedTileType;
+            MoveReverse.OnTilesReverse += GetCachedTileType;
             Board.OnAssignTileValues += AssignTileTypeToCell;
 
             TileType = GetRandomTileType();
@@ -26,7 +26,7 @@ namespace Crush2048
         private void OnDisable()
         {
             Board.OnCacheTileValues -= CacheTileType;
-            Board.OnTilesReverse -= GetCachedTileType;
+            MoveReverse.OnTilesReverse -= GetCachedTileType;
             Board.OnAssignTileValues -= AssignTileTypeToCell;
         }
 

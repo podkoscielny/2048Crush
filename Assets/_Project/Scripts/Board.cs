@@ -11,7 +11,6 @@ namespace Crush2048
     {
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
-        public static event Action OnTilesReverse;
         public static event Action OnAssignTileValues;
         public static event Action OnGameOver;
 
@@ -37,13 +36,6 @@ namespace Crush2048
         }
 
         private void Start() => InitializeTiles();
-
-        public void ReverseMove()
-        {
-            if (!CanTilesBeClicked) return;
-
-            OnTilesReverse?.Invoke();
-        }
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
         {
@@ -137,10 +129,13 @@ namespace Crush2048
 
                     bool isntLastRow = i < rows - 1;
                     bool isntLastColumn = j < columns - 1;
+
                     bool areWorthSameInColumn = isntLastRow && gridSystem.PointsWorthAtCells[i + 1, j] == pointsWorthAtCell;
                     bool areWorthSameInRow = isntLastColumn && gridSystem.PointsWorthAtCells[i, j + 1] == pointsWorthAtCell;
+
                     bool areBothSpecialInColumn = isntLastRow && gridSystem.TileTypeAtCell[i + 1, j].isSpecial && isSpecial;
                     bool areBothSpecialInRow = isntLastColumn && gridSystem.TileTypeAtCell[i, j + 1].isSpecial && isSpecial;
+
                     bool isOneInColumnSpecial = isntLastRow && gridSystem.TileTypeAtCell[i + 1, j].isSpecial != isSpecial;
                     bool isOneInRowSpecial = isntLastColumn && gridSystem.TileTypeAtCell[i, j + 1].isSpecial != isSpecial;
 
