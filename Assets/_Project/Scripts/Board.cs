@@ -61,14 +61,14 @@ namespace Crush2048
                 List<Vector2Int> emptyCellsInColumn = gridSystem.GetEmptyCellsInColumn(i);
                 List<TileToCellPair> tilesToBeAssigned = new List<TileToCellPair>();
 
-                MoveExistingTilesInColumnDown(i, emptyCellsInColumn, tilesToBeAssigned);
-                MoveSpawnedTilesInColumnDown(i, emptyCellsInColumn, tilesToBeAssigned);
+                GetDesiredCellsForExistingTiles(i, emptyCellsInColumn, tilesToBeAssigned);
+                SpawnNewTiles(i, emptyCellsInColumn, tilesToBeAssigned);
 
                 AssignTilesToCells(tilesToBeAssigned);
             }
         }
 
-        private void MoveExistingTilesInColumnDown(int columnIndex, List<Vector2Int> emptyCellsInColumn, List<TileToCellPair> tilesToBeAssigned)
+        private void GetDesiredCellsForExistingTiles(int columnIndex, List<Vector2Int> emptyCellsInColumn, List<TileToCellPair> tilesToBeAssigned)
         {
             for (int j = 0; j < gridSystem.GridSize.Rows; j++)
             {
@@ -86,7 +86,7 @@ namespace Crush2048
             }
         }
 
-        private void MoveSpawnedTilesInColumnDown(int columnIndex, List<Vector2Int> emptyCellsInColumn, List<TileToCellPair> tilesToBeAssigned)
+        private void SpawnNewTiles(int columnIndex, List<Vector2Int> emptyCellsInColumn, List<TileToCellPair> tilesToBeAssigned)
         {
             Vector3 firstGridCellPosition = gridSystem.GridCells[0, columnIndex];
 
