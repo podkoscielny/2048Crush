@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileText: {fileID: 8686686540949471771}
   backgroundText: {fileID: 8709540908940644691}
+  specialImageRenderer: {fileID: 5263982960804465975}
   tileCollider: {fileID: -4246324072427026848}
   tileRenderer: {fileID: 4610248557676912169}
   tilePoints: {fileID: 3994539253609184669}
@@ -619,7 +620,7 @@ Transform:
   m_GameObject: {fileID: 9122456636120507297}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.65}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5978196333470396332}
   m_RootOrder: 2
@@ -669,7 +670,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6400001, y: 2.2502906}
+  m_Size: {x: 0.6, y: 0.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

@@ -10,6 +10,7 @@ namespace Crush2048
         [Header("3D UI")]
         [SerializeField] TextMeshPro tileText;
         [SerializeField] TextMeshPro backgroundText;
+        [SerializeField] SpriteRenderer specialImageRenderer;
 
         [Header("Components attached to Tile")]
         [SerializeField] BoxCollider tileCollider;
@@ -63,6 +64,8 @@ namespace Crush2048
 
         private void SetTileUI(TileType tileType)
         {
+            specialImageRenderer.sprite = tileType.image;
+
             if (tileType.isSpecial)
             {
                 tileText.gameObject.SetActive(false);

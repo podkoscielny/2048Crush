@@ -11,7 +11,7 @@ namespace Crush2048
     {
         public int pointsWorth;
         public bool isSpecial;
-        public Image image;
+        public Sprite image;
         public Behaviours tileBehaviour;
 
         private const int MINIMUM_POINTS_WORTH = 0;
