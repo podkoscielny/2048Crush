@@ -62,7 +62,7 @@ namespace Crush2048
             {
                 if (randomProbability - subtractFromSum <= tileTypePairs[i].spawnProbability) return tileTypePairs[i].tileType;
 
-                subtractFromSum -= tileTypePairs[i].spawnProbability;
+                subtractFromSum += tileTypePairs[i].spawnProbability;
             }
 
             return tileTypePairs[tileTypePairs.Length - 1].tileType;
