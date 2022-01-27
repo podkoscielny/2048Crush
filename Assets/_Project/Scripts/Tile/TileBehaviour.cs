@@ -83,8 +83,7 @@ namespace Crush2048
 
         private void BombNearbyTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
-            Vector2Int specialTileCell = secondSelectedTile.TileBehaviour.IsSpecial ? secondSelectedTile.TileCell : firstSelectedTile.TileCell;
-            List <Vector2Int> nearbyTiles = GetNearbyTileCells(specialTileCell);
+            List <Vector2Int> nearbyTiles = GetNearbyTileCells(secondSelectedTile.TileCell);
 
             AddScoreFromNearbyTiles(nearbyTiles);
             MoveNearbyTilesToPool(nearbyTiles);
