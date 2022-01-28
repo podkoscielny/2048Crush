@@ -13,5 +13,4 @@ public class VisibleBehindMask : MonoBehaviour
 
         renderer.sharedMaterial.renderQueue = maskMaterial.renderQueue - 1;
     }
-
 }
