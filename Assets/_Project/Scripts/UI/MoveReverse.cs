@@ -29,6 +29,6 @@ namespace Crush2048
 
         private bool CantBeReversed() => _reversesLeft <= 0 || !Board.CanTilesBeClicked || score.Value <= 0;
 
-        private void SetReversesRemainingText() => remainingReversesText.text = $"Left: {_reversesLeft}";
+        private void SetReversesRemainingText() => remainingReversesText.text = $"{_reversesLeft}";
     }
 }

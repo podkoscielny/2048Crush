@@ -24,6 +24,8 @@ namespace Crush2048
 
         private Sequence _tileMoveSequence;
 
+        private const float BOARD_SIZE = 0.92f;
+
         private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
 
         private void OnDisable() => TileSwipe.OnTilesMatch -= MatchTiles;
@@ -190,7 +192,7 @@ namespace Crush2048
 
             float aspectRatio = (float)screenWidth / (float)screenHeight;
 
-            transform.localScale = (Vector3.one * 0.95f) * aspectRatio;
+            transform.localScale = Vector3.one * BOARD_SIZE * aspectRatio;
 
             float yPosition = mainCamera.transform.position.y - (aspectRatio + transform.position.y);
             Vector3 boardPosition = new Vector3(transform.position.x, yPosition, transform.position.z);
