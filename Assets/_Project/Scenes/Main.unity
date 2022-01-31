@@ -2509,6 +2509,7 @@ GameObject:
   - component: {fileID: 1923664668}
   - component: {fileID: 1923664670}
   - component: {fileID: 1923664669}
+  - component: {fileID: 1923664671}
   m_Layer: 5
   m_Name: Background Gradient
   m_TagString: Untagged
@@ -2573,6 +2574,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923664667}
   m_CullTransparentMesh: 1
+--- !u!114 &1923664671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923664667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f442938151835aa4bbec774ff7fac1a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeManager: {fileID: 11400000, guid: 6aab48a196300c14e92456d3d0bb62cc, type: 2}
+  backgroundImage: {fileID: 1923664669}
 --- !u!1 &1943868898
 GameObject:
   m_ObjectHideFlags: 0

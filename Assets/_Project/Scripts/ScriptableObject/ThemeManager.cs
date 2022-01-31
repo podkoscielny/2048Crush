@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace Crush2048
     [CreateAssetMenu(fileName = "ThemeManager", menuName = "ScriptableObjects/ThemeManager")]
     public class ThemeManager : ScriptableObject
     {
+        public static event Action OnThemeChanged;
+
         [Header("Theme")]
         [SerializeField] Theme themeSelected;
 
@@ -34,6 +37,8 @@ namespace Crush2048
         {
             if (CantChangeColors()) return;
 
+            OnThemeChanged?.Invoke();
+
             primaryMaterial.color = themeSelected.PrimaryColor;
             secondaryMaterial.color = themeSelected.SecondaryColor;
             UIPrimaryMaterial.color = themeSelected.PrimaryColor;
@@ -41,7 +46,7 @@ namespace Crush2048
 
             foreach (var material in textMaterials)
             {
-                material.color = themeSelected.TextColor;
+                material.SetColor("_FaceColor", themeSelected.TextColor);
             }
         }
     }
