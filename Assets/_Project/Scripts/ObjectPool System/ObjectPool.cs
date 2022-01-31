@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Tags = TagSystem.TagSystem.Tags;
+using Tags = MultipleTagSystem.TagSystem.Tags;
 
 namespace Crush2048
 {

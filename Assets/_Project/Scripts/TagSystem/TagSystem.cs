@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace TagSystem
+namespace MultipleTagSystem
 {
     public static class TagSystem
     {
@@ -13,7 +13,11 @@ namespace TagSystem
         {
             None = 0,
             Tile = 1,
-            SpecialTile = 2
+            SpecialTile = 2,
+            //PrimaryColor = 3,
+            //SecondaryColor = 4,
+            //BackgroundColor = 5,
+            //TextColor = 6
         }
 
         private static Dictionary<Tags, List<GameObject>> TaggedObjects = new Dictionary<Tags, List<GameObject>>();
