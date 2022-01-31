@@ -70,10 +70,8 @@ namespace TagSystem
         {
             foreach (var item in TaggedObjects)
             {
-                if (tags.Contains(item.Key))
-                {
+                if (tags.Contains(item.Key) && item.Key != Tags.None)
                     TaggedObjects[item.Key].Add(objectToCache);
-                }
             }
         }
 
@@ -82,9 +80,7 @@ namespace TagSystem
             foreach (var item in TaggedObjects)
             {
                 if (tags.Contains(item.Key))
-                {
                     TaggedObjects[item.Key].Remove(objectToBeRemoved);
-                }
             }
         }
     }
