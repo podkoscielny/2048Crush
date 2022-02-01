@@ -18,5 +18,4 @@ MonoBehaviour:
   UIPrimaryMaterial: {fileID: 2100000, guid: dac6c6635eb800d4db09903f6dad3568, type: 2}
   UISecondaryMaterial: {fileID: 2100000, guid: b033209c0dc1a7a40874afb852530e40, type: 2}
   textMaterials:
-  - {fileID: 7686090981384812710, guid: bf16f1ed982a698469d30c8bbbb3e3ef, type: 2}
-  - {fileID: 7686090981384812710, guid: aec2da1841393a249b2683eb3230c9af, type: 2}
+  - {fileID: -4631215753241707525, guid: 90429fd7ac7acd84394fbcde9b6dfdfe, type: 2}

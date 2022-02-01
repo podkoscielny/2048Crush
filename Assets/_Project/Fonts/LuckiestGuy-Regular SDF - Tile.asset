@@ -65,7 +65,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.218
+    - _OutlineWidth: 0.015
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.8333333
@@ -113,11 +113,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: LuckiestGuy-Regular SDF
+  m_Name: LuckiestGuy-Regular SDF - Tile
   m_EditorClassIdentifier: 
-  hashCode: -1536617929
+  hashCode: -970154130
   material: {fileID: -4631215753241707525}
-  materialHashCode: 684492983
+  materialHashCode: 1204973582
   m_Version: 1.1.0
   m_SourceFontFileGUID: 69461d7798d14ed47beac0f47b563d4a
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 69461d7798d14ed47beac0f47b563d4a, type: 3}
