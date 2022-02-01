@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Crush2048
 {
-#if UNITY_STANDALONE
     public class ResolutionPicker : MonoBehaviour
     {
+#if UNITY_STANDALONE
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
         private void Start() => SetPortraitResolution();
 
@@ -19,6 +20,6 @@ namespace Crush2048
 
             Screen.SetResolution(width, height, false);
         }
-    }
 #endif
+    }
 }
