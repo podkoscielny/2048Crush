@@ -54,7 +54,7 @@ namespace Crush2048
 #endif
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
 #if UNITY_EDITOR
             if (EditorApplication.isPlaying)
