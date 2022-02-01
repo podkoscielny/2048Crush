@@ -24,9 +24,11 @@ namespace Crush2048
         public int[,] PointsWorthAtCells { get; private set; }
         public Vector3 CubeSize { get; private set; } = new Vector3(0, 0, 0);
 
+#if UNITY_EDITOR
         private void OnEnable() => EditorApplication.playModeStateChanged += ResetDataOnPlayModeExit;
 
         private void OnDisable() => EditorApplication.playModeStateChanged -= ResetDataOnPlayModeExit;
+#endif
 
         public void SetGridSize(GridSize newGridSize) => gridSize = newGridSize;
 

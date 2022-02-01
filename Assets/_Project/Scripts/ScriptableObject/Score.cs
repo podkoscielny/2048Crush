@@ -56,6 +56,7 @@ namespace Crush2048
 
         void OnValidate()
         {
+#if UNITY_EDITOR
             if (EditorApplication.isPlaying)
             {
                 Value = Mathf.Max(value, 0);
@@ -64,6 +65,7 @@ namespace Crush2048
             {
                 value = 0;
             }
+#endif
         }
 
         public void AddPoints(int pointsToAdd) => Value += pointsToAdd;
