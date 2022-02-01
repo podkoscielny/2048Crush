@@ -14,6 +14,11 @@ namespace Crush2048
         [SerializeField] Score score;
 
         private int _reversesLeft = 3;
+        private bool _areTilesCached = false;
+
+        private void OnEnable() => Board.OnTileMatchEnded += ReenableReversing;
+
+        private void OnDisable() => Board.OnTileMatchEnded -= ReenableReversing;
 
         private void Start() => SetReversesRemainingText();
 
@@ -27,7 +32,9 @@ namespace Crush2048
             OnTilesReverse?.Invoke();
         }
 
-        private bool CantBeReversed() => _reversesLeft <= 0 || !Board.CanTilesBeClicked || score.Value <= 0;
+        private void ReenableReversing() => _areTilesCached = true;
+
+        private bool CantBeReversed() => !_areTilesCached || _reversesLeft <= 0 || !Board.CanTilesBeClicked || score.Value <= 0;
 
         private void SetReversesRemainingText() => remainingReversesText.text = $"{_reversesLeft}";
     }
