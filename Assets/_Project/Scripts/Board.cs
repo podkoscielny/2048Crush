@@ -23,6 +23,7 @@ namespace Crush2048
         public static bool CanTilesBeClicked { get; private set; } = true;
 
         private Sequence _tileMoveSequence;
+        private Vector3 _bounceBackTileScale = new Vector3(0.04f, -0.04f, 0);
 
         private const float BOARD_SIZE = 0.92f;
 
@@ -110,19 +111,25 @@ namespace Crush2048
 
             foreach (TileToCellPair pair in tilesToBeAssigned)
             {
-                Sequence sequence = DOTween.Sequence().SetAutoKill(false);
-
                 Vector2Int cell = pair.Cell;
                 GameObject tile = pair.Tile;
 
                 float desiredYPosition = gridCells[cell.x, cell.y].y;
 
-                sequence.Append(tile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f));
-                sequence.Append(tile.transform.DOMoveY(desiredYPosition + 0.1f, 0.1f));
-                sequence.Append(tile.transform.DOMoveY(desiredYPosition, 0.05f));
+                tile.transform.DOMoveY(desiredYPosition, 0.12f).OnComplete(() => BounceBackSequence(tile.transform, desiredYPosition)).SetDelay(0.1f);
 
                 gridSystem.AssignTileToCell(tile, cell);
             }
+        }
+
+        private void BounceBackSequence(Transform tile, float desiredYPosition)
+        {
+            Sequence sequence = DOTween.Sequence().SetAutoKill(false);
+
+            sequence.Append(tile.DOMoveY(desiredYPosition + 0.08f, 0.1f));
+            sequence.Append(tile.DOMoveY(desiredYPosition, 0.05f).SetDelay(0.05f));
+
+            tile.DOPunchScale(_bounceBackTileScale, 0.15f).SetEase(Ease.InElastic);
         }
 
         private void CheckPossibleMoves()
