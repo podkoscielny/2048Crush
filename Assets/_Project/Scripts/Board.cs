@@ -126,10 +126,10 @@ namespace Crush2048
         {
             Sequence sequence = DOTween.Sequence().SetAutoKill(false);
 
-            sequence.Append(tile.DOMoveY(desiredYPosition + 0.08f, 0.1f));
+            sequence.Append(tile.DOMoveY(desiredYPosition + 0.08f, 0.07f));
             sequence.Append(tile.DOMoveY(desiredYPosition, 0.05f).SetDelay(0.05f));
 
-            tile.DOPunchScale(_bounceBackTileScale, 0.15f).SetEase(Ease.InElastic);
+            //tile.DOPunchScale(_bounceBackTileScale, 0.15f).SetEase(Ease.InElastic);
         }
 
         private void CheckPossibleMoves()
