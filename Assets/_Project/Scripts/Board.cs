@@ -110,11 +110,17 @@ namespace Crush2048
 
             foreach (TileToCellPair pair in tilesToBeAssigned)
             {
+                Sequence sequence = DOTween.Sequence().SetAutoKill(false);
+
                 Vector2Int cell = pair.Cell;
                 GameObject tile = pair.Tile;
 
                 float desiredYPosition = gridCells[cell.x, cell.y].y;
-                tile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f);
+
+                sequence.Append(tile.transform.DOMoveY(desiredYPosition, 0.2f).SetDelay(0.1f));
+                sequence.Append(tile.transform.DOMoveY(desiredYPosition + 0.1f, 0.1f));
+                sequence.Append(tile.transform.DOMoveY(desiredYPosition, 0.05f));
+
                 gridSystem.AssignTileToCell(tile, cell);
             }
         }
