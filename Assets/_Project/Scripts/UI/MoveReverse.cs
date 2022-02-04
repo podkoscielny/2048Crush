@@ -26,6 +26,8 @@ namespace Crush2048
         {
             if (CantBeReversed()) return;
 
+            _areTilesCached = false;
+
             _reversesLeft = Mathf.Max(0, _reversesLeft - 1);
             SetReversesRemainingText();
 
