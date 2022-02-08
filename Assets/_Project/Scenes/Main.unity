@@ -1125,6 +1125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIToFade: {fileID: 1199099324}
   objectToAnimate: {fileID: 1614245401}
+  moveAmount: 0.5
 --- !u!1 &497396931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2512,7 +2513,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1185736070}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1824453150}
+        m_TargetAssemblyTypeName: Crush2048.Board, Scripts
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1185736070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4149,6 +4162,7 @@ MonoBehaviour:
   gridRenderer: {fileID: 1824453147}
   tilePrefab: {fileID: 4610248557676912175, guid: 22925b6ec069b98429de4574df8063f0, type: 3}
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
+  score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
 --- !u!1 &1923664667
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,14 +13,24 @@ namespace Crush2048
         [SerializeField] TextMeshProUGUI remainingReversesText;
         [SerializeField] Score score;
 
-        private int _reversesLeft = 3;
+        private int _reversesLeft;
         private bool _areTilesCached = false;
 
-        private void OnEnable() => Board.OnTileMatchEnded += ReenableReversing;
+        private const int MAX_REVERSES = 3;
 
-        private void OnDisable() => Board.OnTileMatchEnded -= ReenableReversing;
+        private void OnEnable()
+        {
+            Board.OnTileMatchEnded += ReenableReversing;
+            Board.OnGameRestart += InitializeReversesCount;
+        }
 
-        private void Start() => SetReversesRemainingText();
+        private void OnDisable()
+        {
+            Board.OnTileMatchEnded -= ReenableReversing;
+            Board.OnGameRestart += InitializeReversesCount;
+        }
+
+        private void Start() => InitializeReversesCount();
 
         public void ReverseMove()
         {
@@ -29,7 +39,7 @@ namespace Crush2048
             _areTilesCached = false;
 
             _reversesLeft = Mathf.Max(0, _reversesLeft - 1);
-            SetReversesRemainingText();
+            SetReversesText();
 
             OnTilesReverse?.Invoke();
         }
@@ -38,6 +48,12 @@ namespace Crush2048
 
         private bool CantBeReversed() => !_areTilesCached || _reversesLeft <= 0 || !Board.CanTilesBeClicked || score.Value <= 0;
 
-        private void SetReversesRemainingText() => remainingReversesText.text = $"{_reversesLeft}";
+        private void InitializeReversesCount()
+        {
+            _reversesLeft = MAX_REVERSES;
+            SetReversesText();
+        }
+
+        private void SetReversesText() => remainingReversesText.text = $"{_reversesLeft}";
     }
 }

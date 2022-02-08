@@ -12,6 +12,7 @@ namespace Crush2048
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
         public static event Action OnAssignTileValues;
+        public static event Action OnGameRestart;
         public static event Action OnGameOver;
 
         [SerializeField] Camera mainCamera;
@@ -19,6 +20,7 @@ namespace Crush2048
         [SerializeField] MeshRenderer gridRenderer;
         [SerializeField] GameObject tilePrefab;
         [SerializeField] ObjectPool objectPool;
+        [SerializeField] Score score;
 
         public static bool CanTilesBeClicked { get; private set; } = true;
 
@@ -39,6 +41,18 @@ namespace Crush2048
         }
 
         private void Start() => InitializeTiles();
+
+        public void RestartGame()
+        {
+            foreach (GameObject tile in gridSystem.TilesAtGridCells)
+            {
+                objectPool.AddToPool(Tags.Tile, tile);
+            }
+
+            OnGameRestart?.Invoke();
+            gridSystem.ResetCellArrays();
+            InitializeTiles();
+        }
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
         {

@@ -100,6 +100,18 @@ namespace Crush2048
             return emptyCellsInColumn;
         }
 
+        public void ResetCellArrays()
+        {
+            int rows = gridSize.Rows;
+            int columns = gridSize.Columns;
+
+            TilesAtGridCells = new GameObject[rows, columns];
+            CachedTilesAtCells = new TileType[rows, columns];
+            TileTypeAtCell = new TileType[rows, columns];
+            CachedPointsWorthAtCells = new int[rows, columns];
+            PointsWorthAtCells = new int[rows, columns];
+        }
+
         public void InitializeGrid(MeshRenderer gridRenderer)
         {
             int rows = gridSize.Rows;
