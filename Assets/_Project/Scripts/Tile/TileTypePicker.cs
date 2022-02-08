@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,6 +11,7 @@ namespace Crush2048
         public event Action<TileType> OnGetCachedTileType;
 
         [SerializeField] GridSystem gridSystem;
+        [SerializeField] List<TileType> tileTypes;
 
         public TileType TileType { get; private set; }
 
@@ -18,6 +20,7 @@ namespace Crush2048
             Board.OnCacheTileValues += CacheTileType;
             MoveReverse.OnTilesReverse += GetCachedTileType;
             Board.OnAssignTileValues += AssignTileTypeToCell;
+            Board.OnCachedValuesLoaded += LoadCachedTileType;
 
             TileType = GetRandomTileType();
             OnTileTypePicked?.Invoke(TileType);
@@ -28,6 +31,7 @@ namespace Crush2048
             Board.OnCacheTileValues -= CacheTileType;
             MoveReverse.OnTilesReverse -= GetCachedTileType;
             Board.OnAssignTileValues -= AssignTileTypeToCell;
+            Board.OnCachedValuesLoaded -= LoadCachedTileType;
         }
 
         private void AssignTileTypeToCell()
@@ -49,6 +53,29 @@ namespace Crush2048
             TileType = tileType;
 
             OnGetCachedTileType?.Invoke(tileType);
+        }
+
+        private void LoadCachedTileType(CachedBaord cachedBoard)
+        {
+            Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
+            CachedTileType cachedTileType = cachedBoard.CachedTileTypesAtCells[tileCell.x, tileCell.y];
+
+            TileType convertedTileType = ConvertSerializableTileTypeToNormal(cachedTileType);
+
+            if (convertedTileType != null) TileType = convertedTileType;
+
+            OnGetCachedTileType?.Invoke(TileType);
+        }
+
+        private TileType ConvertSerializableTileTypeToNormal(CachedTileType cachedTileType)
+        {
+            foreach (TileType tileType in tileTypes)
+            {
+                if (tileType.isSpecial == cachedTileType.IsSpecial && tileType.pointsWorth == cachedTileType.PointsWorth && tileType.tileBehaviour == cachedTileType.TileBehaviour)
+                    return tileType;
+            }
+
+            return null;
         }
 
         private TileType GetRandomTileType()

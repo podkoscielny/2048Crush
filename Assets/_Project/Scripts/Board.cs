@@ -12,6 +12,7 @@ namespace Crush2048
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
         public static event Action OnAssignTileValues;
+        public static event Action<CachedBaord> OnCachedValuesLoaded;
         public static event Action OnGameRestart;
         public static event Action OnGameOver;
 
@@ -26,6 +27,7 @@ namespace Crush2048
 
         private Sequence _tileMoveSequence;
         private Vector3 _bounceBackTileScale = new Vector3(0.04f, -0.04f, 0);
+        private string _savePath = "";
 
         private const float BOARD_SIZE = 0.92f;
 
@@ -38,9 +40,17 @@ namespace Crush2048
             InitializeBoardSize();
             gridSystem.InitializeGrid(gridRenderer);
             objectPool.InitializePool();
+            CacheSavePath();
         }
 
-        private void Start() => InitializeTiles();
+        private void Start()
+        {
+            InitializeTiles();
+
+            CachedBaord cachedBoard = SaveSystem.Load<CachedBaord>(_savePath);
+
+            if (cachedBoard.CachedTileTypesAtCells != null) OnCachedValuesLoaded?.Invoke(cachedBoard);
+        }
 
         public void RestartGame()
         {
@@ -52,6 +62,8 @@ namespace Crush2048
             OnGameRestart?.Invoke();
             gridSystem.ResetCellArrays();
             InitializeTiles();
+
+            SaveSystem.DeleteSaveFile(_savePath);
         }
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
@@ -181,6 +193,7 @@ namespace Crush2048
                     if (canBeMergedInColumn || canBeMergedInRow)
                     {
                         CanTilesBeClicked = true;
+                        CacheCurrentBoard(false);
                         return;
                     }
                 }
@@ -191,9 +204,42 @@ namespace Crush2048
 
         private void EndGame()
         {
+            CacheCurrentBoard(true);
             CanTilesBeClicked = false;
             OnGameOver?.Invoke();
         }
+
+        private void CacheCurrentBoard(bool isGameOver)
+        {
+            CachedTileType[,] cachedTileTypes = ConvertTileTypesToSerializableVersion();
+
+            CachedBaord cachedBoard = new CachedBaord(score.Value, cachedTileTypes, gridSystem.PointsWorthAtCells, isGameOver);
+
+            SaveSystem.Save<CachedBaord>(_savePath, cachedBoard);
+        }
+
+        private CachedTileType[,] ConvertTileTypesToSerializableVersion()
+        {
+            int rows = gridSystem.GridSize.Rows;
+            int columns = gridSystem.GridSize.Columns;
+
+            CachedTileType[,] cachedTileTypes = new CachedTileType[rows, columns];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    TileType tileType = gridSystem.TileTypeAtCell[i, j];
+
+                    CachedTileType cachedTileType = new CachedTileType(tileType.pointsWorth, tileType.isSpecial, tileType.tileBehaviour);
+                    cachedTileTypes[i, j] = cachedTileType;
+                }
+            }
+
+            return cachedTileTypes;
+        }
+
+        private void CacheSavePath() => _savePath = $"{gridSystem.GridSize.name}_board";
 
         private void InitializeTiles()
         {

@@ -11,15 +11,15 @@ namespace Crush2048
     {
         private static readonly string _extension = ".save";
 
-        public static void Save(string path, int highscore)
+        public static void Save<T>(string path, T data)
         {
             string savePath = $"/{path + _extension}";
             FileStream file = new FileStream(Application.persistentDataPath + savePath, FileMode.OpenOrCreate);
-
+            
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(file, highscore);
+                formatter.Serialize(file, data);
             }
             catch (SerializationException e)
             {
@@ -30,10 +30,10 @@ namespace Crush2048
                 file.Close();
             }
         }
-
-        public static int Load(string path)
+        
+        public static T Load<T>(string path)
         {
-            int highscore = 0;
+            T data = default(T);
             string savePath = $"/{path + _extension}";
 
             if (File.Exists(Application.persistentDataPath + savePath))
@@ -43,7 +43,7 @@ namespace Crush2048
                 try
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    highscore = (int)formatter.Deserialize(file);
+                    data = (T)formatter.Deserialize(file);
                 }
                 catch (SerializationException e)
                 {
@@ -55,7 +55,14 @@ namespace Crush2048
                 }
             }
 
-            return highscore;
+            return data;
+        }
+
+        public static void DeleteSaveFile(string path)
+        {
+            string filePath = $"{Application.persistentDataPath}/{path + _extension}";
+
+            File.Delete(filePath);
         }
     }
 }

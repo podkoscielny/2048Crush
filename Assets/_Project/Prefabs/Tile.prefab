@@ -242,6 +242,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  tileTypes:
+  - {fileID: 11400000, guid: 8d131933209ffe848919b1da1e7d935f, type: 2}
+  - {fileID: 11400000, guid: 757d257ab42c98a419130241840f47b8, type: 2}
+  - {fileID: 11400000, guid: 83d7ce66efa8b024cb4ed6b79fd31f9c, type: 2}
+  - {fileID: 11400000, guid: de5f29ab575ba2c488ab8eb3d188836d, type: 2}
+  - {fileID: 11400000, guid: 87f93b6171497694290f346c259f8ae5, type: 2}
+  - {fileID: 11400000, guid: 3d849a655339d5247866cd261bdbf1c2, type: 2}
 --- !u!114 &2200593051386032726
 MonoBehaviour:
   m_ObjectHideFlags: 0
