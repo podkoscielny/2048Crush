@@ -10,14 +10,11 @@ namespace Crush2048
         [SerializeField] CanvasGroup UIToFade;
         [SerializeField] RectTransform objectToAnimate;
 
-        [Header("Optional")]
-        [SerializeField] GameObject worldSpaceBlocker;
-
         private Vector3 _initialPosition;
         private Vector3 _initialScale;
         private Vector3 _loweredScale;
 
-        private const float MOVE_AMOUNT = 1;
+        private const float MOVE_AMOUNT = 0.5f;
         private const float ANIMATION_DURATION = 0.22f;
 
         private void Start()
@@ -33,23 +30,21 @@ namespace Crush2048
             AnimatePopup();
         }
 
-        private void ActivateObjects()
-        {
-            worldSpaceBlocker.SetActive(true);
-            UIToFade.gameObject.SetActive(true);
-        }
+        private void ActivateObjects() => UIToFade.gameObject.SetActive(true);
+
 
         private void AnimatePopup()
         {
             UIToFade.alpha = 0;
 
             Vector3 startPosition = new Vector3(_initialPosition.x, _initialPosition.y - MOVE_AMOUNT, _initialPosition.z);
+            Vector3 midPosition = new Vector3(_initialPosition.x, _initialPosition.y + (MOVE_AMOUNT / 2), _initialPosition.z);
 
             objectToAnimate.position = startPosition;
             objectToAnimate.localScale = _loweredScale;
 
-            UIToFade.DOFade(1, ANIMATION_DURATION);
-            objectToAnimate.DOMove(_initialPosition, ANIMATION_DURATION).SetEase(Ease.OutCirc);
+            UIToFade.DOFade(1, ANIMATION_DURATION).SetEase(Ease.OutCirc);
+            objectToAnimate.DOMove(midPosition, ANIMATION_DURATION / 2).OnComplete(() => objectToAnimate.DOMove(_initialPosition, ANIMATION_DURATION)).SetEase(Ease.OutCirc);
             objectToAnimate.DOScale(_initialScale, ANIMATION_DURATION).SetEase(Ease.OutCirc);
         }
     }
