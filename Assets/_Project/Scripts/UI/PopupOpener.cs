@@ -9,12 +9,12 @@ namespace Crush2048
     {
         [SerializeField] CanvasGroup UIToFade;
         [SerializeField] RectTransform objectToAnimate;
+        [Range(0,2f)] [SerializeField] float moveAmount;
 
         private Vector3 _initialPosition;
         private Vector3 _initialScale;
         private Vector3 _loweredScale;
 
-        private const float MOVE_AMOUNT = 0.5f;
         private const float ANIMATION_DURATION = 0.22f;
 
         private void Start()
@@ -37,8 +37,8 @@ namespace Crush2048
         {
             UIToFade.alpha = 0;
 
-            Vector3 startPosition = new Vector3(_initialPosition.x, _initialPosition.y - MOVE_AMOUNT, _initialPosition.z);
-            Vector3 midPosition = new Vector3(_initialPosition.x, _initialPosition.y + (MOVE_AMOUNT / 2), _initialPosition.z);
+            Vector3 startPosition = new Vector3(_initialPosition.x, _initialPosition.y - moveAmount, _initialPosition.z);
+            Vector3 midPosition = new Vector3(_initialPosition.x, _initialPosition.y + (moveAmount / 2), _initialPosition.z);
 
             objectToAnimate.position = startPosition;
             objectToAnimate.localScale = _loweredScale;
