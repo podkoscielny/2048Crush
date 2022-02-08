@@ -32,7 +32,6 @@ namespace Crush2048
 
         private void ActivateObjects() => UIToFade.gameObject.SetActive(true);
 
-
         private void AnimatePopup()
         {
             UIToFade.alpha = 0;
