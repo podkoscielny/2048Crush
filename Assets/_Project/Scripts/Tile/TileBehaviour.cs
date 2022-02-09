@@ -35,7 +35,10 @@ namespace Crush2048
 
         private void DefaultBehaviour(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
+            Vector3 spawnPosition = secondSelectedTile.TileObject.transform.position;
+
             MoveTileToPool(firstSelectedTile.TileCell, firstSelectedTile.TileObject);
+            SpawnParticleEffect(spawnPosition);
             UpdateScore(tilePoints, 2);
             DoPunchScale(secondSelectedTile.TileObject.transform);
         }
@@ -150,6 +153,12 @@ namespace Crush2048
         {
             gridSystem.DeAssignTileFromCell(cell);
             objectPool.AddToPool(Tags.Tile, tile);
+        }
+
+        private void SpawnParticleEffect(Vector3 spawnPosition)
+        {
+            GameObject particleEffect = objectPool.GetFromPool(Tags.MatchEffect);
+            particleEffect.transform.position = spawnPosition;
         }
 
         private void CacheTileBehaviour(TileType tileType)

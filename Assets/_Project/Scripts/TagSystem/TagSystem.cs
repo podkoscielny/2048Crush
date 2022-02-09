@@ -14,10 +14,7 @@ namespace MultipleTagSystem
             None = 0,
             Tile = 1,
             SpecialTile = 2,
-            //PrimaryColor = 3,
-            //SecondaryColor = 4,
-            //BackgroundColor = 5,
-            //TextColor = 6
+            MatchEffect = 3
         }
 
         private static Dictionary<Tags, List<GameObject>> TaggedObjects = new Dictionary<Tags, List<GameObject>>();
