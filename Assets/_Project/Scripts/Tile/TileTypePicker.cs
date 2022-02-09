@@ -60,22 +60,11 @@ namespace Crush2048
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
             CachedTileType cachedTileType = cachedBoard.CachedTileTypesAtCells[tileCell.x, tileCell.y];
 
-            TileType convertedTileType = ConvertSerializableTileTypeToNormal(cachedTileType);
+            TileType convertedTileType = TileTypeConverter.SerializableToNormal(cachedTileType, tileTypes);
 
             if (convertedTileType != null) TileType = convertedTileType;
 
             OnGetCachedTileType?.Invoke(TileType);
-        }
-
-        private TileType ConvertSerializableTileTypeToNormal(CachedTileType cachedTileType)
-        {
-            foreach (TileType tileType in tileTypes)
-            {
-                if (tileType.isSpecial == cachedTileType.IsSpecial && tileType.pointsWorth == cachedTileType.PointsWorth && tileType.tileBehaviour == cachedTileType.TileBehaviour)
-                    return tileType;
-            }
-
-            return null;
         }
 
         private TileType GetRandomTileType()

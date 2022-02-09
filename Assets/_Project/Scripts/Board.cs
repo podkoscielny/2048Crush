@@ -211,32 +211,10 @@ namespace Crush2048
 
         private void CacheCurrentBoard(bool isGameOver)
         {
-            CachedTileType[,] cachedTileTypes = ConvertTileTypesToSerializableVersion();
-
+            CachedTileType[,] cachedTileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.TileTypeAtCell);
             CachedBaord cachedBoard = new CachedBaord(score.Value, cachedTileTypes, gridSystem.PointsWorthAtCells, isGameOver);
 
             SaveSystem.Save<CachedBaord>(_savePath, cachedBoard);
-        }
-
-        private CachedTileType[,] ConvertTileTypesToSerializableVersion()
-        {
-            int rows = gridSystem.GridSize.Rows;
-            int columns = gridSystem.GridSize.Columns;
-
-            CachedTileType[,] cachedTileTypes = new CachedTileType[rows, columns];
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    TileType tileType = gridSystem.TileTypeAtCell[i, j];
-
-                    CachedTileType cachedTileType = new CachedTileType(tileType.pointsWorth, tileType.isSpecial, tileType.tileBehaviour);
-                    cachedTileTypes[i, j] = cachedTileType;
-                }
-            }
-
-            return cachedTileTypes;
         }
 
         private void CacheSavePath() => _savePath = $"{gridSystem.GridSize.name}_board";
