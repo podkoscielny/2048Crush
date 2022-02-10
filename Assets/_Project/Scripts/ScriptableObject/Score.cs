@@ -29,7 +29,7 @@ namespace Crush2048
             }
         }
 
-        private int _cachedScore = 0;
+        public int CachedScore { get; private set; } = 0;
 
         private void OnEnable()
         {
@@ -76,11 +76,15 @@ namespace Crush2048
 
         private void ResetScore() => Value = 0;
 
-        private void CacheScore() => _cachedScore = value;
+        private void CacheScore() => CachedScore = value;
 
-        private void ReverseScoreToCached() => Value = _cachedScore;
+        private void ReverseScoreToCached() => Value = CachedScore;
 
-        private void LoadCachedScore(CachedBaord cachedBoard) => Value = cachedBoard.Score;
+        private void LoadCachedScore(CachedBaord cachedBoard)
+        {
+            Value = cachedBoard.Score;
+            CachedScore = cachedBoard.CachedScore;
+        }
 
 
 #if UNITY_EDITOR

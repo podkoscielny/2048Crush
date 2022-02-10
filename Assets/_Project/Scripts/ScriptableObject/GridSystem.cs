@@ -100,6 +100,12 @@ namespace Crush2048
             return emptyCellsInColumn;
         }
 
+        public void SetCachedArrays(TileType[,] cachedTileTypes, int[,] cachedPointsWorth)
+        {
+            CachedTilesAtCells = cachedTileTypes;
+            CachedPointsWorthAtCells = cachedPointsWorth;
+        }
+
         public void ResetCellArrays()
         {
             int rows = gridSize.Rows;

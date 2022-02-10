@@ -49,7 +49,11 @@ namespace Crush2048
 
             CachedBaord cachedBoard = SaveSystem.Load<CachedBaord>(_savePath);
 
-            if (cachedBoard.CachedTileTypesAtCells != null) OnCachedValuesLoaded?.Invoke(cachedBoard);
+            if (cachedBoard.TileTypesAtCells != null)
+            {
+                //gridSystem.SetCachedArrays();
+                OnCachedValuesLoaded?.Invoke(cachedBoard);
+            }
         }
 
         public void RestartGame()
@@ -211,8 +215,9 @@ namespace Crush2048
 
         private void CacheCurrentBoard(bool isGameOver)
         {
-            CachedTileType[,] cachedTileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.TileTypeAtCell);
-            CachedBaord cachedBoard = new CachedBaord(score.Value, cachedTileTypes, gridSystem.PointsWorthAtCells, isGameOver);
+            CachedTileType[,] tileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.TileTypeAtCell);
+            CachedTileType[,] cachedTileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.CachedTilesAtCells);
+            CachedBaord cachedBoard = new CachedBaord(score.Value, score.CachedScore, tileTypes, cachedTileTypes, gridSystem.PointsWorthAtCells, gridSystem.CachedPointsWorthAtCells, isGameOver);
 
             SaveSystem.Save<CachedBaord>(_savePath, cachedBoard);
         }
