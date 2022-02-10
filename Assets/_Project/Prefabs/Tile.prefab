@@ -132,6 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  effectColor: {fileID: 11400000, guid: 37f00a81deaaeab499cd986ee323e528, type: 2}
+  tileRenderer: {fileID: 4610248557676912169}
   tilePoints: {fileID: 3994539253609184669}
   tileBehaviour: {fileID: 7528390063450246262}
 --- !u!114 &1163389491736964277
