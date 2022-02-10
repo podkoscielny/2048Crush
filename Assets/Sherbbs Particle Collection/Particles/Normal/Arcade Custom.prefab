@@ -14639,7 +14639,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
-  effectColor: {fileID: 11400000, guid: 37f00a81deaaeab499cd986ee323e528, type: 2}
+  tileGradients: {fileID: 11400000, guid: 2fcc4859818ba504daf72d289e97a0dc, type: 2}
+  effectMaterial: {fileID: 2100000, guid: b0fbc06b85f4fa3428dfd6d37843048d, type: 2}
   particleSystems:
   - {fileID: 202665757818897029}
   - {fileID: 202665756679727251}

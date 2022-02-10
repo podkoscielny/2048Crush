@@ -36,10 +36,11 @@ namespace Crush2048
         private void DefaultBehaviour(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile)
         {
             Vector3 spawnPosition = secondSelectedTile.TileObject.transform.position;
+            spawnPosition.z -= 0.1f;
 
             MoveTileToPool(firstSelectedTile.TileCell, firstSelectedTile.TileObject);
-            SpawnParticleEffect(spawnPosition);
             UpdateScore(tilePoints, 2);
+            SpawnParticleEffect(spawnPosition);
             DoPunchScale(secondSelectedTile.TileObject.transform);
         }
 

@@ -8,8 +8,8 @@ namespace Crush2048
     public class EffectHandler : MonoBehaviour
     {
         [SerializeField] ObjectPool objectPool;
-        [SerializeField] EffectColor effectColor;
-        [SerializeField] List<ParticleSystem> particleSystems;
+        [SerializeField] TileGradients tileGradients;
+        [SerializeField] Material effectMaterial;
 
         private const float DEACTIVATE_DELAY = 0.4f;
 
@@ -23,11 +23,10 @@ namespace Crush2048
 
         private void SetEffectColor()
         {
-            //foreach (ParticleSystem particleSystem in particleSystems)
-            //{
-            //    var main = particleSystem.main;
-            //    main.startColor = new ParticleSystem.MinMaxGradient(effectColor.Color);
-            //}
+            Color effectColor = tileGradients.RecentlyPickedBackgroundColor;
+
+            effectMaterial.color = effectColor;
+            effectMaterial.SetColor("_EmissionColor", effectColor);
         }
     }
 }

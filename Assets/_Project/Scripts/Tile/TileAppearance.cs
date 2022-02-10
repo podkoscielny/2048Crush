@@ -20,10 +20,7 @@ namespace Crush2048
 
         [Header("Systems")]
         [SerializeField] GridSystem gridSystem;
-
-        [Header("Gradients")]
-        [SerializeField] Gradient tileBackgroundGradient;
-        [SerializeField] Gradient tileTextGradient;
+        [SerializeField] TileGradients tileGradients;
 
         private Quaternion _initialRotation = new Quaternion(0, 0, 0, 0);
 
@@ -82,11 +79,11 @@ namespace Crush2048
         {
             int pointsAsTwoToThePower = PointsAsTwoToThePower();
             float colorGradientPercentage = Mathf.Min((float)pointsAsTwoToThePower / (float)MAXED_COLOR_AT_TWO_TO_THE_POWER, 1);
-            Color backgroundColor = tileBackgroundGradient.Evaluate(colorGradientPercentage);
+            Color backgroundColor = tileGradients.GetBackgroundColor(colorGradientPercentage);
 
             backgroundText.color = backgroundColor;
             tileRenderer.material.color = backgroundColor;
-            tileText.color = tileTextGradient.Evaluate(colorGradientPercentage);
+            tileText.color = tileGradients.GetTextColor(colorGradientPercentage);
         }
 
         private int PointsAsTwoToThePower()
