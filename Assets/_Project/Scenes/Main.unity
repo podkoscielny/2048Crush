@@ -2279,6 +2279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remainingReversesText: {fileID: 134635823}
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
+  reversesLeft: {fileID: 0}
 --- !u!1 &1163737885
 GameObject:
   m_ObjectHideFlags: 0
@@ -4298,6 +4299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remainingReversesText: {fileID: 1120509287}
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
+  reversesLeft: {fileID: 11400000, guid: 884ca7998726f194e8a7082ccc5d9b67, type: 2}
 --- !u!1 &1790980570
 GameObject:
   m_ObjectHideFlags: 0
@@ -4611,6 +4613,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 4610248557676912175, guid: 22925b6ec069b98429de4574df8063f0, type: 3}
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
+  reversesLeft: {fileID: 11400000, guid: 884ca7998726f194e8a7082ccc5d9b67, type: 2}
 --- !u!1 &1923664667
 GameObject:
   m_ObjectHideFlags: 0

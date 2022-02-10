@@ -16,12 +16,18 @@ namespace Crush2048
         public static event Action OnGameRestart;
         public static event Action OnGameOver;
 
-        [SerializeField] Camera mainCamera;
-        [SerializeField] GridSystem gridSystem;
-        [SerializeField] MeshRenderer gridRenderer;
+        [Header("GameObjects")]
         [SerializeField] GameObject tilePrefab;
+
+        [Header("Components")]
+        [SerializeField] Camera mainCamera;
+        [SerializeField] MeshRenderer gridRenderer;
+
+        [Header("Systems")]
+        [SerializeField] GridSystem gridSystem;
         [SerializeField] ObjectPool objectPool;
         [SerializeField] Score score;
+        [SerializeField] IntValue reversesLeft;
 
         public static bool CanTilesBeClicked { get; private set; } = true;
 
@@ -46,19 +52,7 @@ namespace Crush2048
         private void Start()
         {
             InitializeTiles();
-
-            CachedBaord cachedBoard = SaveSystem.Load<CachedBaord>(_savePath);
-
-            if (cachedBoard.TileTypesAtCells != null)
-            {
-                TileType[] tileTypeVariants = gridSystem.GridSize.GetTileTypeVariants();
-
-                TileType[,] cachedTileTypes = TileTypeConverter.SerializableArrayToNormal(cachedBoard.CachedTileTypesAtCells, tileTypeVariants);
-                int[,] cachedPointsWorth = cachedBoard.CachedPointsAtCells;
-
-                gridSystem.SetCachedArrays(cachedTileTypes, cachedPointsWorth);
-                OnCachedValuesLoaded?.Invoke(cachedBoard);
-            }
+            LoadCachedBoard();
         }
 
         public void RestartGame()
@@ -73,6 +67,28 @@ namespace Crush2048
             InitializeTiles();
 
             SaveSystem.DeleteSaveFile(_savePath);
+        }
+
+        private void LoadCachedBoard()
+        {
+            CachedBaord cachedBoard = SaveSystem.Load<CachedBaord>(_savePath);
+            bool isBoardCached = cachedBoard.tileTypesAtCells != null;
+
+            reversesLeft.Value = isBoardCached ? cachedBoard.moveReversesLeft : reversesLeft.BaseValue;
+
+            if (isBoardCached)
+            {
+                if (cachedBoard.cachedTileTypesAtCells.Length > 0 && cachedBoard.cachedPointsAtCells.Length > 0)
+                {
+                    TileType[] tileTypeVariants = gridSystem.GridSize.GetTileTypeVariants();
+                    TileType[,] cachedTileTypes = TileTypeConverter.SerializableArrayToNormal(cachedBoard.cachedTileTypesAtCells, tileTypeVariants);
+                    int[,] cachedPointsWorth = cachedBoard.cachedPointsAtCells;
+
+                    gridSystem.SetCachedArrays(cachedTileTypes, cachedPointsWorth);
+                }
+
+                OnCachedValuesLoaded?.Invoke(cachedBoard);
+            }
         }
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
@@ -222,9 +238,25 @@ namespace Crush2048
         {
             CachedTileType[,] tileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.TileTypeAtCell);
             CachedTileType[,] cachedTileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.CachedTilesAtCells);
-            CachedBaord cachedBoard = new CachedBaord(score.Value, score.CachedScore, tileTypes, cachedTileTypes, gridSystem.PointsWorthAtCells, gridSystem.CachedPointsWorthAtCells, isGameOver);
+            CachedBaord cachedBoard = GetNewCachedBoard(tileTypes, cachedTileTypes, isGameOver);
 
             SaveSystem.Save<CachedBaord>(_savePath, cachedBoard);
+        }
+
+        private CachedBaord GetNewCachedBoard(CachedTileType[,] tileTypes, CachedTileType[,] cachedTileTypes, bool isGameOver)
+        {
+            CachedBaord cachedBaord = new CachedBaord();
+
+            cachedBaord.score = score.Value;
+            cachedBaord.cachedScore = score.CachedScore;
+            cachedBaord.moveReversesLeft = reversesLeft.Value;
+            cachedBaord.tileTypesAtCells = tileTypes;
+            cachedBaord.cachedTileTypesAtCells = cachedTileTypes;
+            cachedBaord.pointsAtCells = gridSystem.PointsWorthAtCells;
+            cachedBaord.cachedPointsAtCells = gridSystem.CachedPointsWorthAtCells;
+            cachedBaord.isGameOver = isGameOver;
+
+            return cachedBaord;
         }
 
         private void CacheSavePath() => _savePath = $"{gridSystem.GridSize.name}_board";

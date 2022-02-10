@@ -82,8 +82,8 @@ namespace Crush2048
 
         private void LoadCachedScore(CachedBaord cachedBoard)
         {
-            Value = cachedBoard.Score;
-            CachedScore = cachedBoard.CachedScore;
+            Value = cachedBoard.score;
+            CachedScore = cachedBoard.cachedScore;
         }
 
 
