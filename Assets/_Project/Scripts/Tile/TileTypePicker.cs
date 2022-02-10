@@ -11,7 +11,6 @@ namespace Crush2048
         public event Action<TileType> OnGetCachedTileType;
 
         [SerializeField] GridSystem gridSystem;
-        [SerializeField] List<TileType> tileTypes;
 
         public TileType TileType { get; private set; }
 
@@ -59,8 +58,8 @@ namespace Crush2048
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
             CachedTileType cachedTileType = cachedBoard.TileTypesAtCells[tileCell.x, tileCell.y];
-
-            TileType convertedTileType = TileTypeConverter.SerializableToNormal(cachedTileType, tileTypes);
+            
+            TileType convertedTileType = TileTypeConverter.SerializableToNormal(cachedTileType, gridSystem.GridSize.GetTileTypeVariants());
 
             if (convertedTileType != null) TileType = convertedTileType;
 

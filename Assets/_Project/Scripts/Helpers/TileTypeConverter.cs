@@ -6,7 +6,7 @@ namespace Crush2048
 {
     public static class TileTypeConverter
     {
-        public static TileType SerializableToNormal(CachedTileType cachedTileType, List<TileType> tileTypes)
+        public static TileType SerializableToNormal(CachedTileType cachedTileType, TileType[] tileTypes)
         {
             foreach (TileType tileType in tileTypes)
             {
@@ -17,10 +17,10 @@ namespace Crush2048
             return null;
         }
 
-        public static CachedTileType[,] NormalArrayToSerializable(TileType[,] tileTypes)
+        public static CachedTileType[,] NormalArrayToSerializable(TileType[,] tileTypeVariants)
         {
-            int rows = tileTypes.GetLength(0);
-            int columns = tileTypes.GetLength(1);
+            int rows = tileTypeVariants.GetLength(0);
+            int columns = tileTypeVariants.GetLength(1);
 
             CachedTileType[,] cachedTileTypes = new CachedTileType[rows, columns];
 
@@ -28,7 +28,7 @@ namespace Crush2048
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    TileType tileType = tileTypes[i, j];
+                    TileType tileType = tileTypeVariants[i, j];
 
                     CachedTileType cachedTileType = new CachedTileType(tileType.pointsWorth, tileType.isSpecial, tileType.tileBehaviour);
                     cachedTileTypes[i, j] = cachedTileType;
@@ -36,6 +36,27 @@ namespace Crush2048
             }
 
             return cachedTileTypes;
+        }
+
+        public static TileType[,] SerializableArrayToNormal(CachedTileType[,] cachedTileTypes, TileType[] tileTypeVariants)
+        {
+            int rows = cachedTileTypes.GetLength(0);
+            int columns = cachedTileTypes.GetLength(1);
+
+            TileType[,] tileTypes = new TileType[rows, columns];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    CachedTileType cachedTileType = cachedTileTypes[i, j];
+
+                    TileType tileType = SerializableToNormal(cachedTileType, tileTypeVariants);
+                    tileTypes[i, j] = tileType;
+                }
+            }
+
+            return tileTypes;
         }
     }
 }

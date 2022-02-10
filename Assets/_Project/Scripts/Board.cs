@@ -51,7 +51,12 @@ namespace Crush2048
 
             if (cachedBoard.TileTypesAtCells != null)
             {
-                //gridSystem.SetCachedArrays();
+                TileType[] tileTypeVariants = gridSystem.GridSize.GetTileTypeVariants();
+
+                TileType[,] cachedTileTypes = TileTypeConverter.SerializableArrayToNormal(cachedBoard.CachedTileTypesAtCells, tileTypeVariants);
+                int[,] cachedPointsWorth = cachedBoard.CachedPointsAtCells;
+
+                gridSystem.SetCachedArrays(cachedTileTypes, cachedPointsWorth);
                 OnCachedValuesLoaded?.Invoke(cachedBoard);
             }
         }

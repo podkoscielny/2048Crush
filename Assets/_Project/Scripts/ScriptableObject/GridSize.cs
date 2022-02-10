@@ -18,13 +18,30 @@ namespace Crush2048
         public TileProbabilityPair[] TileTypes => tileTypes;
         public float ProbabilitySum { get; private set; }
 
-        void OnValidate()
+        private TileType[] _tileTypeVariants;
+
+        private void OnValidate()
         {
             ClampRowsAndColumnsCount();
             ClampTileProbability();
         }
 
-        void OnEnable() => CalculateProbabilitySum();
+        private void OnEnable() => CalculateProbabilitySum();
+
+        public TileType[] GetTileTypeVariants()
+        {
+            if (_tileTypeVariants.Length < 1)
+            {
+                _tileTypeVariants = new TileType[TileTypes.Length];
+
+                for (int i = 0; i < TileTypes.Length; i++)
+                {
+                    _tileTypeVariants[i] = TileTypes[i].tileType;
+                }
+            }
+
+            return _tileTypeVariants;
+        }
 
         private void ClampRowsAndColumnsCount()
         {
@@ -32,7 +49,7 @@ namespace Crush2048
             columns = Mathf.Max(1, columns);
         }
 
-        private void ClampTileProbability() // Check making Mathf.Max instead of Clamp or Add Range attribute
+        private void ClampTileProbability()
         {
             for (int i = 0; i < tileTypes.Length; i++)
             {

@@ -14,7 +14,7 @@ namespace Crush2048
         [SerializeField] Score score;
 
         private int _reversesLeft;
-        private bool _areTilesCached = false;
+        private bool _areTilesCached = true;
 
         private const int MAX_REVERSES = 3;
 
