@@ -600,7 +600,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 30
+    maxNumParticles: 45
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -975,7 +975,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 35
+        scalar: 45
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -4891,7 +4891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &202665756679727253
 Transform:
   m_ObjectHideFlags: 0
@@ -14641,11 +14641,6 @@ MonoBehaviour:
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
   tileGradients: {fileID: 11400000, guid: 2fcc4859818ba504daf72d289e97a0dc, type: 2}
   effectMaterial: {fileID: 2100000, guid: b0fbc06b85f4fa3428dfd6d37843048d, type: 2}
-  particleSystems:
-  - {fileID: 202665757818897029}
-  - {fileID: 202665756679727251}
-  - {fileID: 202665758342587069}
-  - {fileID: 202665756364107977}
 --- !u!1 &202665758342587040
 GameObject:
   m_ObjectHideFlags: 0
