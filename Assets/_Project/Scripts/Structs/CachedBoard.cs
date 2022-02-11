@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Crush2048
 {
     [System.Serializable]
-    public struct CachedBaord
+    public struct CachedBoard
     {
         public int score;
         public int cachedScore;

@@ -64,10 +64,10 @@ namespace Crush2048
             PointsWorth = gridSystem.CachedPointsWorthAtCells[tileCell.x, tileCell.y];
         }
 
-        private void LoadCachedPoints(CachedBaord cachedBaord)
+        private void LoadCachedPoints(CachedBoard cachedBoard)
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
-            PointsWorth = cachedBaord.pointsAtCells[tileCell.x, tileCell.y];
+            PointsWorth = cachedBoard.pointsAtCells[tileCell.x, tileCell.y];
         }
 
         private void InitializePoints(TileType tileType) => PointsWorth = tileType.pointsWorth;

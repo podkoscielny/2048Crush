@@ -54,7 +54,7 @@ namespace Crush2048
             OnGetCachedTileType?.Invoke(tileType);
         }
 
-        private void LoadCachedTileType(CachedBaord cachedBoard)
+        private void LoadCachedTileType(CachedBoard cachedBoard)
         {
             Vector2Int tileCell = gridSystem.GetTileGridCell(gameObject);
             CachedTileType cachedTileType = cachedBoard.tileTypesAtCells[tileCell.x, tileCell.y];

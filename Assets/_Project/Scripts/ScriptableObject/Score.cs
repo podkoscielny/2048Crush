@@ -80,7 +80,7 @@ namespace Crush2048
 
         private void ReverseScoreToCached() => Value = CachedScore;
 
-        private void LoadCachedScore(CachedBaord cachedBoard)
+        private void LoadCachedScore(CachedBoard cachedBoard)
         {
             Value = cachedBoard.score;
             CachedScore = cachedBoard.cachedScore;
