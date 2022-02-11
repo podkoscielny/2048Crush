@@ -8,7 +8,7 @@ namespace Crush2048
 {
     public class SceneController : MonoBehaviour
     {
-        public void GoToPlayScene() => SceneManager.LoadScene("Main");
+        public void GoToPlayScene() => SceneManager.LoadScene("Game");
 
         public void QuitGame()
         {
