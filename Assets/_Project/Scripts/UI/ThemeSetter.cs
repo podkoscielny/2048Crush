@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace Crush2048
 {
     public class ThemeSetter : MonoBehaviour
     {
         [SerializeField] ThemeManager themeManager;
+        [SerializeField] Image themeImage;
         [SerializeField] TextMeshProUGUI themeText;
 
-        private void Start() => SetCurrentThemeName();
+        private void Start() => SetCurrentThemeUI();
 
         public void SetNextTheme()
         {
@@ -21,7 +23,7 @@ namespace Crush2048
             Theme themeToBeSelected = themeManager.AllThemes[currentThemeIndex + 1];
 
             themeManager.SelectTheme(themeToBeSelected);
-            SetCurrentThemeName();
+            SetCurrentThemeUI();
         }
 
         public void SetPreviousTheme()
@@ -33,9 +35,15 @@ namespace Crush2048
             Theme themeToBeSelected = themeManager.AllThemes[currentThemeIndex - 1];
 
             themeManager.SelectTheme(themeToBeSelected);
-            SetCurrentThemeName();
+            SetCurrentThemeUI();
         }
 
-        private void SetCurrentThemeName() => themeText.text = themeManager.ThemeSelected.name;
+        private void SetCurrentThemeUI()
+        {
+            Theme selectedTheme = themeManager.ThemeSelected;
+
+            themeText.text = selectedTheme.name;
+            themeImage.sprite = selectedTheme.BackgroundImage;
+        }
     }
 }

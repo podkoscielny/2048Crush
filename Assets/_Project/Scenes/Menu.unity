@@ -4203,7 +4203,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 308804100e0c219459966e52365ba668, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4e4cf8a1949a2848a9925c6f3469a0d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5610,6 +5610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   themeManager: {fileID: 11400000, guid: 6aab48a196300c14e92456d3d0bb62cc, type: 2}
+  themeImage: {fileID: 907112122}
   themeText: {fileID: 59144994}
 --- !u!1 &2057908092
 GameObject:
