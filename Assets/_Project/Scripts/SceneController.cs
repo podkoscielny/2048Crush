@@ -10,6 +10,8 @@ namespace Crush2048
     {
         public void GoToPlayScene() => SceneManager.LoadScene("Game");
 
+        public void GoToMainMenu() => SceneManager.LoadScene("Menu");
+
         public void QuitGame()
         {
 #if UNITY_EDITOR
