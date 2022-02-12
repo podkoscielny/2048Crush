@@ -12,6 +12,7 @@ namespace Crush2048
 
         [Header("Theme")]
         [SerializeField] Theme themeSelected;
+        [SerializeField] List<Theme> allThemes;
 
         [Header("Materials")]
         [SerializeField] Material primaryMaterial;
@@ -20,9 +21,14 @@ namespace Crush2048
         [SerializeField] Material UISecondaryMaterial;
         [SerializeField] Material[] textMaterials;
 
+        public Theme ThemeSelected  => themeSelected;
+        public List<Theme> AllThemes => allThemes;
+        public int CurrentThemeIndex => allThemes.IndexOf(themeSelected);
+
         private List<Material> _allThemeMaterials;
 
-        public Theme ThemeSelected { get => themeSelected; private set => themeSelected = value; }
+        private const string SAVE_PATH = "theme";
+
 
         private void OnValidate()
         {
@@ -30,11 +36,34 @@ namespace Crush2048
             ChangeThemeColors();
         }
 
+        //private void OnEnable() => LoadTheme();
+
         public void SelectTheme(Theme theme)
         {
-            ThemeSelected = theme;
+            themeSelected = theme;
+
+            //SaveSystem.Save<string>(SAVE_PATH, themeSelected.name);
 
             ChangeThemeColors();
+        }
+
+        private void LoadTheme()
+        {
+            string themeName = SaveSystem.Load<string>(SAVE_PATH);
+
+            if (allThemes.Count > 0 || themeSelected != null)
+            {
+                foreach (Theme theme in allThemes)
+                {
+                    if (themeName == theme.name)
+                    {
+                        themeSelected = theme;
+                        break;
+                    }
+                }
+
+                ChangeThemeColors();
+            }
         }
 
         private void ChangeThemeColors()

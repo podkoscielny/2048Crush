@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: ThemeManager
   m_EditorClassIdentifier: 
   themeSelected: {fileID: 11400000, guid: a18006419bdcb054ebfc45f6b37dcbfe, type: 2}
+  allThemes:
+  - {fileID: 11400000, guid: cea5c0745240f5c4c9bdfd1bf1f10b5b, type: 2}
+  - {fileID: 11400000, guid: a18006419bdcb054ebfc45f6b37dcbfe, type: 2}
+  - {fileID: 11400000, guid: 62be71f10135d1d46823c3b00f81c3d2, type: 2}
   primaryMaterial: {fileID: 2100000, guid: fc03e3b375dbd674c9758c6a3dd34473, type: 2}
   secondaryMaterial: {fileID: 2100000, guid: 305246c8531fa6f449bd4a7801880360, type: 2}
   UIPrimaryMaterial: {fileID: 2100000, guid: dac6c6635eb800d4db09903f6dad3568, type: 2}

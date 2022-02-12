@@ -2097,7 +2097,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 680517126}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1916818331}
+        m_TargetAssemblyTypeName: Crush2048.ThemeSetter, Scripts
+        m_MethodName: SetNextTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &680517126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4926,7 +4938,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1763735773}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1916818331}
+        m_TargetAssemblyTypeName: Crush2048.ThemeSetter, Scripts
+        m_MethodName: SetPreviousTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1763735773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5542,6 +5566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1916818330}
+  - component: {fileID: 1916818331}
   m_Layer: 5
   m_Name: Choose Theme
   m_TagString: Untagged
@@ -5572,6 +5597,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 159}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1916818331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916818329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b117c4b937fcd184da9257d93a4ca142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeManager: {fileID: 11400000, guid: 6aab48a196300c14e92456d3d0bb62cc, type: 2}
+  themeText: {fileID: 59144994}
 --- !u!1 &2057908092
 GameObject:
   m_ObjectHideFlags: 0
