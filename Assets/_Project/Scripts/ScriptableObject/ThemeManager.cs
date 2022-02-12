@@ -20,9 +20,15 @@ namespace Crush2048
         [SerializeField] Material UISecondaryMaterial;
         [SerializeField] Material[] textMaterials;
 
+        private List<Material> _allThemeMaterials;
+
         public Theme ThemeSelected { get => themeSelected; private set => themeSelected = value; }
 
-        private void OnValidate() => ChangeThemeColors();
+        private void OnValidate()
+        {
+            AssignMaterialsToList();
+            ChangeThemeColors();
+        }
 
         public void SelectTheme(Theme theme)
         {
@@ -30,8 +36,6 @@ namespace Crush2048
 
             ChangeThemeColors();
         }
-
-        private bool CantChangeColors() => themeSelected == null || textMaterials.Length < 1 || primaryMaterial == null || secondaryMaterial == null || UIPrimaryMaterial == null || UISecondaryMaterial == null;
 
         private void ChangeThemeColors()
         {
@@ -48,6 +52,25 @@ namespace Crush2048
             {
                 material.SetColor("_FaceColor", themeSelected.TextColor);
             }
+        }
+
+        private bool CantChangeColors() => themeSelected == null || textMaterials.Length < 1 || ArentAllMaterialsAssigned();
+
+        private bool ArentAllMaterialsAssigned()
+        {
+            if (_allThemeMaterials.Count < 1) AssignMaterialsToList();
+
+            return _allThemeMaterials.Contains(null);
+        }
+
+        private void AssignMaterialsToList()
+        {
+            _allThemeMaterials = new List<Material>();
+
+            _allThemeMaterials.Add(primaryMaterial);
+            _allThemeMaterials.Add(secondaryMaterial);
+            _allThemeMaterials.Add(UIPrimaryMaterial);
+            _allThemeMaterials.Add(UISecondaryMaterial);
         }
     }
 }
