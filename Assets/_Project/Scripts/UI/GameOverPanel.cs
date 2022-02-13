@@ -9,10 +9,20 @@ namespace Crush2048
     {
         [SerializeField] GameObject gameOverPanel;
 
-        private void OnEnable() => Board.OnGameOver += ShowGameOverPanel;
+        private void OnEnable()
+        {
+            Board.OnGameOver += ShowGameOverPanel;
+            Board.OnCachedValuesLoaded += ShowGameOverPanel;
+        }
 
-        private void OnDisable() => Board.OnGameOver -= ShowGameOverPanel;
+        private void OnDisable()
+        {
+            Board.OnGameOver -= ShowGameOverPanel;
+            Board.OnCachedValuesLoaded -= ShowGameOverPanel;
+        }
 
         private void ShowGameOverPanel() => gameOverPanel.SetActive(true);
+
+        private void ShowGameOverPanel(CachedBoard cachedBoard) => gameOverPanel.SetActive(cachedBoard.isGameOver);
     } 
 }
