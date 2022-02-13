@@ -179,8 +179,6 @@ namespace Crush2048
 
             sequence.Append(tile.DOMoveY(desiredYPosition + 0.08f, 0.07f));
             sequence.Append(tile.DOMoveY(desiredYPosition, 0.05f).SetDelay(0.05f));
-
-            //tile.DOPunchScale(_bounceBackTileScale, 0.15f).SetEase(Ease.InElastic);
         }
 
         private void CheckPossibleMoves()
@@ -230,7 +228,7 @@ namespace Crush2048
         private void EndGame()
         {
             CacheCurrentBoard(true);
-            CanTilesBeClicked = false;
+            CanTilesBeClicked = true;
             OnGameOver?.Invoke();
         }
 
