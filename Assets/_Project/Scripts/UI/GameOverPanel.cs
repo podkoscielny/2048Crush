@@ -13,15 +13,21 @@ namespace Crush2048
         {
             Board.OnGameOver += ShowGameOverPanel;
             Board.OnCachedValuesLoaded += ShowGameOverPanel;
+            Board.OnGameRestart += HideGameOverPanel;
+            MoveReverse.OnTilesReverse += HideGameOverPanel;
         }
 
         private void OnDisable()
         {
             Board.OnGameOver -= ShowGameOverPanel;
             Board.OnCachedValuesLoaded -= ShowGameOverPanel;
+            Board.OnGameRestart -= HideGameOverPanel;
+            MoveReverse.OnTilesReverse -= HideGameOverPanel;
         }
 
         private void ShowGameOverPanel() => gameOverPanel.SetActive(true);
+
+        private void HideGameOverPanel() => gameOverPanel.SetActive(false);
 
         private void ShowGameOverPanel(CachedBoard cachedBoard) => gameOverPanel.SetActive(cachedBoard.isGameOver);
     } 
