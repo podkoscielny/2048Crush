@@ -15,7 +15,7 @@ namespace Crush2048
         {
             int displayHeight = Display.main.systemHeight;
 
-            int height = displayHeight - (int)(displayHeight * 0.1f);
+            int height = (int)(displayHeight * 0.7f);
             int width = (int)(height * 0.5625f);
 
             Screen.SetResolution(width, height, false);

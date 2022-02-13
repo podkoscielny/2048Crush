@@ -12,7 +12,7 @@ namespace Crush2048
         [SerializeField] Image themeImage;
         [SerializeField] TextMeshProUGUI themeText;
 
-        private void Start() => SetCurrentThemeUI();
+        private void Start() => SetCurrentThemeUI(themeManager.ThemeSelected);
 
         public void SetNextTheme()
         {
@@ -23,7 +23,7 @@ namespace Crush2048
             Theme themeToBeSelected = themeManager.AllThemes[currentThemeIndex + 1];
 
             themeManager.SelectTheme(themeToBeSelected);
-            SetCurrentThemeUI();
+            SetCurrentThemeUI(themeToBeSelected);
         }
 
         public void SetPreviousTheme()
@@ -35,12 +35,12 @@ namespace Crush2048
             Theme themeToBeSelected = themeManager.AllThemes[currentThemeIndex - 1];
 
             themeManager.SelectTheme(themeToBeSelected);
-            SetCurrentThemeUI();
+            SetCurrentThemeUI(themeToBeSelected);
         }
 
-        private void SetCurrentThemeUI()
+        private void SetCurrentThemeUI(Theme themeToBeSelected)
         {
-            Theme selectedTheme = themeManager.ThemeSelected;
+            Theme selectedTheme = themeToBeSelected;
 
             themeText.text = selectedTheme.name;
             themeImage.sprite = selectedTheme.BackgroundImage;

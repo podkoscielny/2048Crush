@@ -18,7 +18,7 @@ namespace Crush2048
         public TileProbabilityPair[] TileTypes => tileTypes;
         public float ProbabilitySum { get; private set; }
 
-        private TileType[] _tileTypeVariants;
+        private TileType[] _tileTypeVariants = new TileType[0];
 
         private void OnValidate()
         {
@@ -30,14 +30,11 @@ namespace Crush2048
 
         public TileType[] GetTileTypeVariants()
         {
-            if (_tileTypeVariants.Length < 1)
-            {
-                _tileTypeVariants = new TileType[TileTypes.Length];
+            _tileTypeVariants = new TileType[TileTypes.Length];
 
-                for (int i = 0; i < TileTypes.Length; i++)
-                {
-                    _tileTypeVariants[i] = TileTypes[i].tileType;
-                }
+            for (int i = 0; i < TileTypes.Length; i++)
+            {
+                _tileTypeVariants[i] = TileTypes[i].tileType;
             }
 
             return _tileTypeVariants;
