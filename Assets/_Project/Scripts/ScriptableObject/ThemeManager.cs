@@ -53,7 +53,7 @@ namespace Crush2048
         {
             string themeName = SaveSystem.Load<string>(SAVE_PATH);
 
-            if (allThemes.Count > 0 || themeSelected != null)
+            if (allThemes.Count > 0)
             {
                 foreach (Theme theme in allThemes)
                 {
@@ -63,6 +63,8 @@ namespace Crush2048
                         break;
                     }
                 }
+
+                if (themeSelected == null) themeSelected = allThemes[0];
 
                 ChangeThemeColors();
             }
