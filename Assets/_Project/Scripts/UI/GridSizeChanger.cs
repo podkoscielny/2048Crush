@@ -30,6 +30,10 @@ namespace Crush2048
 
         public void DecreaseGridSize()
         {
+            int previousIndex = _selectedGridSizeIndex - 1;
+
+            if (previousIndex < 0) return;
+
             _selectedGridSizeIndex = Mathf.Max(0, _selectedGridSizeIndex - 1);
 
             SetGridSize();
@@ -38,6 +42,10 @@ namespace Crush2048
 
         public void IncreaseGridSize()
         {
+            int nextIndex = _selectedGridSizeIndex - 1;
+
+            if (nextIndex > gridSizes.Length - 1) return;
+
             _selectedGridSizeIndex = Mathf.Min(_selectedGridSizeIndex + 1, gridSizes.Length - 1);
 
             SetGridSize();
