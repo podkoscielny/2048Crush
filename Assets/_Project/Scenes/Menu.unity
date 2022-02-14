@@ -2164,6 +2164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 680517124}
+  loweredScaleFactor: 0.8
 --- !u!1 &706039617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2329,6 +2330,7 @@ MonoBehaviour:
   objectsToBeScaled:
   - {fileID: 706039618}
   - {fileID: 1802178627}
+  loweredScaleFactor: 0.9
 --- !u!1 &709093011
 GameObject:
   m_ObjectHideFlags: 0
@@ -2697,6 +2699,7 @@ MonoBehaviour:
   objectsToBeScaled:
   - {fileID: 862199934}
   - {fileID: 84655698}
+  loweredScaleFactor: 0.9
 --- !u!1 &907112120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3647,7 +3650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3771769423092328958, guid: 88d9918c14737774c9628e2fc55f8c9e, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3771769423092328958, guid: 88d9918c14737774c9628e2fc55f8c9e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4018,6 +4021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 1258154169}
+  loweredScaleFactor: 0.8
 --- !u!1 &1408880953
 GameObject:
   m_ObjectHideFlags: 0
@@ -4458,6 +4462,7 @@ MonoBehaviour:
   objectsToBeScaled:
   - {fileID: 1618340539}
   - {fileID: 1858290891}
+  loweredScaleFactor: 0.9
 --- !u!1 &1636606165
 GameObject:
   m_ObjectHideFlags: 0
@@ -5082,6 +5087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 1763735771}
+  loweredScaleFactor: 0.8
 --- !u!1 &1802178626
 GameObject:
   m_ObjectHideFlags: 0
@@ -5439,6 +5445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 1851285571}
+  loweredScaleFactor: 0.8
 --- !u!1 &1855428095
 GameObject:
   m_ObjectHideFlags: 0

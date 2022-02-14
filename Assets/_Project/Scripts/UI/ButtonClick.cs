@@ -10,10 +10,10 @@ namespace Crush2048
     public class ButtonClick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] List<RectTransform> objectsToBeScaled;
+        [SerializeField] float loweredScaleFactor = 0.9f;
 
         private List<Vector3> _initialScalesOfObjects = new List<Vector3>(); 
 
-        private const float LOWERED_SCALE_FACTOR = 0.9f;
         private const float TRANSITION_DURATION = 0.1f;
 
         private void Awake() => CacheObjectsScales();
@@ -22,7 +22,7 @@ namespace Crush2048
         {
             for (int i = 0; i < objectsToBeScaled.Count; i++)
             {
-                Vector3 scaleToBeSet = _initialScalesOfObjects[i] * LOWERED_SCALE_FACTOR;
+                Vector3 scaleToBeSet = _initialScalesOfObjects[i] * loweredScaleFactor;
                 objectsToBeScaled[i].DOScale(scaleToBeSet, TRANSITION_DURATION);
             }
         }

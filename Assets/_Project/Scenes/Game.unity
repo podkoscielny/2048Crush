@@ -906,6 +906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 379271004}
+  loweredScaleFactor: 0.8
 --- !u!1 &497396931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1772,7 @@ MonoBehaviour:
   objectsToBeScaled:
   - {fileID: 841813479}
   - {fileID: 1120509286}
+  loweredScaleFactor: 0.8
 --- !u!1 &863750757
 GameObject:
   m_ObjectHideFlags: 0
@@ -3038,6 +3040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 1185736068}
+  loweredScaleFactor: 0.8
 --- !u!1 &1199099322
 GameObject:
   m_ObjectHideFlags: 0
@@ -5147,6 +5150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToBeScaled:
   - {fileID: 1814746917}
+  loweredScaleFactor: 0.8
 --- !u!1001 &1817607506
 PrefabInstance:
   m_ObjectHideFlags: 0
