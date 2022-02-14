@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5d4b0ae37645b448e463ca24773a1b, type: 3}
+  m_Name: GridSize3x3
+  m_EditorClassIdentifier: 
+  rows: 3
+  columns: 3
+  tileTypes:
+  - spawnProbability: 0.007
+    tileType: {fileID: 11400000, guid: 8d131933209ffe848919b1da1e7d935f, type: 2}
+  - spawnProbability: 0.05
+    tileType: {fileID: 11400000, guid: 87f93b6171497694290f346c259f8ae5, type: 2}
+  - spawnProbability: 0.95
+    tileType: {fileID: 11400000, guid: de5f29ab575ba2c488ab8eb3d188836d, type: 2}

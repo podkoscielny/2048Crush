@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3299d1fd87211ff48878b607a0a54cd9, type: 3}
   m_Name: ThemeManager
   m_EditorClassIdentifier: 
-  themeSelected: {fileID: 11400000, guid: a5273581bd1e89940b6db4dabbfbac53, type: 2}
+  themeSelected: {fileID: 11400000, guid: a112b47fbef206b4aa885c78f5c29d51, type: 2}
   allThemes:
   - {fileID: 11400000, guid: a112b47fbef206b4aa885c78f5c29d51, type: 2}
   - {fileID: 11400000, guid: cea5c0745240f5c4c9bdfd1bf1f10b5b, type: 2}
