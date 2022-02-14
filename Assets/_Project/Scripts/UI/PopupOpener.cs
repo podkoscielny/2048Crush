@@ -9,7 +9,9 @@ namespace Crush2048
     {
         [SerializeField] CanvasGroup UIToFade;
         [SerializeField] RectTransform objectToAnimate;
-        [Range(0,2f)] [SerializeField] float moveAmount;
+        [SerializeField] MeshCollider clickBlocker;
+        [SerializeField] bool showPopupOnBackButton;
+        [Range(0, 2f)] [SerializeField] float moveAmount;
 
         private Vector3 _initialPosition;
         private Vector3 _initialScale;
@@ -22,6 +24,17 @@ namespace Crush2048
             _initialPosition = objectToAnimate.position;
             _initialScale = objectToAnimate.localScale;
             _loweredScale = _initialScale * 0.9f;
+        }
+
+        private void Update()
+        {
+            if (!showPopupOnBackButton) return;
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                clickBlocker.enabled = true;
+                ShowPopup();
+            }
         }
 
         public void ShowPopup()
