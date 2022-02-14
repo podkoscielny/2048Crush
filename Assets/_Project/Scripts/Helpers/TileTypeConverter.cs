@@ -10,8 +10,7 @@ namespace Crush2048
         {
             foreach (TileType tileType in tileTypes)
             {
-                if (tileType.isSpecial == cachedTileType.IsSpecial && tileType.pointsWorth == cachedTileType.PointsWorth && tileType.tileBehaviour == cachedTileType.TileBehaviour)
-                    return tileType;
+                if (tileType.name == cachedTileType.Name) return tileType;
             }
 
             return null;
@@ -30,7 +29,7 @@ namespace Crush2048
                 {
                     TileType tileType = tileTypeVariants[i, j];
 
-                    CachedTileType cachedTileType = new CachedTileType(tileType.pointsWorth, tileType.isSpecial, tileType.tileBehaviour);
+                    CachedTileType cachedTileType = new CachedTileType(tileType.name);
                     cachedTileTypes[i, j] = cachedTileType;
                 }
             }
