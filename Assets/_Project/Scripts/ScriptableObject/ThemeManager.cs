@@ -32,6 +32,7 @@ namespace Crush2048
 
         private void OnValidate()
         {
+            SaveTheme();
             AssignMaterialsToList();
             ChangeThemeColors();
         }
@@ -42,10 +43,11 @@ namespace Crush2048
         {
             themeSelected = theme;
 
-            SaveSystem.Save<string>(SAVE_PATH, themeSelected.name);
-
+            SaveTheme();
             ChangeThemeColors();
         }
+
+        private void SaveTheme() => SaveSystem.Save<string>(SAVE_PATH, themeSelected.name);
 
         private void LoadTheme()
         {

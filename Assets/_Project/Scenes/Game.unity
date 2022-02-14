@@ -5529,11 +5529,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6526154137912447313, guid: 88d9918c14737774c9628e2fc55f8c9e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 429.4
+      value: 373.5
       objectReference: {fileID: 0}
     - target: {fileID: 6526154137912447313, guid: 88d9918c14737774c9628e2fc55f8c9e, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 159.6
+      value: 155.1
       objectReference: {fileID: 0}
     - target: {fileID: 8074071694445030199, guid: 88d9918c14737774c9628e2fc55f8c9e, type: 3}
       propertyPath: m_text
@@ -5604,7 +5604,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d03a382ee184bd14586766028288907e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0119bbf9d6d497848b013161f6f8d445, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
