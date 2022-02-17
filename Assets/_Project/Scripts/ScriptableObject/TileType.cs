@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UI;
+using Tags = MultipleTagSystem.TagSystem.Tags;
 
 namespace Crush2048
 {
@@ -11,8 +11,10 @@ namespace Crush2048
     {
         public int pointsWorth;
         public bool isSpecial;
+
+        //Special Behaviour fields
         public Sprite image;
-        public Behaviours tileBehaviour;
+        public BaseBehaviour specialBehaviour;
 
         private const int MINIMUM_POINTS_WORTH = 0;
 
@@ -25,38 +27,33 @@ namespace Crush2048
         [CustomEditor(typeof(TileType))]
         class TileTypeEditor : Editor
         {
-            SerializedProperty _isSpecial;
-            SerializedProperty _image;
-            SerializedProperty _pointsWorth;
-            SerializedProperty _tileBehaviour;
-
-            private void OnEnable()
-            {
-                _isSpecial = serializedObject.FindProperty("isSpecial");
-                _image = serializedObject.FindProperty("image");
-                _pointsWorth = serializedObject.FindProperty("pointsWorth");
-                _tileBehaviour = serializedObject.FindProperty("tileBehaviour");
-            }
-
             public override void OnInspectorGUI()
             {
                 serializedObject.Update();
 
-                EditorGUILayout.PropertyField(_isSpecial);
+                EditorGUILayout.PropertyField(GetProperty("isSpecial"));
 
-                if(_isSpecial.boolValue)
-                {
-                    EditorGUILayout.PropertyField(_image);
-                    EditorGUILayout.PropertyField(_tileBehaviour);
-                }
-                else
-                {
-                    EditorGUILayout.PropertyField(_pointsWorth);
-                    _tileBehaviour.enumValueIndex = (int)Behaviours.Default;
-                }
+                DrawConditionalProperties();
 
                 serializedObject.ApplyModifiedProperties();
             }
+
+            private void DrawConditionalProperties()
+            {
+                if (GetProperty("isSpecial").boolValue)
+                {
+                    DrawProperty("image");
+                    DrawProperty("specialBehaviour");
+                }
+                else
+                {
+                    DrawProperty("pointsWorth");
+                }
+            }
+
+            private void DrawProperty(string propertyPath) => EditorGUILayout.PropertyField(GetProperty(propertyPath));
+
+            private SerializedProperty GetProperty(string propertyPath) => serializedObject.FindProperty(propertyPath);
         }
 #endif
     }
