@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 
-namespace Crush2048
+namespace AoOkami.SaveSystem
 {
     public static class SaveSystem
     {
