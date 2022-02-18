@@ -30,7 +30,5 @@ namespace Crush2048
                 DoPunchScale(secondSelectedTile.TileObject.transform);
             }
         }
-
-        private void MultiplyTilePoints(TilePoints tilePointsToBeUpdated, int multiplier) => tilePointsToBeUpdated.MultiplyPoints(multiplier);
     }
 }

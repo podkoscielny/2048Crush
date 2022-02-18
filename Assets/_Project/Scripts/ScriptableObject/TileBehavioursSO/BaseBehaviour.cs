@@ -24,7 +24,15 @@ namespace Crush2048
             objectPool.AddToPool(Tags.Tile, tile);
         }
 
+        protected void SpawnParticleEffect(Vector3 spawnPosition, Tags specialEffectTag)
+        {
+            GameObject particleEffect = objectPool.GetFromPool(specialEffectTag);
+            particleEffect.transform.position = spawnPosition;
+        }
+
         protected void UpdateScore(int pointsToAdd) => score.AddPoints(pointsToAdd);
+
+        protected void MultiplyTilePoints(TilePoints tilePointsToBeUpdated, int multiplier) => tilePointsToBeUpdated.MultiplyPoints(multiplier);
 
         protected void DoPunchScale(Transform tileTransform) => tileTransform.DOPunchScale(_enlargedTileScale, 0.3f, 1);
     }

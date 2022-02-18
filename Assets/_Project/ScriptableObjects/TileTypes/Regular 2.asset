@@ -15,4 +15,4 @@ MonoBehaviour:
   pointsWorth: 2
   isSpecial: 0
   image: {fileID: 0}
-  tileBehaviour: 0
+  behaviour: {fileID: 11400000, guid: 22822ec4502e50b489c8bf9c2eddb421, type: 2}

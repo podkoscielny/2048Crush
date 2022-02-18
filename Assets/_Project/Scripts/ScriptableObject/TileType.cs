@@ -14,7 +14,7 @@ namespace Crush2048
 
         //Special Behaviour fields
         public Sprite image;
-        public BaseBehaviour specialBehaviour;
+        public BaseBehaviour behaviour;
 
         private const int MINIMUM_POINTS_WORTH = 0;
 
@@ -31,7 +31,8 @@ namespace Crush2048
             {
                 serializedObject.Update();
 
-                EditorGUILayout.PropertyField(GetProperty("isSpecial"));
+                DrawProperty("isSpecial");
+                DrawProperty("behaviour");
 
                 DrawConditionalProperties();
 
@@ -41,14 +42,9 @@ namespace Crush2048
             private void DrawConditionalProperties()
             {
                 if (GetProperty("isSpecial").boolValue)
-                {
                     DrawProperty("image");
-                    DrawProperty("specialBehaviour");
-                }
                 else
-                {
                     DrawProperty("pointsWorth");
-                }
             }
 
             private void DrawProperty(string propertyPath) => EditorGUILayout.PropertyField(GetProperty(propertyPath));
