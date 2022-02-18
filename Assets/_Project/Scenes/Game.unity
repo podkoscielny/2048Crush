@@ -5695,6 +5695,7 @@ GameObject:
   - component: {fileID: 1824453147}
   - component: {fileID: 1824453146}
   - component: {fileID: 1824453150}
+  - component: {fileID: 1824453149}
   m_Layer: 8
   m_Name: Board
   m_TagString: Untagged
@@ -5781,6 +5782,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824453144}
   m_Mesh: {fileID: -1644769701942723082, guid: 62446d840a7c766459247d29ac125cff, type: 3}
+--- !u!114 &1824453149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824453144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 791a1d92fd2898f40b28eee8b9d9e328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  reversesLeft: {fileID: 11400000, guid: 884ca7998726f194e8a7082ccc5d9b67, type: 2}
 --- !u!114 &1824453150
 MonoBehaviour:
   m_ObjectHideFlags: 0

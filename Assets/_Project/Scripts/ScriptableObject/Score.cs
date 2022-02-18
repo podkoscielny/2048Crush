@@ -36,7 +36,7 @@ namespace Crush2048
             //SceneController.OnSceneChange += ResetScore;
             Board.OnCacheTileValues += CacheScore;
             Board.OnGameRestart += ResetScore;
-            Board.OnCachedValuesLoaded += LoadCachedScore;
+            BoardCacher.OnCachedValuesLoaded += LoadCachedScore;
             MoveReverse.OnTilesReverse += ReverseScoreToCached;
 
 #if UNITY_EDITOR
@@ -49,7 +49,7 @@ namespace Crush2048
             //SceneController.OnSceneChange -= ResetScore;
             Board.OnCacheTileValues -= CacheScore;
             Board.OnGameRestart -= ResetScore;
-            Board.OnCachedValuesLoaded -= LoadCachedScore;
+            BoardCacher.OnCachedValuesLoaded -= LoadCachedScore;
             MoveReverse.OnTilesReverse -= ReverseScoreToCached;
             ResetScore();
 

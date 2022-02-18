@@ -12,8 +12,9 @@ namespace Crush2048
     {
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
+        public static event Action OnTilesInitialized;
         public static event Action OnAssignTileValues;
-        public static event Action<CachedBoard> OnCachedValuesLoaded;
+        public static event Action<bool> OnBoardCached;
         public static event Action OnGameRestart;
         public static event Action OnGameOver;
 
@@ -27,13 +28,10 @@ namespace Crush2048
         [Header("Systems")]
         [SerializeField] GridSystem gridSystem;
         [SerializeField] ObjectPool objectPool;
-        [SerializeField] Score score;
-        [SerializeField] IntValue reversesLeft;
 
         public static bool CanTilesBeClicked { get; private set; } = true;
 
         private Sequence _tileMoveSequence;
-        private Vector3 _bounceBackTileScale = new Vector3(0.04f, -0.04f, 0);
         private string _savePath = "";
 
         private const float BOARD_SIZE = 0.92f;
@@ -47,14 +45,9 @@ namespace Crush2048
             InitializeBoardSize();
             gridSystem.InitializeGrid(gridRenderer);
             objectPool.InitializePool();
-            CacheSavePath();
         }
 
-        private void Start()
-        {
-            InitializeTiles();
-            LoadCachedBoard();
-        }
+        private void Start() => InitializeTiles();
 
         public void RestartGame()
         {
@@ -68,28 +61,6 @@ namespace Crush2048
             InitializeTiles();
 
             SaveSystem.DeleteSaveFile(_savePath);
-        }
-
-        private void LoadCachedBoard()
-        {
-            CachedBoard cachedBoard = SaveSystem.Load<CachedBoard>(_savePath);
-            bool isBoardCached = cachedBoard.tileTypesAtCells != null;
-
-            reversesLeft.Value = isBoardCached ? cachedBoard.moveReversesLeft : reversesLeft.BaseValue;
-
-            if (isBoardCached)
-            {
-                if (cachedBoard.cachedTileTypesAtCells.Length > 0 && cachedBoard.cachedPointsAtCells.Length > 0)
-                {
-                    TileType[] tileTypeVariants = gridSystem.GridSize.GetTileTypeVariants();
-                    TileType[,] cachedTileTypes = TileTypeConverter.SerializableArrayToNormal(cachedBoard.cachedTileTypesAtCells, tileTypeVariants);
-                    int[,] cachedPointsWorth = cachedBoard.cachedPointsAtCells;
-
-                    gridSystem.SetCachedArrays(cachedTileTypes, cachedPointsWorth);
-                }
-
-                OnCachedValuesLoaded?.Invoke(cachedBoard);
-            }
         }
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
@@ -217,7 +188,7 @@ namespace Crush2048
                     if (canBeMergedInColumn || canBeMergedInRow)
                     {
                         CanTilesBeClicked = true;
-                        CacheCurrentBoard(false);
+                        OnBoardCached?.Invoke(false);
                         return;
                     }
                 }
@@ -228,37 +199,10 @@ namespace Crush2048
 
         private void EndGame()
         {
-            CacheCurrentBoard(true);
+            OnBoardCached?.Invoke(true);
             CanTilesBeClicked = true;
             OnGameOver?.Invoke();
         }
-
-        private void CacheCurrentBoard(bool isGameOver)
-        {
-            CachedTileType[,] tileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.TileTypeAtCell);
-            CachedTileType[,] cachedTileTypes = TileTypeConverter.NormalArrayToSerializable(gridSystem.CachedTilesAtCells);
-            CachedBoard cachedBoard = GetNewCachedBoard(tileTypes, cachedTileTypes, isGameOver);
-
-            SaveSystem.Save<CachedBoard>(_savePath, cachedBoard);
-        }
-
-        private CachedBoard GetNewCachedBoard(CachedTileType[,] tileTypes, CachedTileType[,] cachedTileTypes, bool isGameOver)
-        {
-            CachedBoard cachedBoard = new CachedBoard();
-
-            cachedBoard.score = score.Value;
-            cachedBoard.cachedScore = score.CachedScore;
-            cachedBoard.moveReversesLeft = reversesLeft.Value;
-            cachedBoard.tileTypesAtCells = tileTypes;
-            cachedBoard.cachedTileTypesAtCells = cachedTileTypes;
-            cachedBoard.pointsAtCells = gridSystem.PointsWorthAtCells;
-            cachedBoard.cachedPointsAtCells = gridSystem.CachedPointsWorthAtCells;
-            cachedBoard.isGameOver = isGameOver;
-
-            return cachedBoard;
-        }
-
-        private void CacheSavePath() => _savePath = $"{gridSystem.GridSize.name}_board";
 
         private void InitializeTiles()
         {
@@ -275,6 +219,8 @@ namespace Crush2048
                     gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
                 }
             }
+
+            OnTilesInitialized?.Invoke();
         }
 
         private void InitializeBoardSize()

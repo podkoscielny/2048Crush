@@ -29,7 +29,7 @@ namespace Crush2048
             Board.OnCacheTileValues += CachePointsWorthAtCell;
             MoveReverse.OnTilesReverse += SetCachedPointsWorth;
             Board.OnAssignTileValues += AssignPointsWorthToCell;
-            Board.OnCachedValuesLoaded += LoadCachedPoints;
+            BoardCacher.OnCachedValuesLoaded += LoadCachedPoints;
             tileTypePicker.OnTileTypePicked += InitializePoints;
         }
 
@@ -38,7 +38,7 @@ namespace Crush2048
             Board.OnCacheTileValues -= CachePointsWorthAtCell;
             MoveReverse.OnTilesReverse -= SetCachedPointsWorth;
             Board.OnAssignTileValues -= AssignPointsWorthToCell;
-            Board.OnCachedValuesLoaded -= LoadCachedPoints;
+            BoardCacher.OnCachedValuesLoaded -= LoadCachedPoints;
             tileTypePicker.OnTileTypePicked -= InitializePoints;
         }
 
