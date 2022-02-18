@@ -155,64 +155,6 @@ MonoBehaviour:
   tileTypePicker: {fileID: -8099170192273083415}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tileGradients: {fileID: 11400000, guid: 2fcc4859818ba504daf72d289e97a0dc, type: 2}
-  tileBackgroundGradient:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 0.5803922, g: 1, b: 0.3254902, a: 1}
-    key2: {r: 0.96862745, g: 1, b: 0.33333334, a: 0}
-    key3: {r: 1, g: 0.54901963, b: 0.023529412, a: 0}
-    key4: {r: 1, g: 0.2784314, b: 0.043137256, a: 0}
-    key5: {r: 0.4745098, g: 0.02745098, b: 0.62352943, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 3277
-    ctime1: 13697
-    ctime2: 22741
-    ctime3: 36044
-    ctime4: 46858
-    ctime5: 57081
-    ctime6: 65535
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 7
-    m_NumAlphaKeys: 2
-  tileTextGradient:
-    serializedVersion: 2
-    key0: {r: 0.20784314, g: 0.17254902, b: 0.03529412, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 55508
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
 --- !u!114 &7528390063450246262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +172,7 @@ MonoBehaviour:
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   tilePoints: {fileID: 3994539253609184669}
   tileTypePicker: {fileID: -8099170192273083415}
+  defaultBehaviour: {fileID: 11400000, guid: 22822ec4502e50b489c8bf9c2eddb421, type: 2}
 --- !u!114 &-8099170192273083415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,13 +186,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
-  tileTypes:
-  - {fileID: 11400000, guid: 8d131933209ffe848919b1da1e7d935f, type: 2}
-  - {fileID: 11400000, guid: 757d257ab42c98a419130241840f47b8, type: 2}
-  - {fileID: 11400000, guid: 83d7ce66efa8b024cb4ed6b79fd31f9c, type: 2}
-  - {fileID: 11400000, guid: de5f29ab575ba2c488ab8eb3d188836d, type: 2}
-  - {fileID: 11400000, guid: 87f93b6171497694290f346c259f8ae5, type: 2}
-  - {fileID: 11400000, guid: 3d849a655339d5247866cd261bdbf1c2, type: 2}
 --- !u!114 &2200593051386032726
 MonoBehaviour:
   m_ObjectHideFlags: 0

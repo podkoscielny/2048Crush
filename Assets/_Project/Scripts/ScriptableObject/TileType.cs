@@ -32,7 +32,6 @@ namespace Crush2048
                 serializedObject.Update();
 
                 DrawProperty("isSpecial");
-                DrawProperty("behaviour");
 
                 DrawConditionalProperties();
 
@@ -42,7 +41,10 @@ namespace Crush2048
             private void DrawConditionalProperties()
             {
                 if (GetProperty("isSpecial").boolValue)
+                {
                     DrawProperty("image");
+                    DrawProperty("behaviour");
+                }
                 else
                     DrawProperty("pointsWorth");
             }

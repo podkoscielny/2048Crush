@@ -8,9 +8,13 @@ namespace Crush2048
 {
     public class TileBehaviour : MonoBehaviour
     {
+        [Header("ScriptableObjects")]
         [SerializeField] Score score;
         [SerializeField] ObjectPool objectPool;
         [SerializeField] GridSystem gridSystem;
+        [SerializeField] BaseBehaviour defaultBehaviour;
+
+        [Header("Tile Components")]
         [SerializeField] TilePoints tilePoints;
         [SerializeField] TileTypePicker tileTypePicker;
 
@@ -29,7 +33,13 @@ namespace Crush2048
             tileTypePicker.OnGetCachedTileType += CacheTileBehaviour;
         }
 
-        private void CacheTileBehaviour(TileType tileType) => Behaviour = tileType.behaviour.Invoke;
+        private void CacheTileBehaviour(TileType tileType)
+        {
+            if (tileType.isSpecial)
+                Behaviour = tileType.behaviour.Invoke;
+            else
+                Behaviour = defaultBehaviour.Invoke;
+        }
     }
 
     public delegate void BehaviourDelegate(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile);
