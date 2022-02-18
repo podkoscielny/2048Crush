@@ -19,14 +19,14 @@ namespace Crush2048
         private void OnEnable()
         {
             Board.OnBoardCached += CacheCurrentBoard;
-            Board.OnTilesInitialized += LoadCachedBoard;
+            GameInitializer.OnTilesInitialized += LoadCachedBoard;
             GameRestart.OnGameRestart += DeleteSaveFile;
         }
 
         private void OnDisable()
         {
             Board.OnBoardCached -= CacheCurrentBoard;
-            Board.OnTilesInitialized -= LoadCachedBoard;
+            GameInitializer.OnTilesInitialized -= LoadCachedBoard;
             GameRestart.OnGameRestart -= DeleteSaveFile;
         }
 

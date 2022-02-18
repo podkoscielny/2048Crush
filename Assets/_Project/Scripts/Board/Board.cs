@@ -11,17 +11,12 @@ namespace Crush2048
     {
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;
-        public static event Action OnTilesInitialized;
         public static event Action OnAssignTileValues;
         public static event Action<bool> OnBoardCached;
         public static event Action OnGameOver;
 
         [Header("GameObjects")]
         [SerializeField] GameObject tilePrefab;
-
-        [Header("Components")]
-        [SerializeField] Camera mainCamera;
-        [SerializeField] MeshRenderer gridRenderer;
 
         [Header("Systems")]
         [SerializeField] GridSystem gridSystem;
@@ -31,19 +26,9 @@ namespace Crush2048
 
         private Sequence _tileMoveSequence;
 
-        private void OnEnable()
-        {
-            TileSwipe.OnTilesMatch += MatchTiles;
-            GameRestart.OnGameRestart += InitializeTiles;
-        }
+        private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
 
-        private void OnDisable()
-        {
-            TileSwipe.OnTilesMatch -= MatchTiles;
-            GameRestart.OnGameRestart -= InitializeTiles;
-        }
-
-        private void Start() => InitializeTiles();
+        private void OnDisable() => TileSwipe.OnTilesMatch -= MatchTiles;
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
         {
@@ -184,25 +169,6 @@ namespace Crush2048
             CanTilesBeClicked = true;
             OnBoardCached?.Invoke(true);
             OnGameOver?.Invoke();
-        }
-
-        private void InitializeTiles()
-        {
-            Vector3[,] gridCells = gridSystem.GridCells;
-
-            for (int i = 0; i < gridCells.GetLength(0); i++)
-            {
-                for (int j = 0; j < gridCells.GetLength(1); j++)
-                {
-                    GameObject tile = objectPool.GetFromPool(Tags.Tile);
-
-                    Vector3 tilePosition = new Vector3(gridCells[i, j].x, gridCells[i, j].y, tilePrefab.transform.position.z);
-                    tile.transform.SetPositionAndRotation(tilePosition, tilePrefab.transform.rotation);
-                    gridSystem.AssignTileToCell(tile, new Vector2Int(i, j));
-                }
-            }
-
-            OnTilesInitialized?.Invoke();
         }
     }
 }

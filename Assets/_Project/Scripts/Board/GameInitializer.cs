@@ -18,6 +18,9 @@ namespace Crush2048
 
         private const float BOARD_SIZE = 0.92f;
 
+        private void OnEnable() => GameRestart.OnGameRestart += InitializeTiles;
+        private void OnDisable() => GameRestart.OnGameRestart -= InitializeTiles;
+
         private void Awake()
         {
             InitializeBoardSize();
@@ -25,7 +28,7 @@ namespace Crush2048
             objectPool.InitializePool();
         }
 
-        //private void Start() => InitializeTiles();
+        private void Start() => InitializeTiles();
 
         private void InitializeBoardSize()
         {
