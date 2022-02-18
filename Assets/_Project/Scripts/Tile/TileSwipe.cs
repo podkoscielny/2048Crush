@@ -21,13 +21,13 @@ namespace Crush2048
 
         private SelectedTile _emptyTileSelection = new SelectedTile();
 
-        private void OnEnable() => Board.OnTileMatchEnded += ClearSelectedTiles;
+        private void OnEnable() => TileMatchSequence.OnTileMatchEnded += ClearSelectedTiles;
 
-        private void OnDisable() => Board.OnTileMatchEnded -= ClearSelectedTiles;
+        private void OnDisable() => TileMatchSequence.OnTileMatchEnded -= ClearSelectedTiles;
 
         private void OnMouseDown()
         {
-            if (!Board.CanTilesBeClicked) return;
+            if (!TileMatchSequence.CanTilesBeClicked) return;
 
             ClearSelectedTiles();
             _isPointerDown = true;

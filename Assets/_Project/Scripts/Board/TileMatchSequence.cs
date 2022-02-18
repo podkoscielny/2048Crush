@@ -7,7 +7,7 @@ using Tags = MultipleTagSystem.TagSystem.Tags;
 
 namespace Crush2048
 {
-    public class Board : MonoBehaviour
+    public class TileMatchSequence : MonoBehaviour
     {
         public static event Action OnCacheTileValues;
         public static event Action OnTileMatchEnded;

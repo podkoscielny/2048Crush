@@ -11,7 +11,7 @@ namespace Crush2048
 
         private void OnEnable()
         {
-            Board.OnGameOver += ShowGameOverPanel;
+            TileMatchSequence.OnGameOver += ShowGameOverPanel;
             BoardCacher.OnCachedValuesLoaded += ShowGameOverPanel;
             GameRestart.OnGameRestart += HideGameOverPanel;
             MoveReverse.OnTilesReverse += HideGameOverPanel;
@@ -19,7 +19,7 @@ namespace Crush2048
 
         private void OnDisable()
         {
-            Board.OnGameOver -= ShowGameOverPanel;
+            TileMatchSequence.OnGameOver -= ShowGameOverPanel;
             BoardCacher.OnCachedValuesLoaded -= ShowGameOverPanel;
             GameRestart.OnGameRestart -= HideGameOverPanel;
             MoveReverse.OnTilesReverse -= HideGameOverPanel;

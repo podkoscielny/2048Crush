@@ -26,18 +26,18 @@ namespace Crush2048
 
         private void OnEnable()
         {
-            Board.OnCacheTileValues += CachePointsWorthAtCell;
+            TileMatchSequence.OnCacheTileValues += CachePointsWorthAtCell;
             MoveReverse.OnTilesReverse += SetCachedPointsWorth;
-            Board.OnAssignTileValues += AssignPointsWorthToCell;
+            TileMatchSequence.OnAssignTileValues += AssignPointsWorthToCell;
             BoardCacher.OnCachedValuesLoaded += LoadCachedPoints;
             tileTypePicker.OnTileTypePicked += InitializePoints;
         }
 
         private void OnDisable()
         {
-            Board.OnCacheTileValues -= CachePointsWorthAtCell;
+            TileMatchSequence.OnCacheTileValues -= CachePointsWorthAtCell;
             MoveReverse.OnTilesReverse -= SetCachedPointsWorth;
-            Board.OnAssignTileValues -= AssignPointsWorthToCell;
+            TileMatchSequence.OnAssignTileValues -= AssignPointsWorthToCell;
             BoardCacher.OnCachedValuesLoaded -= LoadCachedPoints;
             tileTypePicker.OnTileTypePicked -= InitializePoints;
         }

@@ -34,7 +34,7 @@ namespace Crush2048
         private void OnEnable()
         {
             //SceneController.OnSceneChange += ResetScore;
-            Board.OnCacheTileValues += CacheScore;
+            TileMatchSequence.OnCacheTileValues += CacheScore;
             GameRestart.OnGameRestart += ResetScore;
             BoardCacher.OnCachedValuesLoaded += LoadCachedScore;
             MoveReverse.OnTilesReverse += ReverseScoreToCached;
@@ -47,7 +47,7 @@ namespace Crush2048
         private void OnDisable()
         {
             //SceneController.OnSceneChange -= ResetScore;
-            Board.OnCacheTileValues -= CacheScore;
+            TileMatchSequence.OnCacheTileValues -= CacheScore;
             GameRestart.OnGameRestart -= ResetScore;
             BoardCacher.OnCachedValuesLoaded -= LoadCachedScore;
             MoveReverse.OnTilesReverse -= ReverseScoreToCached;

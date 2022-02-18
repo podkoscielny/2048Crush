@@ -18,14 +18,14 @@ namespace Crush2048
 
         private void OnEnable()
         {
-            Board.OnTileMatchEnded += ReenableReversing;
+            TileMatchSequence.OnTileMatchEnded += ReenableReversing;
             GameRestart.OnGameRestart += InitializeReversesCount;
             reversesLeft.OnValueChanged += SetReversesText;
         }
 
         private void OnDisable()
         {
-            Board.OnTileMatchEnded -= ReenableReversing;
+            TileMatchSequence.OnTileMatchEnded -= ReenableReversing;
             GameRestart.OnGameRestart -= InitializeReversesCount;
             reversesLeft.OnValueChanged -= SetReversesText;
         }
@@ -44,7 +44,7 @@ namespace Crush2048
 
         private void ReenableReversing() => _areTilesCached = true;
 
-        private bool CantBeReversed() => !_areTilesCached || reversesLeft.Value <= 0 || !Board.CanTilesBeClicked || score.Value <= 0;
+        private bool CantBeReversed() => !_areTilesCached || reversesLeft.Value <= 0 || !TileMatchSequence.CanTilesBeClicked || score.Value <= 0;
 
         private void InitializeReversesCount()
         {
