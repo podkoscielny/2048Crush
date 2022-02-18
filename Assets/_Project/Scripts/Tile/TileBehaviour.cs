@@ -35,7 +35,9 @@ namespace Crush2048
 
         private void CacheTileBehaviour(TileType tileType)
         {
-            if (tileType.isSpecial)
+            IsSpecial = tileType.isSpecial;
+
+            if (IsSpecial)
                 Behaviour = tileType.behaviour.Invoke;
             else
                 Behaviour = defaultBehaviour.Invoke;
