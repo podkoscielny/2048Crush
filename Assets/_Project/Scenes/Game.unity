@@ -4209,7 +4209,7 @@ PrefabInstance:
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1510882139}
+      objectReference: {fileID: 1510882144}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -4702,7 +4702,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5190691739128653310, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
   m_PrefabInstance: {fileID: 1444767459}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1510882139
+--- !u!114 &1510882144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5715,6 +5715,7 @@ GameObject:
   - component: {fileID: 1824453146}
   - component: {fileID: 1824453150}
   - component: {fileID: 1824453149}
+  - component: {fileID: 1824453151}
   m_Layer: 8
   m_Name: Board
   m_TagString: Untagged
@@ -5831,6 +5832,23 @@ MonoBehaviour:
   tilePrefab: {fileID: 4610248557676912175, guid: 22925b6ec069b98429de4574df8063f0, type: 3}
   mainCamera: {fileID: 1406598827}
   gridRenderer: {fileID: 1824453147}
+  gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
+--- !u!114 &1824453151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824453144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cdd1f3a74521944e93174792c07b4c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 1406598827}
+  gridRenderer: {fileID: 1824453147}
+  tilePrefab: {fileID: 4610248557676912175, guid: 22925b6ec069b98429de4574df8063f0, type: 3}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
 --- !u!1 &1896984992

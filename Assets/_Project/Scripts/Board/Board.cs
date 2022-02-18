@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Tags = MultipleTagSystem.TagSystem.Tags;
-using AoOkami.SaveSystem;
 
 namespace Crush2048
 {
@@ -32,8 +31,6 @@ namespace Crush2048
 
         private Sequence _tileMoveSequence;
 
-        private const float BOARD_SIZE = 0.92f;
-
         private void OnEnable()
         {
             TileSwipe.OnTilesMatch += MatchTiles;
@@ -44,13 +41,6 @@ namespace Crush2048
         {
             TileSwipe.OnTilesMatch -= MatchTiles;
             GameRestart.OnGameRestart -= InitializeTiles;
-        }
-
-        private void Awake()
-        {
-            InitializeBoardSize();
-            gridSystem.InitializeGrid(gridRenderer);
-            objectPool.InitializePool();
         }
 
         private void Start() => InitializeTiles();
@@ -213,20 +203,6 @@ namespace Crush2048
             }
 
             OnTilesInitialized?.Invoke();
-        }
-
-        private void InitializeBoardSize()
-        {
-            int screenWidth = Screen.width;
-            int screenHeight = Screen.height;
-
-            float aspectRatio = (float)screenWidth / (float)screenHeight;
-
-            transform.localScale = Vector3.one * BOARD_SIZE * aspectRatio;
-
-            float yPosition = mainCamera.transform.position.y - (aspectRatio + transform.position.y);
-            Vector3 boardPosition = new Vector3(transform.position.x, yPosition, transform.position.z);
-            transform.position = boardPosition;
         }
     }
 }

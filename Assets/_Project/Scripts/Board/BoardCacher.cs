@@ -10,7 +10,6 @@ namespace Crush2048
     {
         public static event Action<CachedBoard> OnCachedValuesLoaded;
 
-        [Header("Systems")]
         [SerializeField] Score score;
         [SerializeField] GridSystem gridSystem;
         [SerializeField] IntValue reversesLeft;
