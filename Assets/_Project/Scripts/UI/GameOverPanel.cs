@@ -13,7 +13,7 @@ namespace Crush2048
         {
             Board.OnGameOver += ShowGameOverPanel;
             BoardCacher.OnCachedValuesLoaded += ShowGameOverPanel;
-            Board.OnGameRestart += HideGameOverPanel;
+            GameRestart.OnGameRestart += HideGameOverPanel;
             MoveReverse.OnTilesReverse += HideGameOverPanel;
         }
 
@@ -21,7 +21,7 @@ namespace Crush2048
         {
             Board.OnGameOver -= ShowGameOverPanel;
             BoardCacher.OnCachedValuesLoaded -= ShowGameOverPanel;
-            Board.OnGameRestart -= HideGameOverPanel;
+            GameRestart.OnGameRestart -= HideGameOverPanel;
             MoveReverse.OnTilesReverse -= HideGameOverPanel;
         }
 

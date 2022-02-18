@@ -15,7 +15,6 @@ namespace Crush2048
         public static event Action OnTilesInitialized;
         public static event Action OnAssignTileValues;
         public static event Action<bool> OnBoardCached;
-        public static event Action OnGameRestart;
         public static event Action OnGameOver;
 
         [Header("GameObjects")]
@@ -32,13 +31,20 @@ namespace Crush2048
         public static bool CanTilesBeClicked { get; private set; } = true;
 
         private Sequence _tileMoveSequence;
-        private string _savePath = "";
 
         private const float BOARD_SIZE = 0.92f;
 
-        private void OnEnable() => TileSwipe.OnTilesMatch += MatchTiles;
+        private void OnEnable()
+        {
+            TileSwipe.OnTilesMatch += MatchTiles;
+            GameRestart.OnGameRestart += InitializeTiles;
+        }
 
-        private void OnDisable() => TileSwipe.OnTilesMatch -= MatchTiles;
+        private void OnDisable()
+        {
+            TileSwipe.OnTilesMatch -= MatchTiles;
+            GameRestart.OnGameRestart -= InitializeTiles;
+        }
 
         private void Awake()
         {
@@ -48,20 +54,6 @@ namespace Crush2048
         }
 
         private void Start() => InitializeTiles();
-
-        public void RestartGame()
-        {
-            foreach (GameObject tile in gridSystem.TilesAtGridCells)
-            {
-                objectPool.AddToPool(Tags.Tile, tile);
-            }
-
-            OnGameRestart?.Invoke();
-            gridSystem.ResetCellArrays();
-            InitializeTiles();
-
-            SaveSystem.DeleteSaveFile(_savePath);
-        }
 
         private void MatchTiles(SelectedTile firstSelectedTile, SelectedTile secondSelectedTile, BehaviourDelegate tileBehaviour)
         {
@@ -199,8 +191,8 @@ namespace Crush2048
 
         private void EndGame()
         {
-            OnBoardCached?.Invoke(true);
             CanTilesBeClicked = true;
+            OnBoardCached?.Invoke(true);
             OnGameOver?.Invoke();
         }
 

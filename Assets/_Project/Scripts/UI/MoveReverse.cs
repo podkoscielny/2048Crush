@@ -19,14 +19,14 @@ namespace Crush2048
         private void OnEnable()
         {
             Board.OnTileMatchEnded += ReenableReversing;
-            Board.OnGameRestart += InitializeReversesCount;
+            GameRestart.OnGameRestart += InitializeReversesCount;
             reversesLeft.OnValueChanged += SetReversesText;
         }
 
         private void OnDisable()
         {
             Board.OnTileMatchEnded -= ReenableReversing;
-            Board.OnGameRestart -= InitializeReversesCount;
+            GameRestart.OnGameRestart -= InitializeReversesCount;
             reversesLeft.OnValueChanged -= SetReversesText;
         }
 
