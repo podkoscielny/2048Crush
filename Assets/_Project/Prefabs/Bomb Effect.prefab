@@ -41,7 +41,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1085412806299596}
   serializedVersion: 7
   lengthInSec: 0.5
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -4861,7 +4861,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1289377929907018}
   serializedVersion: 7
   lengthInSec: 0.2
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -14249,7 +14249,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1838308332998216}
   serializedVersion: 7
   lengthInSec: 0.5
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -18993,7 +18993,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1892078723244562}
   serializedVersion: 7
   lengthInSec: 0.5
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -23668,4 +23668,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
-  deactivateDelay: 0.5
+  deactivateDelay: 0.8

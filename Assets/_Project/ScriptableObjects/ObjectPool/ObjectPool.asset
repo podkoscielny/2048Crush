@@ -21,4 +21,4 @@ MonoBehaviour:
     size: 4
   - tag: 4
     prefab: {fileID: 1892078723244562, guid: c4027326b13083d4f9ef470f04a20e0b, type: 3}
-    size: 5
+    size: 8

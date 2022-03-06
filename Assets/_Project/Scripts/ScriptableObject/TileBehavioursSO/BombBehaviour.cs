@@ -107,7 +107,6 @@ namespace Crush2048
                 if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
 
                 Vector3 spawnPosition = gridSystem.TilesAtGridCells[cell.x, cell.y].transform.position;
-                spawnPosition.z -= 0.1f;
 
                 spawnPositions.Add(spawnPosition);
             }
