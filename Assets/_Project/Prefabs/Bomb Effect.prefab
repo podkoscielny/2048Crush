@@ -18958,7 +18958,7 @@ GameObject:
   - component: {fileID: 4977646799359860}
   - component: {fileID: 198194127032045410}
   - component: {fileID: 199200332811060622}
-  - component: {fileID: 114566962382578006}
+  - component: {fileID: -3246103258015374301}
   m_Layer: 0
   m_Name: Bomb Effect
   m_TagString: FxTemporaire
@@ -23655,7 +23655,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &114566962382578006
+--- !u!114 &-3246103258015374301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -23664,7 +23664,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1892078723244562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fd2e8874f60266498a388d7229a1bac, type: 3}
+  m_Script: {fileID: 11500000, guid: 6936e81aa15663548aff3d6bd91f5e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnlyDeactivate: 0
+  objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
+  deactivateDelay: 0.5

@@ -9759,7 +9759,8 @@ GameObject:
   - component: {fileID: 202665757818897028}
   - component: {fileID: 202665757818897029}
   - component: {fileID: 202665757818897030}
-  - component: {fileID: 2968483001480375449}
+  - component: {fileID: 3310405565708948402}
+  - component: {fileID: -8449061970860566643}
   m_Layer: 0
   m_Name: Arcade Custom
   m_TagString: Untagged
@@ -14626,7 +14627,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &2968483001480375449
+--- !u!114 &3310405565708948402
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14635,13 +14636,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 202665757818897031}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bf4e6a21183223449bac0ed8151aff4, type: 3}
+  m_Script: {fileID: 11500000, guid: 6936e81aa15663548aff3d6bd91f5e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
+  deactivateDelay: 0.4
+--- !u!114 &-8449061970860566643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202665757818897031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6041fd496bd04404daa10f1c5153ea9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   tileGradients: {fileID: 11400000, guid: 2fcc4859818ba504daf72d289e97a0dc, type: 2}
   effectMaterial: {fileID: 2100000, guid: b0fbc06b85f4fa3428dfd6d37843048d, type: 2}
-  poolTag: 3
 --- !u!1 &202665758342587040
 GameObject:
   m_ObjectHideFlags: 0
