@@ -14,7 +14,8 @@ namespace MultipleTagSystem
             None = 0,
             Tile = 1,
             SpecialTile = 2,
-            MatchEffect = 3
+            MatchEffect = 3,
+            BombEffect = 4
         }
 
         private static Dictionary<Tags, List<GameObject>> TaggedObjects = new Dictionary<Tags, List<GameObject>>();

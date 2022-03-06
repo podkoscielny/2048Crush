@@ -19,3 +19,6 @@ MonoBehaviour:
   - tag: 3
     prefab: {fileID: 202665757818897031, guid: 88c038f9def14864f976b160fe196df4, type: 3}
     size: 4
+  - tag: 4
+    prefab: {fileID: 1892078723244562, guid: c4027326b13083d4f9ef470f04a20e0b, type: 3}
+    size: 5

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tags = MultipleTagSystem.TagSystem.Tags;
 
 namespace Crush2048
 {
@@ -14,6 +15,7 @@ namespace Crush2048
         {
             List<Vector2Int> nearbyTiles = GetNearbyTileCells(secondSelectedTile.TileCell);
 
+            SpawnBombEffects(nearbyTiles);
             AddScoreFromNearbyTiles(nearbyTiles);
             MoveNearbyTilesToPool(nearbyTiles);
         }
@@ -81,6 +83,35 @@ namespace Crush2048
 
                 MoveTileToPool(cell, tile);
             }
+        }
+
+        private void SpawnBombEffects(List<Vector2Int> nearbyTiles)
+        {
+            List<Vector3> spawnPositions = GetSpawnPositions(nearbyTiles);
+
+            foreach (Vector3 position in spawnPositions)
+            {
+                SpawnParticleEffect(position, Tags.BombEffect);
+            }
+        }
+
+        private List<Vector3> GetSpawnPositions(List<Vector2Int> nearbyTiles)
+        {
+            int rows = gridSystem.GridSize.Rows;
+            int columns = gridSystem.GridSize.Columns;
+
+            List<Vector3> spawnPositions = new List<Vector3>();
+
+            foreach (Vector2Int cell in nearbyTiles)
+            {
+                if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
+
+                Vector3 spawnPosition = gridSystem.TilesAtGridCells[cell.x, cell.y].transform.position;
+
+                spawnPositions.Add(spawnPosition);
+            }
+
+            return spawnPositions;
         }
     }
 }
