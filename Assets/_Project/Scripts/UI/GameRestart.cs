@@ -17,7 +17,7 @@ namespace Crush2048
         {
             foreach (GameObject tile in gridSystem.TilesAtGridCells)
             {
-                objectPool.AddToPool(Tags.Tile, tile);
+                objectPool.AddToPool(tile);
             }
 
             gridSystem.ResetCellArrays();

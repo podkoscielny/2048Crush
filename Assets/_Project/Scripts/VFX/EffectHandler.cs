@@ -19,7 +19,7 @@ namespace Crush2048
             Invoke(nameof(DeactivateEffect), DEACTIVATE_DELAY);
         }
 
-        private void DeactivateEffect() => objectPool.AddToPool(Tags.MatchEffect, gameObject);
+        private void DeactivateEffect() => objectPool.AddToPool(gameObject);
 
         private void SetEffectColor()
         {

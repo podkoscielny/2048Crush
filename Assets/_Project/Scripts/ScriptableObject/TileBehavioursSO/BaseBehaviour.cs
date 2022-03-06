@@ -21,7 +21,7 @@ namespace Crush2048
         protected void MoveTileToPool(Vector2Int cell, GameObject tile)
         {
             gridSystem.DeAssignTileFromCell(cell);
-            objectPool.AddToPool(Tags.Tile, tile);
+            objectPool.AddToPool(tile);
         }
 
         protected void SpawnParticleEffect(Vector3 spawnPosition, Tags specialEffectTag)

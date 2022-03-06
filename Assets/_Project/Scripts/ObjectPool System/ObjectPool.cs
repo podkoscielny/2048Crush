@@ -51,6 +51,22 @@ namespace Crush2048
             pool.Enqueue(instance);
         }
 
+        public void AddToPool(GameObject instance)
+        {
+            if (instance.TryGetComponent(out PooledObject pooledObject))
+            {
+                Tags pooledTag = pooledObject.PoolTag;
+
+                if (!poolDictionary.ContainsKey(pooledTag)) return;
+
+                Queue<GameObject> pool = poolDictionary[pooledTag];
+
+                instance.SetActive(false);
+                pool.Enqueue(instance);
+
+            }
+        }
+
         public GameObject GetFromPool(Tags tag)
         {
             if (!poolDictionary.ContainsKey(tag))
