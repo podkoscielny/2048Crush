@@ -28,22 +28,6 @@ namespace MultipleTagSystem
             InitializeTaggedObjectsDictionary();
         }
 
-        private static void InitializeTaggedObjectsDictionary()
-        {
-            Type enumType = typeof(Tags);
-            var enumValues = Enum.GetValues(enumType);
-
-            foreach (var value in enumValues)
-            {
-                TaggedObjects.Add((Tags)value, new List<GameObject>());
-            }
-
-            foreach (var item in TaggedObjects)
-            {
-                _readonlyObjects.Add(item.Key, item.Value.AsReadOnly());
-            }
-        }
-
         public static GameObject FindGameObjectWithTag(Tags tag)
         {
             if (!TaggedObjects.ContainsKey(tag) || TaggedObjects[tag].Count < 1) return null;
@@ -83,6 +67,22 @@ namespace MultipleTagSystem
             {
                 if (tags.Contains(item.Key))
                     TaggedObjects[item.Key].Remove(objectToBeRemoved);
+            }
+        }
+
+        private static void InitializeTaggedObjectsDictionary()
+        {
+            Type enumType = typeof(Tags);
+            var enumValues = Enum.GetValues(enumType);
+
+            foreach (var value in enumValues)
+            {
+                TaggedObjects.Add((Tags)value, new List<GameObject>());
+            }
+
+            foreach (var item in TaggedObjects)
+            {
+                _readonlyObjects.Add(item.Key, item.Value.AsReadOnly());
             }
         }
     }
