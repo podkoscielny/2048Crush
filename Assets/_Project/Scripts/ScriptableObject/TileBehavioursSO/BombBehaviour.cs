@@ -43,8 +43,8 @@ namespace Crush2048
                 Vector2Int upTileCellToAdd = new Vector2Int(tileCell.x - i - 1, tileCell.y);
                 Vector2Int downTileCellToAdd = new Vector2Int(tileCell.x + i + 1, tileCell.y);
 
-                if (upTileCellToAdd.y >= 0) nearbyTiles.Add(upTileCellToAdd);
-                if (downTileCellToAdd.y < rows) nearbyTiles.Add(downTileCellToAdd);
+                if (upTileCellToAdd.x >= 0) nearbyTiles.Add(upTileCellToAdd);
+                if (downTileCellToAdd.x < rows) nearbyTiles.Add(downTileCellToAdd);
             }
 
             return nearbyTiles;
@@ -52,9 +52,6 @@ namespace Crush2048
 
         private void AddScoreFromNearbyTiles(List<Vector2Int> nearbyTiles)
         {
-            int rows = gridSystem.GridSize.Rows;
-            int columns = gridSystem.GridSize.Columns;
-
             TileType[,] cachedTileValues = gridSystem.CachedTilesAtCells;
             int[,] cachedPointsWorth = gridSystem.CachedPointsWorthAtCells;
 
@@ -62,8 +59,6 @@ namespace Crush2048
 
             foreach (Vector2Int cell in nearbyTiles)
             {
-                if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
-
                 if (!cachedTileValues[cell.x, cell.y].isSpecial) scoreToAdd += cachedPointsWorth[cell.x, cell.y];
             }
 
@@ -72,13 +67,8 @@ namespace Crush2048
 
         private void MoveNearbyTilesToPool(List<Vector2Int> nearbyTiles)
         {
-            int rows = gridSystem.GridSize.Rows;
-            int columns = gridSystem.GridSize.Columns;
-
             foreach (Vector2Int cell in nearbyTiles)
             {
-                if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
-
                 GameObject tile = gridSystem.TilesAtGridCells[cell.x, cell.y];
 
                 MoveTileToPool(cell, tile);
@@ -97,15 +87,10 @@ namespace Crush2048
 
         private List<Vector3> GetSpawnPositions(List<Vector2Int> nearbyTiles)
         {
-            int rows = gridSystem.GridSize.Rows;
-            int columns = gridSystem.GridSize.Columns;
-
             List<Vector3> spawnPositions = new List<Vector3>();
 
             foreach (Vector2Int cell in nearbyTiles)
             {
-                if (cell.x < 0 || cell.x >= rows || cell.y < 0 || cell.y >= columns) continue;
-
                 Vector3 spawnPosition = gridSystem.TilesAtGridCells[cell.x, cell.y].transform.position;
 
                 spawnPositions.Add(spawnPosition);
