@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Crush2048
     [CreateAssetMenu(fileName = "BombBehaviour", menuName = "ScriptableObjects/TileBehaviours/BombBehaviour")]
     public class BombBehaviour : BaseBehaviour
     {
+        public static event Action OnBombBehaviourInvoked;
+
         [SerializeField] int destroyInRowForEachSide;
         [SerializeField] int destroyInColumnForEachSide;
 
@@ -18,6 +21,7 @@ namespace Crush2048
             SpawnBombEffects(nearbyTiles);
             AddScoreFromNearbyTiles(nearbyTiles);
             MoveNearbyTilesToPool(nearbyTiles);
+            OnBombBehaviourInvoked?.Invoke();
         }
 
         private List<Vector2Int> GetNearbyTileCells(Vector2Int tileCell)

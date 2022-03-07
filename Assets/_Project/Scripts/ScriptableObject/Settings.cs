@@ -12,11 +12,11 @@ namespace Crush2048
         [Range(0, 1)] [SerializeField] float backgroundMusicVolume;
         [Range(0, 1)] [SerializeField] float soundEffectsVolume;
 
-        private const string SAVE_PATH = "settings";
-
         public bool IsVFXEnabled { get => isVFXEnabled; set { isVFXEnabled = value; SaveSettings(); } }
         public float BackgroundMusicVolume { get => backgroundMusicVolume; set { backgroundMusicVolume = value; SaveSettings(); } }
         public float SoundEffectsVolume { get => soundEffectsVolume; set { soundEffectsVolume = value; SaveSettings(); } }
+
+        private const string SAVE_PATH = "settings";
 
         private void OnEnable() => LoadSettings();
 
