@@ -14,9 +14,9 @@ namespace Crush2048
 
         private const string SAVE_PATH = "settings";
 
-        public bool IsVFXEnabled { get => isVFXEnabled; set => isVFXEnabled = value; }
-        public float BackgroundMusicVolume { get => backgroundMusicVolume; set => backgroundMusicVolume = value; }
-        public float SoundEffectsVolume { get => soundEffectsVolume; set => soundEffectsVolume = value; }
+        public bool IsVFXEnabled { get => isVFXEnabled; set { isVFXEnabled = value; SaveSettings(); } }
+        public float BackgroundMusicVolume { get => backgroundMusicVolume; set { backgroundMusicVolume = value; SaveSettings(); } }
+        public float SoundEffectsVolume { get => soundEffectsVolume; set { soundEffectsVolume = value; SaveSettings(); } }
 
         private void OnEnable() => LoadSettings();
 

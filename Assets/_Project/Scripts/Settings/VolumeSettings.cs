@@ -13,10 +13,19 @@ namespace Crush2048
 
         private void Start() => LoadSettings();
 
+        public void SetVolumeSettings()
+        {
+            settings.BackgroundMusicVolume = backgroundMusicSlider.value;
+            settings.SoundEffectsVolume = soundEffectsSlider.value;
+        }
+
         private void LoadSettings()
         {
-            backgroundMusicSlider.value = settings.BackgroundMusicVolume;
-            soundEffectsSlider.value = settings.SoundEffectsVolume;
+            float backgroundMusicVolume = settings.BackgroundMusicVolume;
+            float soundEffectsVolume = settings.SoundEffectsVolume;
+
+            backgroundMusicSlider.value = backgroundMusicVolume;
+            soundEffectsSlider.value = soundEffectsVolume;
         }
     }
 }

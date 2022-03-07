@@ -12,6 +12,9 @@ namespace Crush2048
 
         private void Start() => LoadSettings();
 
+        public void SetVFXSettings() => settings.IsVFXEnabled = toggle.isOn;
+
         private void LoadSettings() => toggle.isOn = settings.IsVFXEnabled;
+
     }
 }

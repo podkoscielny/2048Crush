@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d09247cb41eb5f439a51410a9f73e76, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  isVFXEnabled: 0
-  backgroundMusicVolume: 0.125
-  soundEffectsVolume: 0
+  isVFXEnabled: 1
+  backgroundMusicVolume: 0.21824141
+  soundEffectsVolume: 0.516

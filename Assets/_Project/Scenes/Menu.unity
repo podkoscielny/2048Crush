@@ -1029,7 +1029,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1056977136}
+        m_TargetAssemblyTypeName: Crush2048.VFXSettings, Scripts
+        m_MethodName: SetVFXSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &370238199
 GameObject:
@@ -1352,8 +1364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
-  backgroundMusicSlider: {fileID: 1513509166}
-  soundEffectsSlider: {fileID: 884026696}
+  backgroundMusicSlider: {fileID: 884026696}
+  soundEffectsSlider: {fileID: 1513509166}
 --- !u!1001 &458830918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1364,6 +1376,38 @@ PrefabInstance:
     - target: {fileID: 1730323662405225130, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 442869719}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetVolumeSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Crush2048.VolumeSettings, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1730323662878112889, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5625,6 +5669,34 @@ PrefabInstance:
     - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
       propertyPath: m_Value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 442869719}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetVolumeSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Crush2048.VolumeSettings, Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9063184506221806722, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
       propertyPath: m_AnchoredPosition.x
