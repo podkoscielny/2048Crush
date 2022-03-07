@@ -10,8 +10,8 @@ namespace Crush2048
     {
         [SerializeField] protected GridSystem gridSystem;
         [SerializeField] protected ObjectPool objectPool;
+        [SerializeField] protected Settings settings;
         [SerializeField] protected Score score;
-        [SerializeField] protected Tags specialEffectTag;
 
         protected Quaternion initialRotation = new Quaternion(0, 0, 0, 0);
         private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
@@ -26,6 +26,8 @@ namespace Crush2048
 
         protected void SpawnParticleEffect(Vector3 spawnPosition, Tags specialEffectTag)
         {
+            if (!settings.IsVFXEnabled) return;
+
             GameObject particleEffect = objectPool.GetFromPool(specialEffectTag);
             particleEffect.transform.position = spawnPosition;
         }
