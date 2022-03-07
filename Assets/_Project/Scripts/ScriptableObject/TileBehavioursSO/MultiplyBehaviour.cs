@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tags = MultipleTagSystem.TagSystem.Tags;
 
 namespace Crush2048
 {
@@ -29,6 +30,9 @@ namespace Crush2048
                 UpdateScore(secondSelectedTile.TilePoints.PointsWorth);
                 DoPunchScale(secondSelectedTile.TileObject.transform);
             }
+
+            Vector3 spawnPosition = secondSelectedTile.TileObject.transform.position;
+            SpawnParticleEffect(spawnPosition, Tags.MatchEffect);
         }
     }
 }
