@@ -812,7 +812,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Match It\nOr\n Crush It"
+  m_text: "Match\nn'\n Crush "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90429fd7ac7acd84394fbcde9b6dfdfe, type: 2}
   m_sharedMaterial: {fileID: -4631215753241707525, guid: 90429fd7ac7acd84394fbcde9b6dfdfe, type: 2}
@@ -1310,6 +1310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 442869718}
+  - component: {fileID: 442869719}
   m_Layer: 5
   m_Name: Volume
   m_TagString: Untagged
@@ -1338,6 +1339,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 20.000021}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &442869719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442869717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a2f10b7122b1c43ad3685b738656d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
+  backgroundMusicSlider: {fileID: 1513509166}
+  soundEffectsSlider: {fileID: 884026696}
 --- !u!1001 &458830918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2388,7 +2404,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Match Or Crush
+  m_text: Match n' Crush
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90429fd7ac7acd84394fbcde9b6dfdfe, type: 2}
   m_sharedMaterial: {fileID: -4631215753241707525, guid: 90429fd7ac7acd84394fbcde9b6dfdfe, type: 2}
@@ -2700,6 +2716,17 @@ MonoBehaviour:
   - {fileID: 862199934}
   - {fileID: 84655698}
   loweredScaleFactor: 0.9
+--- !u!114 &884026696 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1730323662405225131, guid: 0f35dacf43196cd43a3bbd4f527c108c, type: 3}
+  m_PrefabInstance: {fileID: 458830918}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &907112120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3302,6 +3329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1056977135}
+  - component: {fileID: 1056977136}
   m_Layer: 5
   m_Name: VFX
   m_TagString: Untagged
@@ -3330,6 +3358,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -541}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1056977136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056977134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f214e0aec5e134eab9e675ca40cdce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
+  toggle: {fileID: 365918362}
 --- !u!1 &1105067939
 GameObject:
   m_ObjectHideFlags: 0
@@ -4136,6 +4178,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474045571}
   m_CullTransparentMesh: 1
+--- !u!114 &1513509166 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+  m_PrefabInstance: {fileID: 1877712026}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1534362108
 GameObject:
   m_ObjectHideFlags: 0
@@ -5567,6 +5620,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9063184506076707130, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9063184506221806721, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
+      propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9063184506221806722, guid: 457cbc65cde9e5d4cb8b4bab8a48b397, type: 3}
