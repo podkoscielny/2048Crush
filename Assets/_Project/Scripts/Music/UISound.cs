@@ -4,35 +4,25 @@ using UnityEngine;
 
 namespace Crush2048
 {
-    public class UISound : MonoBehaviour
+    public class UISound : SoundHandler
     {
-        [SerializeField] AudioSource audioSource;
-        [SerializeField] Settings settings;
         [SerializeField] AudioClip buttonUpSound;
         [SerializeField] AudioClip buttonDownSound;
 
-        private float _baseVolume = 1;
-
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             ButtonSound.OnButtonUp += PlayOnButtonUp;
             ButtonSound.OnButtonClick += PlayOnButtonUp;
             ButtonSound.OnButtonDown += PlayOnButtonDown;
-            settings.OnSettingsChanged += SetVolume;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             ButtonSound.OnButtonUp -= PlayOnButtonUp;
             ButtonSound.OnButtonClick -= PlayOnButtonUp;
             ButtonSound.OnButtonDown -= PlayOnButtonDown;
-            settings.OnSettingsChanged -= SetVolume;
-        }
-
-        private void Start()
-        {
-            SetBaseVolume();
-            SetVolume();
         }
 
         public void PlaySoundEffect(AudioClip audioClip)
@@ -43,10 +33,9 @@ namespace Crush2048
         }
 
         private void PlayOnButtonUp() => PlaySoundEffect(buttonUpSound);
+
         private void PlayOnButtonDown() => PlaySoundEffect(buttonDownSound);
 
-        private void SetBaseVolume() => _baseVolume = audioSource.volume;
-
-        private void SetVolume() => audioSource.volume = _baseVolume * settings.SoundEffectsVolume;
+        protected override void SetVolume() => audioSource.volume = _baseVolume * settings.SoundEffectsVolume;
     }
 }

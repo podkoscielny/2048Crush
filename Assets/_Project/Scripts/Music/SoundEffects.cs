@@ -4,34 +4,21 @@ using UnityEngine;
 
 namespace Crush2048
 {
-    public class SoundEffects : MonoBehaviour
+    public class SoundEffects : SoundHandler
     {
-        [SerializeField] AudioSource audioSource;
-        [SerializeField] Settings settings;
-
-        private float _baseVolume = 1;
-
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             BaseBehaviour.OnSoundEffectPlay += PlaySoundEffect;
-            settings.OnSettingsChanged += SetVolume;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             BaseBehaviour.OnSoundEffectPlay -= PlaySoundEffect;
-            settings.OnSettingsChanged -= SetVolume;
         }
 
-        private void Start()
-        {
-            SetBaseVolume();
-            SetVolume();
-        }
-
-        private void SetBaseVolume() => _baseVolume = audioSource.volume;
-
-        private void SetVolume() => audioSource.volume = _baseVolume * settings.SoundEffectsVolume;
+        protected override void SetVolume() => audioSource.volume = _baseVolume * settings.SoundEffectsVolume;
 
         private void PlaySoundEffect(AudioClip audioClip)
         {
