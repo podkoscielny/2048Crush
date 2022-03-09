@@ -2229,6 +2229,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863750757}
   m_CullTransparentMesh: 1
+--- !u!82 &971996912 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6252786856208003341, guid: cf61d0319e37e794bba7b8710b912014, type: 3}
+  m_PrefabInstance: {fileID: 6252786856803054205}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &983002984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5569,6 +5574,7 @@ GameObject:
   - component: {fileID: 1814746918}
   - component: {fileID: 1814746921}
   - component: {fileID: 1814746922}
+  - component: {fileID: 1814746923}
   m_Layer: 5
   m_Name: Music Button
   m_TagString: Untagged
@@ -5639,7 +5645,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1814746919}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1814746923}
+        m_TargetAssemblyTypeName: Crush2048.MusicMute, Scripts
+        m_MethodName: MuteMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1814746919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5705,6 +5723,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8023461b39cb66a43b46fa0f657ca7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1814746923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814746916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7301c911557781b4b9442ab288ba4adf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 971996912}
 --- !u!1001 &1817607506
 PrefabInstance:
   m_ObjectHideFlags: 0

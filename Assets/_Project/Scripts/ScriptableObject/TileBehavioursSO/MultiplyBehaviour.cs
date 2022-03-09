@@ -32,8 +32,8 @@ namespace Crush2048
             }
 
             Vector3 spawnPosition = secondSelectedTile.TileObject.transform.position;
-            PlaySoundEffect(soundEffect);
             SpawnParticleEffect(spawnPosition, Tags.MatchEffect);
+            PlaySoundEffect(soundEffect);
         }
     }
 }
