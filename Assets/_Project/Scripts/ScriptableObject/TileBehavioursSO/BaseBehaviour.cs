@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Crush2048
 {
     public abstract class BaseBehaviour : ScriptableObject
     {
+        public static event Action<AudioClip> OnSoundEffectPlay;
+
         [SerializeField] protected GridSystem gridSystem;
         [SerializeField] protected ObjectPool objectPool;
         [SerializeField] protected Settings settings;
@@ -31,6 +34,8 @@ namespace Crush2048
             GameObject particleEffect = objectPool.GetFromPool(specialEffectTag);
             particleEffect.transform.position = spawnPosition;
         }
+
+        protected void PlaySoundEffect(AudioClip audioClip) => OnSoundEffectPlay?.Invoke(audioClip);
 
         protected void UpdateScore(int pointsToAdd) => score.AddPoints(pointsToAdd);
 
