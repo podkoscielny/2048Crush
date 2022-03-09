@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Crush2048
     [CreateAssetMenu(fileName = "Settings", menuName = "ScriptableObjects/Settings")]
     public class Settings : ScriptableObject
     {
+        public event Action OnSettingsChanged;
+
         [SerializeField] bool isVFXEnabled;
         [Range(0, 1)] [SerializeField] float backgroundMusicVolume;
         [Range(0, 1)] [SerializeField] float soundEffectsVolume;
@@ -27,6 +30,8 @@ namespace Crush2048
             SettingsData settingsData = new SettingsData(IsVFXEnabled, BackgroundMusicVolume, SoundEffectsVolume);
 
             SaveSystem.Save<SettingsData>(SAVE_PATH, settingsData);
+
+            OnSettingsChanged?.Invoke();
         }
 
         private void LoadSettings()

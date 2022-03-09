@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Settings
   m_EditorClassIdentifier: 
   isVFXEnabled: 1
-  backgroundMusicVolume: 0.21824141
-  soundEffectsVolume: 0.516
+  backgroundMusicVolume: 1
+  soundEffectsVolume: 1
