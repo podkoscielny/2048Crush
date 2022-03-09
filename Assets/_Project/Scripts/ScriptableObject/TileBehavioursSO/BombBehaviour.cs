@@ -11,7 +11,6 @@ namespace Crush2048
     {
         public static event Action OnBombBehaviourInvoked;
 
-        [SerializeField] AudioClip bombSoundEffect;
         [SerializeField] int destroyInRowForEachSide;
         [SerializeField] int destroyInColumnForEachSide;
 
@@ -22,7 +21,7 @@ namespace Crush2048
             SpawnBombEffects(nearbyTiles);
             AddScoreFromNearbyTiles(nearbyTiles);
             MoveNearbyTilesToPool(nearbyTiles);
-            PlaySoundEffect(bombSoundEffect);
+            PlaySoundEffect(soundEffect);
             OnBombBehaviourInvoked?.Invoke();
         }
 

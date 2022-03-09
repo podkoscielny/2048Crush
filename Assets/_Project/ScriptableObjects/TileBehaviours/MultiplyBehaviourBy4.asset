@@ -16,4 +16,5 @@ MonoBehaviour:
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
   settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
+  soundEffect: {fileID: 8300000, guid: 291fd576b8d4f7e4e83a8663edadb606, type: 3}
   multiplier: 4

@@ -24,6 +24,7 @@ namespace Crush2048
                 MoveTileToPool(firstSelectedTile.TileCell, firstSelectedTile.TileObject);
                 DoPunchScale(secondSelectedTile.TileObject.transform);
             }
+            PlaySoundEffect(soundEffect);
         }
     }
 }

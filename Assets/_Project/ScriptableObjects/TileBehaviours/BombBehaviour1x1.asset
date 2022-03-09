@@ -16,6 +16,6 @@ MonoBehaviour:
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
   settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
-  bombSoundEffect: {fileID: 8300000, guid: 6f438a50fb690f04184eb0f12c150eaa, type: 3}
+  soundEffect: {fileID: 8300000, guid: 6f438a50fb690f04184eb0f12c150eaa, type: 3}
   destroyInRowForEachSide: 1
   destroyInColumnForEachSide: 1

@@ -19,6 +19,7 @@ namespace Crush2048
             MultiplyTilePoints(tilePoints, 2);
             UpdateScore(tilePoints.PointsWorth);
             SpawnParticleEffect(spawnPosition, Tags.MatchEffect);
+            PlaySoundEffect(soundEffect);
             DoPunchScale(secondSelectedTile.TileObject.transform);
         }
     }

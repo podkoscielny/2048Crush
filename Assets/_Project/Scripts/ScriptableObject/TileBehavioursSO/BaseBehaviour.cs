@@ -15,6 +15,7 @@ namespace Crush2048
         [SerializeField] protected ObjectPool objectPool;
         [SerializeField] protected Settings settings;
         [SerializeField] protected Score score;
+        [SerializeField] protected AudioClip soundEffect;
 
         protected Quaternion initialRotation = new Quaternion(0, 0, 0, 0);
         private Vector3 _enlargedTileScale = new Vector3(0.4f, 0.4f, 0.4f);
