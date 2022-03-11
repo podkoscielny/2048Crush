@@ -1293,6 +1293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 454385208}
   settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
+  gameOverSound: {fileID: 8300000, guid: c1c6dae36c70c5f45a828551bad61a43, type: 3}
 --- !u!1 &497396931
 GameObject:
   m_ObjectHideFlags: 0
