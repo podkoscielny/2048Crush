@@ -9,9 +9,8 @@ namespace Crush2048
     {
         [SerializeField] CanvasGroup UIToFade;
         [SerializeField] RectTransform objectToAnimate;
-        [Range(0, 2f)] [SerializeField] float moveAmount;
+        [SerializeField] Vector3 punchScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        private Vector3 _punchScale = new Vector3(0.1f, 0.1f, 0.1f);
 
         private const float ANIMATION_DURATION = 0.4f;
        
@@ -28,7 +27,7 @@ namespace Crush2048
             UIToFade.alpha = 0;
 
             UIToFade.DOFade(1, ANIMATION_DURATION).SetEase(Ease.OutCirc);
-            objectToAnimate.DOPunchScale(_punchScale, ANIMATION_DURATION).SetEase(Ease.OutCirc);
+            objectToAnimate.DOPunchScale(punchScale, ANIMATION_DURATION).SetEase(Ease.OutCirc);
         }
     }
 }

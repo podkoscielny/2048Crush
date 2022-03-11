@@ -1044,7 +1044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIToFade: {fileID: 1199099324}
   objectToAnimate: {fileID: 1614245401}
-  moveAmount: 0.1
+  punchScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!114 &379271009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1903,7 +1903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIToFade: {fileID: 207221011}
   objectToAnimate: {fileID: 992038518}
-  moveAmount: 0.1
+  punchScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!114 &805789922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3525,7 +3525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIToFade: {fileID: 1444767462}
   objectToAnimate: {fileID: 1444767460}
-  moveAmount: 0.1
+  punchScale: {x: 0.001, y: 0.001, z: 0.001}
 --- !u!114 &1185736073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5431,7 +5431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIToFade: {fileID: 1896984994}
   objectToAnimate: {fileID: 561135508}
-  moveAmount: 0.1
+  punchScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &1765827245
 GameObject:
   m_ObjectHideFlags: 0
@@ -5939,7 +5939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIToFade: {fileID: 1028904876}
   objectToAnimate: {fileID: 1132215975}
-  moveAmount: 0.1
+  punchScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &1824453144
 GameObject:
   m_ObjectHideFlags: 0
