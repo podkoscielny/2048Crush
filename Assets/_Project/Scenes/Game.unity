@@ -7079,7 +7079,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6332758963685903764, guid: b445c27c56617eb4f9eb22f0913fc743, type: 3}
       propertyPath: m_Volume
-      value: 0.788
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6332758963685903765, guid: b445c27c56617eb4f9eb22f0913fc743, type: 3}
       propertyPath: m_Name

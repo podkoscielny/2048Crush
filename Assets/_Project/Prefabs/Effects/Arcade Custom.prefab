@@ -14640,7 +14640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
-  deactivateDelay: 0.4
+  deactivateDelay: 0.28
 --- !u!114 &-8449061970860566643
 MonoBehaviour:
   m_ObjectHideFlags: 0
