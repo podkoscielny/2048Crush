@@ -17,23 +17,22 @@ namespace Crush2048
         private const float TRANSITION_DURATION = 0.1f;
         private const float HIGHLIGHT_DURATION = 0.32f;
 
-        private void Start() =>  StartCoroutine(HighlightImageCoroutine());
+        private void Start() => StartCoroutine(HighlightImageCoroutine());
 
         private IEnumerator HighlightImageCoroutine()
         {
-            while (true)
-            {
-                Transform randomImage = GetRandomImage();
-                Vector3 finalPosition = randomImage.position + (randomImage.up * IMAGE_MOVE_AMOUNT);
+            Transform randomImage = GetRandomImage();
+            Vector3 finalPosition = randomImage.position + (randomImage.up * IMAGE_MOVE_AMOUNT);
 
-                randomImage.DOMove(finalPosition, TRANSITION_DURATION);
-                if (_lastlyHighlightedImage != null) _lastlyHighlightedImage.DOMove(_initialPosition, TRANSITION_DURATION);
+            randomImage.DOMove(finalPosition, TRANSITION_DURATION);
+            if (_lastlyHighlightedImage != null) _lastlyHighlightedImage.DOMove(_initialPosition, TRANSITION_DURATION);
 
-                _lastlyHighlightedImage = randomImage;
-                _initialPosition = randomImage.position;
+            _lastlyHighlightedImage = randomImage;
+            _initialPosition = randomImage.position;
 
-                yield return new WaitForSeconds(HIGHLIGHT_DURATION);
-            }
+            yield return new WaitForSeconds(HIGHLIGHT_DURATION);
+
+            StartCoroutine(HighlightImageCoroutine());
         }
 
         private Transform GetRandomImage()
