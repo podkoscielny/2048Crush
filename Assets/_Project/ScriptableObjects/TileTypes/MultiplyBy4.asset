@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointsWorth: 0
   isSpecial: 1
-  image: {fileID: 21300000, guid: 41e21f09a435e8f48b835199999a7226, type: 3}
+  image: {fileID: 21300000, guid: 742f20786aca0564789e5196813f8208, type: 3}
   behaviour: {fileID: 11400000, guid: 38cc509ab7e386848be5915573fb6c6a, type: 2}
