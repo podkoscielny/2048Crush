@@ -1809,7 +1809,7 @@ GameObject:
   - component: {fileID: 497858656}
   - component: {fileID: 497858655}
   m_Layer: 5
-  m_Name: Bomb Image 6
+  m_Name: Bomb Image 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2133,6 +2133,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631155561}
   m_CullTransparentMesh: 1
+--- !u!1 &632839572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 632839573}
+  - component: {fileID: 632839574}
+  m_Layer: 0
+  m_Name: ----Images Animation----
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &632839573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632839572}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.8588085, y: 35.8585, z: 555.3338}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &632839574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632839572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0667bb22be4169e4a9b4dd6d674ed7fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagesCenter: {fileID: 1706493588}
+  images:
+  - {fileID: 1715874375}
+  - {fileID: 1636606166}
+  - {fileID: 2077409435}
+  - {fileID: 497858654}
+  - {fileID: 1785176923}
+  - {fileID: 1630157745}
+  - {fileID: 1686127792}
+  - {fileID: 825628422}
+  - {fileID: 545837387}
+  - {fileID: 1722818204}
 --- !u!1 &678257820
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,7 +5164,7 @@ GameObject:
   - component: {fileID: 1636606168}
   - component: {fileID: 1636606167}
   m_Layer: 5
-  m_Name: Bomb Image 4
+  m_Name: Bomb Image 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5498,7 +5553,7 @@ GameObject:
   - component: {fileID: 1715874377}
   - component: {fileID: 1715874376}
   m_Layer: 5
-  m_Name: Bomb Image 3
+  m_Name: Bomb Image 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7388,7 +7443,7 @@ GameObject:
   - component: {fileID: 2077409437}
   - component: {fileID: 2077409436}
   m_Layer: 5
-  m_Name: Bomb Image 5
+  m_Name: Bomb Image 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
