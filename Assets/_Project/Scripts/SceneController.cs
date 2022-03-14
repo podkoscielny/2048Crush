@@ -8,9 +8,18 @@ namespace Crush2048
 {
     public class SceneController : MonoBehaviour
     {
-        public void GoToPlayScene() => SceneManager.LoadScene("Game");
+        private const float LOAD_DELAY = 0.5f;
 
-        public void GoToMainMenu() => SceneManager.LoadScene("Menu");
+        public void GoToPlayScene() => StartCoroutine(LoadScene("Game"));
+
+        public void GoToMainMenu() => StartCoroutine(LoadScene("Menu"));
+
+        private IEnumerator LoadScene(string sceneName)
+        {
+            yield return new WaitForSeconds(LOAD_DELAY);
+
+            SceneManager.LoadSceneAsync(sceneName);
+        }
 
         public void QuitGame()
         {

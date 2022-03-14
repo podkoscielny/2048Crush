@@ -19,6 +19,8 @@ namespace Crush2048
 
         private void Start() => StartCoroutine(HighlightImageCoroutine());
 
+        private void OnDestroy() => StopAllCoroutines();
+
         private IEnumerator HighlightImageCoroutine()
         {
             Transform randomImage = GetRandomImage();

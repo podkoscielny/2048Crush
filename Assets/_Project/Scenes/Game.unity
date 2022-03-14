@@ -2466,12 +2466,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 805789922}
+    - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1063957563}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -2481,12 +2485,20 @@ PrefabInstance:
       value: GoToMainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Crush2048.SceneController, Scripts
+      value: UnityEngine.Animator, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Close
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: 
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7563769834679625521, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_Pivot.x
@@ -2821,6 +2833,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a763f525ee15fbd41889bc375842cadf, type: 3}
+--- !u!95 &1063957563 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1124807071, guid: a763f525ee15fbd41889bc375842cadf, type: 3}
+  m_PrefabInstance: {fileID: 1063957562}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1076588858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3191,16 +3208,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 805789922}
+    - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1063957563}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -3210,12 +3231,20 @@ PrefabInstance:
       value: GoToMainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Crush2048.SceneController, Scripts
+      value: UnityEngine.Animator, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Close
       objectReference: {fileID: 0}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: 
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7563769834679625521, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_Pivot.x
