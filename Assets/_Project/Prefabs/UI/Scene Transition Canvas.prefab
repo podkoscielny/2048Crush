@@ -489,8 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5d9f6fd0aed3f459508137473bc4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftDoor: {fileID: 349491569}
-  rightDoor: {fileID: 777471895}
 --- !u!95 &1124807071
 Animator:
   serializedVersion: 3

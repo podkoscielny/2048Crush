@@ -2176,7 +2176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0667bb22be4169e4a9b4dd6d674ed7fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imagesCenter: {fileID: 1706493588}
   images:
   - {fileID: 1715874375}
   - {fileID: 1636606166}

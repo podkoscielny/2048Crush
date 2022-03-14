@@ -12,7 +12,7 @@ namespace Crush2048
         public static event Action OnSceneChanged;
 
         private float _volumeRef;
-        private const float LOAD_DELAY = 0.5f;
+        private const float LOAD_DELAY = 0.8f;
 
         public void GoToPlayScene() => StartCoroutine(LoadScene("Game"));
 
