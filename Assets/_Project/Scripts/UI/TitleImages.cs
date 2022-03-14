@@ -7,7 +7,6 @@ namespace Crush2048
 {
     public class TitleImages : MonoBehaviour
     {
-        [SerializeField] Transform imagesCenter;
         [SerializeField] List<Transform> images;
 
         private Vector3 _initialPosition;
@@ -16,6 +15,10 @@ namespace Crush2048
         private const float IMAGE_MOVE_AMOUNT = 4;
         private const float TRANSITION_DURATION = 0.1f;
         private const float HIGHLIGHT_DURATION = 0.32f;
+
+        private void OnEnable() => SceneController.OnSceneChanged += StopAllCoroutines;
+
+        private void OnDisable() => SceneController.OnSceneChanged -= StopAllCoroutines;
 
         private void Start() => StartCoroutine(HighlightImageCoroutine());
 

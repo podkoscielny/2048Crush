@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Crush2048
 {
     public class SceneController : MonoBehaviour
     {
+        public static event Action OnSceneChanged;
+
         private float _volumeRef;
         private const float LOAD_DELAY = 0.5f;
 
@@ -17,6 +20,8 @@ namespace Crush2048
 
         private IEnumerator LoadScene(string sceneName)
         {
+            OnSceneChanged?.Invoke();
+
             StartCoroutine(MuteMasterVolume());
 
             yield return new WaitForSeconds(LOAD_DELAY);
