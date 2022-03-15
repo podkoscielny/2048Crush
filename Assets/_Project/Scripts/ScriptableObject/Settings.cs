@@ -11,9 +11,9 @@ namespace Crush2048
     {
         public event Action OnSettingsChanged;
 
-        [SerializeField] bool isVFXEnabled;
-        [Range(0, 1)] [SerializeField] float backgroundMusicVolume;
-        [Range(0, 1)] [SerializeField] float soundEffectsVolume;
+        [SerializeField] bool isVFXEnabled = true;
+        [Range(0, 1)] [SerializeField] float backgroundMusicVolume = 1;
+        [Range(0, 1)] [SerializeField] float soundEffectsVolume = 1;
 
         public bool IsVFXEnabled { get => isVFXEnabled; set { isVFXEnabled = value; SaveSettings(); } }
         public float BackgroundMusicVolume { get => backgroundMusicVolume; set { backgroundMusicVolume = value; SaveSettings(); } }
