@@ -3009,6 +3009,7 @@ GameObject:
   - component: {fileID: 862199935}
   - component: {fileID: 862199938}
   - component: {fileID: 862199939}
+  - component: {fileID: 862199940}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -3080,7 +3081,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2142505740}
+      - m_Target: {fileID: 862199940}
         m_TargetAssemblyTypeName: Crush2048.SceneController, Scripts
         m_MethodName: GoToPlayScene
         m_Mode: 1
@@ -3168,6 +3169,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8023461b39cb66a43b46fa0f657ca7ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &862199940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862199933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e34eee2604179b409547d63c21fc3e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &884026696 stripped
@@ -3751,6 +3764,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 5d1c375385c94ee4f949f837aa15ecbc, type: 2}
   toggle: {fileID: 365918362}
+--- !u!1 &1091838518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5190691739128653310, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
+  m_PrefabInstance: {fileID: 7572394854467128494}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1091838519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091838518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e34eee2604179b409547d63c21fc3e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1105067939
 GameObject:
   m_ObjectHideFlags: 0
@@ -7604,7 +7634,6 @@ GameObject:
   - component: {fileID: 2142505738}
   - component: {fileID: 2142505737}
   - component: {fileID: 2142505736}
-  - component: {fileID: 2142505740}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -7696,18 +7725,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &2142505740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142505735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e34eee2604179b409547d63c21fc3e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &135499865821457311 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7563769834679625521, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
@@ -7833,7 +7850,7 @@ PrefabInstance:
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2142505740}
+      objectReference: {fileID: 1091838519}
     - target: {fileID: 7389767322592034191, guid: ad6ef96c2cea0c34ab5b1e65ff0c92b5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: QuitGame
