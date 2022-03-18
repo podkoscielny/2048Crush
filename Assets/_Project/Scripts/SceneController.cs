@@ -11,9 +11,6 @@ namespace Crush2048
     {
         public static event Action OnSceneChanged;
 
-        private float _volumeRef;
-        private const float LOAD_DELAY = 0.8f;
-
         public void GoToPlayScene() => StartCoroutine(LoadScene("Game"));
 
         public void GoToMainMenu() => StartCoroutine(LoadScene("Menu"));
@@ -22,9 +19,7 @@ namespace Crush2048
         {
             OnSceneChanged?.Invoke();
 
-            StartCoroutine(MuteMasterVolume());
-
-            yield return new WaitForSeconds(LOAD_DELAY);
+            yield return StartCoroutine(MasterVolume.Mute());
 
             SceneManager.LoadSceneAsync(sceneName);
         }
@@ -37,15 +32,6 @@ namespace Crush2048
             Application.Quit();
 
 #endif
-        }
-
-        private IEnumerator MuteMasterVolume()
-        {
-            while (AudioListener.volume > 0.01f)
-            {
-                AudioListener.volume = Mathf.SmoothDamp(AudioListener.volume, 0, ref _volumeRef, 0.2f);
-                yield return null;
-            }
         }
     }
 }
