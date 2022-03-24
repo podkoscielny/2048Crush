@@ -170,9 +170,9 @@ MonoBehaviour:
   score: {fileID: 11400000, guid: 4c6af5951756e1040913f953370b56f7, type: 2}
   objectPool: {fileID: 11400000, guid: 0c5b313052c8c664d851a337fa4f36bd, type: 2}
   gridSystem: {fileID: 11400000, guid: 047e5f3f2b76f604c8c80101d353ce56, type: 2}
+  defaultBehaviour: {fileID: 11400000, guid: 22822ec4502e50b489c8bf9c2eddb421, type: 2}
   tilePoints: {fileID: 3994539253609184669}
   tileTypePicker: {fileID: -8099170192273083415}
-  defaultBehaviour: {fileID: 11400000, guid: 22822ec4502e50b489c8bf9c2eddb421, type: 2}
 --- !u!114 &-8099170192273083415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.7, y: 2.7003489}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
