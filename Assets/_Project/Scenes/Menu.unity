@@ -1036,7 +1036,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7094102014069937633, guid: 4196c23dbc218d440ad93ca94e11764d, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7094102014069937633, guid: 4196c23dbc218d440ad93ca94e11764d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1966,8 +1966,9 @@ GameObject:
   m_Component:
   - component: {fileID: 587456966}
   - component: {fileID: 587456967}
+  - component: {fileID: 587456968}
   m_Layer: 0
-  m_Name: Setup Settings
+  m_Name: ----Setup Settings----
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1985,7 +1986,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &587456967
 MonoBehaviour:
@@ -1997,6 +1998,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80197c618e02134449a7a12e4c5d8888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &587456968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587456965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81c88036fe90e349b6ebc230e852249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &631155561
@@ -4114,7 +4127,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: ee8f93b3c53744442b9550b3722e5cbc, type: 3}
     - target: {fileID: 6252786856208003346, guid: cf61d0319e37e794bba7b8710b912014, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6252786856208003346, guid: cf61d0319e37e794bba7b8710b912014, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6975,7 +6988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6332758963685903767, guid: b445c27c56617eb4f9eb22f0913fc743, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6332758963685903767, guid: b445c27c56617eb4f9eb22f0913fc743, type: 3}
       propertyPath: m_LocalPosition.x
