@@ -7,14 +7,14 @@ namespace Crush2048
     public class TargetFPSSetter : MonoBehaviour
     {
         private int _targetFramerate = -1;
-        private int _vSyncCount = 0;
+        private int _vSyncCount = 1;
 
         private void Start() => SetTargetFPS();
 
         private void SetTargetFPS()
         {
 #if UNITY_ANDROID
-            _targetFramerate = Screen.currentResolution.refreshRate;
+            _targetFramerate = 60;
             _vSyncCount = 0;
 #endif
 
