@@ -14,8 +14,8 @@ namespace Crush2048
         private void SetTargetFPS()
         {
 #if UNITY_ANDROID
-            _targetFramerate = 60;
-            _vSyncCount = 0;
+            _targetFramerate = -1;
+            _vSyncCount = 1;
 #endif
 
 #if UNITY_STANDALONE
