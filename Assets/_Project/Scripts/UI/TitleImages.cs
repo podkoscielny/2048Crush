@@ -11,6 +11,7 @@ namespace Crush2048
 
         private Vector3 _initialPosition;
         private Transform _lastlyHighlightedImage;
+        private WaitForSeconds _waitForHighlight;
 
         private const float IMAGE_MOVE_AMOUNT = 4;
         private const float TRANSITION_DURATION = 0.1f;
@@ -20,7 +21,11 @@ namespace Crush2048
 
         private void OnDisable() => SceneController.OnSceneChanged -= StopAllCoroutines;
 
-        private void Start() => StartCoroutine(HighlightImageCoroutine());
+        private void Start()
+        {
+            CacheWaitForSeconds();
+            StartCoroutine(HighlightImageCoroutine());
+        }
 
         private void OnDestroy() => StopAllCoroutines();
 
@@ -35,10 +40,12 @@ namespace Crush2048
             _lastlyHighlightedImage = randomImage;
             _initialPosition = randomImage.position;
 
-            yield return new WaitForSeconds(HIGHLIGHT_DURATION);
+            yield return _waitForHighlight;
 
             StartCoroutine(HighlightImageCoroutine());
         }
+
+        private void CacheWaitForSeconds() => _waitForHighlight = new WaitForSeconds(HIGHLIGHT_DURATION);
 
         private Transform GetRandomImage()
         {
