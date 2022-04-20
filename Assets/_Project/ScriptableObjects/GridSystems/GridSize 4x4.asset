@@ -15,11 +15,11 @@ MonoBehaviour:
   rows: 4
   columns: 4
   tileTypes:
-  - spawnProbability: 0.008
+  - spawnProbability: 0.005
     tileType: {fileID: 11400000, guid: 46b4848b1c018a84db9d650dcc6048e9, type: 2}
-  - spawnProbability: 0.009
+  - spawnProbability: 0.01
     tileType: {fileID: 11400000, guid: 8d131933209ffe848919b1da1e7d935f, type: 2}
   - spawnProbability: 0.123
     tileType: {fileID: 11400000, guid: 87f93b6171497694290f346c259f8ae5, type: 2}
-  - spawnProbability: 0.86
+  - spawnProbability: 0.862
     tileType: {fileID: 11400000, guid: de5f29ab575ba2c488ab8eb3d188836d, type: 2}
