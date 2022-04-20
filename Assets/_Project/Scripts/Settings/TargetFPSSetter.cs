@@ -14,7 +14,7 @@ namespace Crush2048
         private void SetTargetFPS()
         {
 #if UNITY_ANDROID
-            _targetFramerate = -1;
+            _targetFramerate = Screen.currentResolution.refreshRate;
             _vSyncCount = 1;
 #endif
 
