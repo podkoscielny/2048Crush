@@ -18,7 +18,7 @@ MonoBehaviour:
   - spawnProbability: 0.005
     tileType: {fileID: 11400000, guid: 757d257ab42c98a419130241840f47b8, type: 2}
   - spawnProbability: 0.01
-    tileType: {fileID: 11400000, guid: 83d7ce66efa8b024cb4ed6b79fd31f9c, type: 2}
+    tileType: {fileID: 11400000, guid: 46b4848b1c018a84db9d650dcc6048e9, type: 2}
   - spawnProbability: 0.12
     tileType: {fileID: 11400000, guid: 87f93b6171497694290f346c259f8ae5, type: 2}
   - spawnProbability: 0.865
