@@ -11,7 +11,6 @@ namespace Crush2048
         [SerializeField] RectTransform objectToAnimate;
         [SerializeField] Vector3 punchScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-
         private const float ANIMATION_DURATION = 0.4f;
        
         public void ShowPopup()
