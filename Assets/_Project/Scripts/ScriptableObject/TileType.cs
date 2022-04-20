@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using Tags = MultipleTagSystem.TagSystem.Tags;
 
 namespace Crush2048
 {
@@ -15,6 +13,8 @@ namespace Crush2048
         //Special Behaviour fields
         public Sprite image;
         public BaseBehaviour behaviour;
+        public bool showTextInsteadOfImage;
+        public string textToShow;
 
         private const int MINIMUM_POINTS_WORTH = 0;
 

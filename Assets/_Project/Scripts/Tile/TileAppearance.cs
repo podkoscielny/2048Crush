@@ -63,9 +63,15 @@ namespace Crush2048
         {
             specialImageRenderer.sprite = tileType.image;
 
-            if (tileType.isSpecial)
+            if (tileType.isSpecial && !tileType.showTextInsteadOfImage)
             {
                 tileText.gameObject.SetActive(false);
+            }
+            else if (tileType.isSpecial && tileType.showTextInsteadOfImage)
+            {
+                tileText.gameObject.SetActive(true);
+                specialImageRenderer.sprite = null;
+                tileText.text = tileType.textToShow;
             }
             else
             {

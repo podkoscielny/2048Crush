@@ -24,8 +24,12 @@ namespace Crush2048
         {
             if (GetProperty("isSpecial").boolValue)
             {
-                DrawProperty("image");
                 DrawProperty("behaviour");
+                DrawProperty("showTextInsteadOfImage");
+
+                if (!GetProperty("showTextInsteadOfImage").boolValue) DrawProperty("image");
+
+                if (GetProperty("showTextInsteadOfImage").boolValue) DrawProperty("textToShow");
             }
             else
                 DrawProperty("pointsWorth");
