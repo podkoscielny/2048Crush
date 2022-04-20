@@ -1,40 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Crush2048
 {
     public static class MasterVolume
     {
-        private static float _volumeRef;
-        private static readonly float _changeVolumeDuration = 0.3f;
+        private static readonly float _changeVolumeDuration = 0.7f;
+        private static Tween _muteTween;
 
         private static bool _isMuting = false;
 
-        public static bool IsMuted() => AudioListener.volume <= 0.01f;
-
-        public static IEnumerator Mute()
+        public static void MuteTest(Action callback = null)
         {
             _isMuting = true;
 
-            while (AudioListener.volume > 0.01f)
-            {
-                AudioListener.volume = Mathf.SmoothDamp(AudioListener.volume, 0, ref _volumeRef, _changeVolumeDuration);
-                yield return null;
-            }
-
-            _isMuting = false;
+            _muteTween = DOTween.To(() => AudioListener.volume, x => AudioListener.volume = x, 0, _changeVolumeDuration)
+                .OnComplete(() => MuteCallback(callback));
         }
 
-        public static IEnumerator UnMute()
+        private static void MuteCallback(Action AdditionalCallback = null)
         {
-            while (AudioListener.volume < 0.999f)
-            {
-                if (_isMuting) yield break;
+            _isMuting = false;
+            AdditionalCallback.Invoke();
+        }
 
-                AudioListener.volume = Mathf.SmoothDamp(AudioListener.volume, 1, ref _volumeRef, _changeVolumeDuration);
-                yield return null;
+        public static void UnMuteTest()
+        {
+            if (_isMuting)
+            {
+                _muteTween.Kill();
+                _isMuting = false;
             }
+
+            DOTween.To(() => AudioListener.volume, x => AudioListener.volume = x, 1, _changeVolumeDuration);
         }
     }
 }

@@ -19,9 +19,9 @@ namespace Crush2048
         {
             OnSceneChanged?.Invoke();
 
-            yield return StartCoroutine(MasterVolume.Mute());
+            MasterVolume.MuteTest(() => SceneManager.LoadSceneAsync(sceneName));
 
-            SceneManager.LoadSceneAsync(sceneName);
+            yield return null;
         }
 
         public void QuitGame()

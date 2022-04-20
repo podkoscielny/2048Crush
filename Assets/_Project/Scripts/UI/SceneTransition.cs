@@ -7,6 +7,6 @@ namespace Crush2048
 {
     public class SceneTransition : MonoBehaviour
     {
-        private void Start() => StartCoroutine(MasterVolume.UnMute());
+        private void Start() => MasterVolume.UnMuteTest();
     }
 }
