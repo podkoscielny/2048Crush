@@ -23,10 +23,15 @@ namespace Crush2048
 
         private void OnEnable() => LoadSettings();
 
+#if UNITY_EDITOR
         private void OnValidate() => SaveSettings();
+#endif
 
         private void SaveSettings()
         {
+            PlayerPrefs.SetInt("HasSavedSettings", 1);
+            PlayerPrefs.Save();
+
             SettingsData settingsData = new SettingsData(IsVFXEnabled, BackgroundMusicVolume, SoundEffectsVolume);
 
             SaveSystem.Save<SettingsData>(SAVE_PATH, settingsData);
@@ -36,11 +41,13 @@ namespace Crush2048
 
         private void LoadSettings()
         {
-            SettingsData settingsData = SaveSystem.Load<SettingsData>(SAVE_PATH);
+            SettingsData settingsData = PlayerPrefs.GetInt("HasSavedSettings") == 1 ? SaveSystem.Load<SettingsData>(SAVE_PATH) : GetDefaultSettings();
 
-            IsVFXEnabled = settingsData.IsVFXEnabled;
-            BackgroundMusicVolume = settingsData.BackgroundMusicVolume;
-            SoundEffectsVolume = settingsData.SoundEffectsVolume;
+            isVFXEnabled = settingsData.IsVFXEnabled;
+            backgroundMusicVolume = settingsData.BackgroundMusicVolume;
+            soundEffectsVolume = settingsData.SoundEffectsVolume;
         }
+
+        private SettingsData GetDefaultSettings() => new SettingsData(true, 1, 1);
     }
 }
